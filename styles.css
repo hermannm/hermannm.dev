@@ -1,0 +1,13 @@
+body {
+	width: 100%;
+	font-family: "Consolas", "Courier New", sans-serif;
+}
+
+#main {
+	max-width: 500px;
+	margin: 0px auto;
+}
+
+.text-centered {
+	text-align: center;
+}
