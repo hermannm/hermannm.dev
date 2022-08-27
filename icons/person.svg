@@ -1,0 +1,15 @@
+
+<svg
+	version="1.1"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	x="0px"
+	y="0px"
+	viewBox="0 0 512 512"
+	style="enable-background:new 0 0 512 512;"
+	xml:space="preserve"
+>
+	<g id="XMLID_2_">
+		<path fill="#ebdbb2" d="M256,256c70.5,0,128-57.5,128-128S326.5,0,256,0S128,57.5,128,128C128.9,198.5,185.5,256,256,256z M256,320 C170.7,320,0.9,362.7,0.9,448v64h510.1v-64C511.1,362.7,341.3,320,256,320z"/>
+	</g>
+</svg>
