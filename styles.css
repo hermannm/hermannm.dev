@@ -1,13 +1,142 @@
+:root {
+  /* gruvbox colors */
+  --fg: #ebdbb2;
+  --fg2: #d5c4a1;
+  --fg3: #bdae93;
+  --fg4: #a89984;
+  --bg: #282828;
+  --bg1: #3c3836;
+  --bg2: #504945;
+  --bg3: #665c54;
+  --bg4: #7c6f64;
+  --gray: #928374;
+  --red: #fb4934;
+  --green: #b8bb26;
+  --yellow: #fabd2f;
+  --blue: #83a498;
+  --purple: #d3869b;
+  --aqua: #8ec07c;
+  --orange: #fe8019;
+}
+
 body {
-  width: 100%;
   font-family: "Consolas", "Courier New", sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-size: 16px;
+  max-width: 50rem;
+  margin: 1rem auto 1rem auto;
 }
 
-#main {
-  max-width: 500px;
-  margin: 0px auto;
+.main {
+  margin: 0 1rem;
 }
 
-.text-centered {
-  text-align: center;
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.x-centered {
+  justify-content: center;
+}
+
+.y-centered {
+  align-items: center;
+}
+
+.gap {
+  gap: 1rem;
+}
+
+.small-gap {
+  gap: 0.5rem;
+}
+
+.mini-gap {
+  gap: 0.25rem;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+a {
+  color: var(--fg);
+}
+
+details {
+  border-radius: 0.5rem;
+  border: 0.25rem solid var(--bg2);
+}
+
+details summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  background-color: var(--bg2);
+  font-weight: bold;
+}
+
+.main details summary {
+  min-height: 3rem;
+}
+
+details summary > :nth-child(1) {
+  flex-grow: 1;
+}
+
+details summary img {
+  border-radius: 0.5rem;
+  max-width: 3rem;
+}
+
+details summary::marker {
+  display: none;
+}
+
+details summary:before {
+  content: ">";
+  font-weight: bold;
+  margin-left: 0.25rem;
+}
+
+details[open] summary:before {
+  content: "x";
+}
+
+details[open] summary {
+  border-bottom: 0.25rem solid var(--bg2);
+}
+
+details > :not(summary) {
+  padding: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sidebar {
+  max-width: 15rem;
+  margin: 0 1rem;
+}
+
+.sidebar ul li {
+  list-style-type: none;
+}
+
+.profile-pic {
+  max-width: 15rem;
+  border-radius: 0.5rem;
+  border: 0.25rem solid var(--bg2);
 }
