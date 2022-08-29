@@ -58,10 +58,6 @@ body {
   gap: 0.5rem;
 }
 
-.mini-gap {
-  gap: 0.25rem;
-}
-
 .grow {
   flex-grow: 1;
 }
