@@ -62,6 +62,18 @@ body {
   gap: 0.5rem;
 }
 
+.mini-gap {
+  gap: 0.25rem;
+}
+
+.no-gap {
+  gap: 0;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
 .grow {
   flex-grow: 1;
 }
@@ -126,12 +138,18 @@ details > :not(summary) {
   margin-bottom: 0;
 }
 
+.main .icon-list {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
 .sidebar {
   max-width: 15rem;
   margin: 0 1rem;
 }
 
-.sidebar ul li {
+.icon-list li {
   list-style-type: none;
 }
 
