@@ -25,7 +25,24 @@ body {
   color: var(--fg);
   font-size: 16px;
   max-width: 50rem;
-  margin: 1rem auto 1rem auto;
+  margin: 1.5rem auto 1.5rem auto;
+}
+
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+  .page {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+h1:nth-child(1) {
+  margin-top: 0;
 }
 
 .main {
@@ -145,8 +162,17 @@ details > :not(summary) {
 }
 
 .sidebar {
-  max-width: 15rem;
   margin: 0 1rem;
+}
+
+.sidebar details {
+  width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  .sidebar {
+    max-width: 15rem;
+  }
 }
 
 .icon-list li {
@@ -157,4 +183,10 @@ details > :not(summary) {
   max-width: 15rem;
   border-radius: 0.5rem;
   border: 0.25rem solid var(--bg2);
+}
+
+@media screen and (max-width: 600px) {
+  .site-title {
+    text-align: center;
+  }
 }
