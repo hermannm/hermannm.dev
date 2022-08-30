@@ -83,10 +83,6 @@ body {
   width: 1rem;
 }
 
-.white-bg {
-  background-color: white;
-}
-
 a {
   color: var(--fg);
 }
