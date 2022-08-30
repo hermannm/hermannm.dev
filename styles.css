@@ -125,20 +125,24 @@ details {
 }
 
 details summary {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: block;
   cursor: pointer;
   background-color: var(--bg2);
   font-weight: bold;
   list-style: none;
 }
 
+details summary > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .main details summary {
   min-height: 3rem;
 }
 
-details summary > :nth-child(1) {
+details summary > div > :nth-child(1) {
   flex-grow: 1;
 }
 
@@ -152,13 +156,13 @@ details summary::-webkit-details-marker {
   display: none;
 }
 
-details summary:before {
+details summary > div:before {
   content: ">";
   font-weight: bold;
   margin-left: 0.25rem;
 }
 
-details[open] summary:before {
+details[open] summary > div:before {
   content: "x";
 }
 
