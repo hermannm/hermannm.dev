@@ -1,45 +1,47 @@
 <html>
   <head>
     <title>hermannm.dev</title>
-    <script type="module" src="scripts/age.js"></script>
-    <script type="module" src="scripts/about-section.js"></script>
-    <link rel="stylesheet" href="./styles.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <script type="module" src="/scripts/age.js"></script>
+    <script type="module" src="/scripts/about-section.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <meta charset="utf8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Metadata for Open Graph protocol -->
     <meta property="og:title" content="hermannm.dev" />
     <meta property="og:description" content="Hermann Mørkrid's personal website." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hermannm.dev" />
-    <meta property="og:image" content="https://hermannm.dev/img/preview.png" />
+    <meta property="og:image" content="https://hermannm.dev//img/preview.png" />
   </head>
   <body>
     <h1 class="mobile-title">hermannm.dev</h1>
     <div class="page">
       <div class="sidebar column y-centered gap">
-        <img class="profile-pic" src="img/profile-pic.jpg" alt="Hermann's profile picture" />
+        <img class="profile-pic" src="/img/profile-pic.jpg" alt="Hermann's profile picture" />
         <details id="about-section">
           <summary>About me</summary>
           <ul class="column small-gap icon-list">
             <li id="age-field" class="row y-centered small-gap">
-              <img class="icon" src="img/icons/person.svg" alt />
+              <img class="icon" src="/img/icons/person.svg" alt />
               <!-- Set by age.js script -->
             </li>
             <li class="row y-centered small-gap">
-              <img class="icon" src="img/icons/map-marker.svg" alt />
+              <img class="icon" src="/img/icons/map-marker.svg" alt />
               Trondheim, Norway
               <br />
               (Oslo in holidays)
             </li>
             <li>
               <a class="row y-centered small-gap" href="https://github.com/hermannm" target="_blank">
-                <img class="icon" src="img/icons/github.svg" alt />
+                <img class="icon" src="/img/icons/github.svg" alt />
                 GitHub profile
               </a>
             </li>
             <li>
               <a class="row y-centered small-gap" href="https://www.linkedin.com/in/hermannmorkrid/" target="_blank">
-                <img class="icon" src="img/icons/linkedin.svg" alt />
+                <img class="icon" src="/img/icons/linkedin.svg" alt />
                 LinkedIn profile
               </a>
             </li>
@@ -59,25 +61,25 @@
           <details>
             <summary>
               <div>indok-web</div>
-              <img src="img/projects/rubberdok.png" alt="Rubberdøk student organization" />
+              <img src="/img/projects/rubberdok.png" alt="Rubberdøk student organization" />
             </summary>
             <div class="column mini-gap">
               <strong>Built with:</strong>
               <ul class="column mini-gap icon-list">
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://www.typescriptlang.org/" target="_blank">
-                    <img class="icon" src="img/tech/typescript.svg" alt />
+                    <img class="icon" src="/img/tech/typescript.svg" alt />
                     TypeScript
                   </a>
                   (frontend, with
                   <a class="row y-centered mini-gap" href="https://reactjs.org/" target="_blank">
-                    <img class="icon" src="img/tech/react.svg" alt />
+                    <img class="icon" src="/img/tech/react.svg" alt />
                     React
                   </a>
                   and
                   <div class="row no-gap">
                     <a class="row y-centered mini-gap" href="https://nextjs.org/" target="_blank">
-                      <img class="icon" src="img/tech/next-js.svg" alt />
+                      <img class="icon" src="/img/tech/next-js.svg" alt />
                       Next.js
                     </a>
                     )
@@ -85,13 +87,13 @@
                 </li>
                 <li class="row y-centered small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://www.python.org/" target="_blank">
-                    <img class="icon" src="img/tech/python.svg" alt />
+                    <img class="icon" src="/img/tech/python.svg" alt />
                     Python
                   </a>
                   (backend, with
                   <div class="row no-gap">
                     <a class="row y-centered mini-gap" href="https://www.djangoproject.com/" target="_blank">
-                      <img class="icon" src="img/tech/django.svg" alt />
+                      <img class="icon" src="/img/tech/django.svg" alt />
                       Django
                     </a>
                     )
@@ -99,7 +101,7 @@
                 </li>
                 <li>
                   <a class="row y-centered mini-gap" href="https://graphql.org/" target="_blank">
-                    <img class="icon" src="img/tech/graphql.svg" alt />
+                    <img class="icon" src="/img/tech/graphql.svg" alt />
                     GraphQL
                   </a>
                 </li>
@@ -120,7 +122,7 @@
             <div class="row small-gap wrap">
               <strong>Code:</strong>
               <a class="row y-centered mini-gap" href="https://github.com/rubberdok/indok-web" target="_blank">
-                <img class="icon" src="img/icons/github.svg" alt />
+                <img class="icon" src="/img/icons/github.svg" alt />
                 rubberdok/indok-web
               </a>
             </div>
@@ -129,7 +131,7 @@
           <details>
             <summary>
               <div>bfh-client & bfh-server</div>
-              <img src="img/projects/immerse.png" alt="Immerse student organization" />
+              <img src="/img/projects/immerse.png" alt="Immerse student organization" />
             </summary>
             <div class="column mini-gap">
               <strong>Built with:</strong>
@@ -140,13 +142,13 @@
                     href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
                     target="_blank"
                   >
-                    <img class="icon" src="img/tech/csharp.svg" alt />
+                    <img class="icon" src="/img/tech/csharp.svg" alt />
                     C#
                   </a>
                   (client-side, with
                   <div class="row no-gap">
                     <a class="row y-centered mini-gap" href="https://unity.com/" target="_blank">
-                      <img class="icon" src="img/tech/unity.svg" alt />
+                      <img class="icon" src="/img/tech/unity.svg" alt />
                       Unity
                     </a>
                     )
@@ -154,7 +156,7 @@
                 </li>
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
-                    <img class="icon" src="img/tech/go.svg" alt />
+                    <img class="icon" src="/img/tech/go.svg" alt />
                     Go
                   </a>
                   (server-side)
@@ -180,13 +182,13 @@
               <ul class="column mini-gap icon-list">
                 <li>
                   <a class="row y-centered mini-gap" href="https://github.com/immerse-ntnu/bfh-client" target="_blank">
-                    <img class="icon" src="img/icons/github.svg" alt />
+                    <img class="icon" src="/img/icons/github.svg" alt />
                     immerse-ntnu/bfh-client
                   </a>
                 </li>
                 <li>
                   <a class="row y-centered mini-gap" href="https://github.com/hermannm/bfh-server" target="_blank">
-                    <img class="icon" src="img/icons/github.svg" alt />
+                    <img class="icon" src="/img/icons/github.svg" alt />
                     hermannm/bfh-server
                   </a>
                 </li>
@@ -197,7 +199,7 @@
           <details>
             <summary>
               <div>coffeetalk</div>
-              <img src="img/projects/coffeetalk.png" alt="CoffeeTalk project" />
+              <img src="/img/projects/coffeetalk.png" alt="CoffeeTalk project" />
             </summary>
             <div class="column mini-gap">
               <strong>Built with:</strong>
@@ -208,27 +210,27 @@
                     href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
                     target="_blank"
                   >
-                    <img class="icon" src="img/tech/javascript.svg" alt />
+                    <img class="icon" src="/img/tech/javascript.svg" alt />
                     JavaScript
                   </a>
                   (frontend)
                 </li>
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
-                    <img class="icon" src="img/tech/go.svg" alt />
+                    <img class="icon" src="/img/tech/go.svg" alt />
                     Go
                   </a>
                   (backend)
                 </li>
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://webrtc.org/" target="_blank">
-                    <img class="icon" src="img/tech/webrtc.svg" alt />
+                    <img class="icon" src="/img/tech/webrtc.svg" alt />
                     WebRTC
                   </a>
                 </li>
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://mqtt.org/" target="_blank">
-                    <img class="icon" src="img/tech/mqtt.svg" alt />
+                    <img class="icon" src="/img/tech/mqtt.svg" alt />
                     MQTT
                   </a>
                 </li>
@@ -249,7 +251,7 @@
             <div class="row small-gap wrap">
               <strong>Code:</strong>
               <a class="row y-centered mini-gap" href="https://github.com/dcs-team4/coffeetalk" target="_blank">
-                <img class="icon" src="img/icons/github.svg" alt />
+                <img class="icon" src="/img/icons/github.svg" alt />
                 dcs-team4/coffeetalk
               </a>
             </div>
@@ -258,20 +260,20 @@
           <details>
             <summary>
               <div>corona-defense</div>
-              <img src="img/projects/corona-defense.png" alt="Corona Defense project" />
+              <img src="/img/projects/corona-defense.png" alt="Corona Defense project" />
             </summary>
             <div class="column mini-gap">
               <strong>Built with:</strong>
               <ul class="column mini-gap icon-list">
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://kotlinlang.org/" target="_blank">
-                    <img class="icon" src="img/tech/kotlin.svg" alt />
+                    <img class="icon" src="/img/tech/kotlin.svg" alt />
                     Kotlin
                   </a>
                   (client-side, with
                   <div class="row no-gap">
                     <a class="row y-centered mini-gap" href="https://libgdx.com/" target="_blank">
-                      <img class="icon" src="img/tech/libgdx.svg" alt />
+                      <img class="icon" src="/img/tech/libgdx.svg" alt />
                       libGDX
                     </a>
                     )
@@ -283,7 +285,7 @@
                     href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
                     target="_blank"
                   >
-                    <img class="icon" src="img/tech/csharp.svg" alt />
+                    <img class="icon" src="/img/tech/csharp.svg" alt />
                     C#
                   </a>
                   (server-side)
@@ -310,7 +312,7 @@
                     href="https://github.com/swa-group1/corona-defense-client"
                     target="_blank"
                   >
-                    <img class="icon" src="img/icons/github.svg" alt />
+                    <img class="icon" src="/img/icons/github.svg" alt />
                     swa-group1/corona-defense-client
                   </a>
                 </li>
@@ -320,7 +322,7 @@
                     href="https://github.com/swa-group1/corona-defense-server"
                     target="_blank"
                   >
-                    <img class="icon" src="img/icons/github.svg" alt />
+                    <img class="icon" src="/img/icons/github.svg" alt />
                     swa-group1/corona-defense-server
                   </a>
                 </li>
@@ -331,7 +333,7 @@
           <details>
             <summary>
               <div>minesweeper</div>
-              <img src="img/projects/minesweeper.png" alt="Minesweeper project" />
+              <img src="/img/projects/minesweeper.png" alt="Minesweeper project" />
             </summary>
             <div class="row small-gap wrap">
               <strong>Built with:</strong>
@@ -340,7 +342,7 @@
                 href="https://www.java.com/en/download/help/whatis_java.html"
                 target="_blank"
               >
-                <img class="icon" src="img/tech/java.svg" alt />
+                <img class="icon" src="/img/tech/java.svg" alt />
                 Java
               </a>
             </div>
@@ -359,7 +361,7 @@
             <div class="row small-gap wrap">
               <strong>Code:</strong>
               <a class="row y-centered mini-gap" href="https://github.com/hermannm/minesweeper" target="_blank">
-                <img class="icon" src="img/icons/github.svg" alt />
+                <img class="icon" src="/img/icons/github.svg" alt />
                 hermannm/minesweeper
               </a>
             </div>
@@ -368,7 +370,7 @@
           <details>
             <summary>
               <div>gruvbox-plain</div>
-              <img src="img/projects/gruvbox-plain.png" alt="gruvbox-plain project" />
+              <img src="/img/projects/gruvbox-plain.png" alt="gruvbox-plain project" />
             </summary>
             <p>
               One of the things I enjoy is setting up my development environment to look just the way I like it. When
@@ -381,7 +383,7 @@
             <div class="row small-gap wrap">
               <strong>Code:</strong>
               <a class="row y-centered mini-gap" href="https://github.com/hermannm/gruvbox-plain" target="_blank">
-                <img class="icon" src="img/icons/github.svg" alt />
+                <img class="icon" src="/img/icons/github.svg" alt />
                 hermannm/gruvbox-plain
               </a>
             </div>
@@ -393,20 +395,20 @@
           <details>
             <summary>
               <div>Ignite Procurement</div>
-              <img src="img/companies/ignite.png" alt="Ignite Procurement" />
+              <img src="/img/companies/ignite.png" alt="Ignite Procurement" />
             </summary>
             <div class="column mini-gap">
               <strong>Technologies I worked with:</strong>
               <ul class="column mini-gap icon-list">
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://www.typescriptlang.org/" target="_blank">
-                    <img class="icon" src="img/tech/typescript.svg" alt />
+                    <img class="icon" src="/img/tech/typescript.svg" alt />
                     TypeScript
                   </a>
                   (frontend, with
                   <div class="row no-gap">
                     <a class="row y-centered mini-gap" href="https://reactjs.org/" target="_blank">
-                      <img class="icon" src="img/tech/react.svg" alt />
+                      <img class="icon" src="/img/tech/react.svg" alt />
                       React
                     </a>
                     )
@@ -414,13 +416,13 @@
                 </li>
                 <li class="row y-centered small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://www.python.org/" target="_blank">
-                    <img class="icon" src="img/tech/python.svg" alt />
+                    <img class="icon" src="/img/tech/python.svg" alt />
                     Python
                   </a>
                   (backend, with
                   <div class="row no-gap">
                     <a class="row y-centered mini-gap" href="https://www.djangoproject.com/" target="_blank">
-                      <img class="icon" src="img/tech/django.svg" alt />
+                      <img class="icon" src="/img/tech/django.svg" alt />
                       Django
                     </a>
                     )
@@ -428,20 +430,20 @@
                 </li>
                 <li class="row small-gap wrap">
                   <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
-                    <img class="icon" src="img/tech/go.svg" alt />
+                    <img class="icon" src="/img/tech/go.svg" alt />
                     Go
                   </a>
                   (backend microservices)
                 </li>
                 <li>
                   <a class="row y-centered mini-gap" href="https://grpc.io/" target="_blank">
-                    <img class="icon" src="img/tech/grpc.svg" alt />
+                    <img class="icon" src="/img/tech/grpc.svg" alt />
                     gRPC
                   </a>
                 </li>
                 <li>
                   <a class="row y-centered mini-gap" href="https://graphql.org/" target="_blank">
-                    <img class="icon" src="img/tech/graphql.svg" alt />
+                    <img class="icon" src="/img/tech/graphql.svg" alt />
                     GraphQL
                   </a>
                 </li>
@@ -467,7 +469,7 @@
           <details>
             <summary>
               <div>Norwegian University of Science and Technology (NTNU)</div>
-              <img src="img/companies/ntnu.png" alt="NTNU" />
+              <img src="/img/companies/ntnu.png" alt="NTNU" />
             </summary>
             <p>
               In the spring semester of 2019, I took the course Object-Oriented Programming at NTNU. As described above
@@ -485,7 +487,7 @@
           <details>
             <summary>
               <div>Fresh Fitness</div>
-              <img src="img/companies/fresh.png" alt="Fresh Fitness" />
+              <img src="/img/companies/fresh.png" alt="Fresh Fitness" />
             </summary>
             <p>
               When I moved to Trondheim in the fall of 2018, I started training at the gym Fresh Fitness along with a
@@ -503,7 +505,7 @@
           <details>
             <summary>
               <div>Norlandia Care</div>
-              <img src="img/companies/norlandia.png" alt="Norlandia Care" />
+              <img src="/img/companies/norlandia.png" alt="Norlandia Care" />
             </summary>
             <p>
               In January 2018, during my last semester of high school, I started working part-time at Ullernhjemmet
@@ -522,7 +524,7 @@
           <details>
             <summary>
               <div>Norwegian University of Science and Technology (NTNU)</div>
-              <img src="img/schools/ntnu.jpg" alt="Facade of NTNU" />
+              <img src="/img/schools/ntnu.jpg" alt="Facade of NTNU" />
             </summary>
             <p>
               I first started considering NTNU in my first year of high school, when I was thinking about what I wanted
@@ -557,7 +559,7 @@
           <details>
             <summary>
               <div>Foss High School</div>
-              <img src="img/schools/foss.jpg" alt="Facade of Foss high school" />
+              <img src="/img/schools/foss.jpg" alt="Facade of Foss high school" />
             </summary>
             <p>
               In the fall of 2015, I started studying at Foss High School in Oslo. During my 3 years there, I took
