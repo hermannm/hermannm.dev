@@ -45,6 +45,21 @@ h1:nth-child(1) {
   margin-top: 0;
 }
 
+@media screen and (min-width: 600px) {
+  .mobile-title {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .mobile-title {
+    text-align: center;
+  }
+  .desktop-title {
+    display: none;
+  }
+}
+
 .main {
   margin: 0 1rem;
 }
@@ -183,10 +198,4 @@ details > :not(summary) {
   max-width: 15rem;
   border-radius: 0.5rem;
   border: 0.25rem solid var(--bg2);
-}
-
-@media screen and (max-width: 600px) {
-  .site-title {
-    text-align: center;
-  }
 }
