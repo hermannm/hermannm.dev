@@ -130,7 +130,7 @@ details summary > div:before {
 }
 
 details[open] summary > div:before {
-  content: "x";
+  content: "v";
 }
 
 details[open] summary {
