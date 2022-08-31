@@ -1,31 +1,17 @@
 :root {
   /* gruvbox colors */
-  --fg: #ebdbb2;
-  --fg2: #d5c4a1;
-  --fg3: #bdae93;
-  --fg4: #a89984;
-  --bg: #282828;
-  --bg1: #3c3836;
-  --bg2: #504945;
-  --bg3: #665c54;
-  --bg4: #7c6f64;
-  --gray: #928374;
-  --red: #fb4934;
-  --green: #b8bb26;
-  --yellow: #fabd2f;
-  --blue: #83a498;
-  --purple: #d3869b;
-  --aqua: #8ec07c;
-  --orange: #fe8019;
+  --text-color: #ebdbb2;
+  --background-color: #282828;
+  --border-color: #504945;
 }
 
 body {
-  font-family: "Consolas", "Courier New", sans-serif;
-  background-color: var(--bg);
-  color: var(--fg);
-  font-size: 16px;
+  background-color: var(--background-color);
   max-width: 50rem;
   margin: 1.5rem auto 1.5rem auto;
+  font-family: "Consolas", "Courier New", sans-serif;
+  font-size: 16px;
+  color: var(--text-color);
 }
 
 .page {
@@ -37,7 +23,6 @@ body {
 @media screen and (max-width: 600px) {
   .page {
     flex-direction: column;
-    align-items: stretch;
   }
 }
 
@@ -58,10 +43,6 @@ h1:nth-child(1) {
   .desktop-title {
     display: none;
   }
-}
-
-.main {
-  margin: 0 1rem;
 }
 
 .row {
@@ -116,34 +97,20 @@ h1:nth-child(1) {
 }
 
 a {
-  color: var(--fg);
+  color: var(--text-color);
 }
 
 details {
   border-radius: 0.5rem;
-  border: 0.25rem solid var(--bg2);
+  border: 0.25rem solid var(--border-color);
 }
 
 details summary {
   display: block;
   cursor: pointer;
-  background-color: var(--bg2);
+  background-color: var(--border-color);
   font-weight: bold;
   list-style: none;
-}
-
-details summary > div {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.main details summary {
-  min-height: 3rem;
-}
-
-details summary > div > :nth-child(1) {
-  flex-grow: 1;
 }
 
 details summary img {
@@ -167,7 +134,7 @@ details[open] summary > div:before {
 }
 
 details[open] summary {
-  border-bottom: 0.25rem solid var(--bg2);
+  border-bottom: 0.25rem solid var(--border-color);
 }
 
 details > :not(summary) {
@@ -180,14 +147,19 @@ details > :not(summary) {
   list-style-type: none;
 }
 
+.main,
+.sidebar {
+  margin: 0 1rem;
+}
+
+.main details summary {
+  min-height: 3rem;
+}
+
 .main .icon-list {
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 0;
-}
-
-.sidebar {
-  margin: 0 1rem;
 }
 
 .sidebar details {
@@ -203,5 +175,5 @@ details > :not(summary) {
 .profile-pic {
   max-width: 15rem;
   border-radius: 0.5rem;
-  border: 0.25rem solid var(--bg2);
+  border: 0.25rem solid var(--border-color);
 }
