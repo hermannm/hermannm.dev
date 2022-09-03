@@ -14,34 +14,36 @@ body {
   color: var(--text-color);
 }
 
-.page {
+.responsive-container {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+}
+
+.main,
+.sidebar {
+  margin: 0 1rem;
 }
 
 @media screen and (max-width: 600px) {
-  .page {
+  .responsive-container {
     flex-direction: column;
   }
-}
 
-h1:nth-child(1) {
-  margin-top: 0;
+  .desktop-visible {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 601px) {
-  .mobile-title {
-    display: none;
+  .responsive-container {
+    flex-direction: row;
   }
-}
 
-@media screen and (max-width: 600px) {
-  .mobile-title {
-    text-align: center;
-  }
-  .desktop-title {
+  .mobile-visible {
     display: none;
+  }
+
+  .sidebar {
+    max-width: 15rem;
   }
 }
 
@@ -100,6 +102,10 @@ a {
   color: var(--text-color);
 }
 
+h1:nth-child(1) {
+  margin-top: 0;
+}
+
 details {
   border-radius: 0.5rem;
   border: 0.25rem solid var(--border-color);
@@ -147,11 +153,6 @@ details > :not(summary) {
   list-style-type: none;
 }
 
-.main,
-.sidebar {
-  margin: 0 1rem;
-}
-
 .main details summary {
   min-height: 3rem;
 }
@@ -164,12 +165,6 @@ details > :not(summary) {
 
 .sidebar details {
   width: 100%;
-}
-
-@media screen and (min-width: 601px) {
-  .sidebar {
-    max-width: 15rem;
-  }
 }
 
 .profile-pic {
