@@ -3,11 +3,13 @@
   --text-color: #ebdbb2;
   --background-color: #282828;
   --border-color: #504945;
+
+  --content-width: 35rem;
+  --sidebar-width: 15rem;
 }
 
 body {
   background-color: var(--background-color);
-  max-width: 50rem;
   margin: 1.5rem auto 1.5rem auto;
   font-family: "Roboto Mono", "Consolas", "Courier New", sans-serif;
   font-size: 15px;
@@ -43,8 +45,16 @@ body {
   }
 
   .sidebar {
-    max-width: 15rem;
+    max-width: var(--sidebar-width);
   }
+}
+
+.full-width {
+  max-width: calc(var(--content-width) + var(--sidebar-width));
+}
+
+.content-width {
+  max-width: var(--content-width);
 }
 
 .row {
