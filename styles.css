@@ -4,6 +4,7 @@
   --background-color: #282828;
   --border-color: #504945;
 
+  --font-size: 15px;
   --content-width: 35rem;
   --sidebar-width: 15rem;
 }
@@ -12,7 +13,7 @@ body {
   background-color: var(--background-color);
   margin: 1.5rem auto 1.5rem auto;
   font-family: "Roboto Mono", "Consolas", "Courier New", sans-serif;
-  font-size: 15px;
+  font-size: var(--font-size);
   color: var(--text-color);
 }
 
@@ -140,13 +141,15 @@ details summary::-webkit-details-marker {
 }
 
 details summary > div:before {
-  content: ">";
-  font-weight: bold;
+  content: "➤";
+  font-size: calc(0.8 * var(--font-size));
+  width: calc(0.8 * var(--font-size));
+  text-align: center;
   margin-left: 0.25rem;
 }
 
 details[open] summary > div:before {
-  content: "v";
+  content: "⮟";
 }
 
 details[open] summary {
