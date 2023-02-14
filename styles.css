@@ -143,7 +143,7 @@ details summary::-webkit-details-marker {
 details summary > div:before {
   content: "➤";
   font-size: calc(0.8 * var(--font-size));
-  width: calc(0.8 * var(--font-size));
+  min-width: calc(0.8 * var(--font-size));
   text-align: center;
   margin-left: 0.25rem;
 }
