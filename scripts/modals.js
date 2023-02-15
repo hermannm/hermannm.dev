@@ -37,4 +37,21 @@ for (const modalId of MODAL_IDS) {
   modalCloser?.addEventListener("click", () => {
     modal?.close();
   });
+
+  /** Closes the modal when clicking outside it. */
+  modal?.addEventListener("click", (event) => {
+    if (!modal) return;
+
+    const modalBounds = modal.getBoundingClientRect();
+
+    const clickedOutsideModal =
+      event.clientY < modalBounds.top ||
+      event.clientX < modalBounds.left ||
+      event.clientY > modalBounds.bottom ||
+      event.clientX > modalBounds.right;
+
+    if (clickedOutsideModal) {
+      modal?.close();
+    }
+  });
 }
