@@ -5,6 +5,7 @@
 
     <script type="module" src="/scripts/age.js"></script>
     <script type="module" src="/scripts/about-section.js"></script>
+    <script type="module" src="/scripts/modals.js"></script>
     <link rel="stylesheet" href="/styles.css" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <meta charset="utf8" />
@@ -25,461 +26,204 @@
     <meta property="og:url" content="https://hermannm.dev" />
     <meta property="og:image" content="https://hermannm.dev/img/preview.png" />
   </head>
-  <body class="full-width">
-    <h1 class="mobile-visible text-centered">hermannm.dev</h1>
-    <div class="responsive-container">
-      <div class="sidebar column y-centered gap">
-        <img class="profile-pic" src="/img/profile-pic.jpg" alt="Hermann's profile picture" />
-        <details id="about-section">
-          <summary><div class="row y-centered small-gap">About me</div></summary>
-          <ul class="column small-gap icon-list">
-            <li id="age-field" class="row y-centered small-gap">
-              <img class="icon" src="/img/icons/person.svg" alt />
-              <!-- Set by age.js script -->
-            </li>
-            <li class="row y-centered small-gap">
-              <img class="icon" src="/img/icons/map-marker.svg" alt />
-              Trondheim, Norway
-              <br />
-              (Oslo in holidays)
-            </li>
-            <li>
-              <a
-                class="row y-centered small-gap"
-                href="https://github.com/hermannm"
-                target="_blank"
-              >
-                <img class="icon" src="/img/icons/github.svg" alt />
-                GitHub profile
-              </a>
-            </li>
-            <li>
-              <a
-                class="row y-centered small-gap"
-                href="https://www.linkedin.com/in/hermannmorkrid/"
-                target="_blank"
-              >
-                <img class="icon" src="/img/icons/linkedin.svg" alt />
-                LinkedIn profile
-              </a>
-            </li>
-          </ul>
-        </details>
-      </div>
-      <div class="main grow">
-        <h1 class="desktop-visible">hermannm.dev</h1>
-        <p>
+  <body class="full-width medium-margin">
+    <div class="row gap y-centered">
+      <div class="column gap">
+        <h1 class="text-centered no-vertical-margin">hermannm.dev</h1>
+        <p class="content-width no-vertical-margin">
           Hello there! I'm Hermann Mørkrid, a Computer Science student at NTNU Trondheim. I mostly
-          do web development (frontend and backend) and some hobby game development. Click the tabs
-          below to read about my projects, as well as places I've worked and studied.
+          do web development (frontend and backend) and some hobby game development. Click the
+          projects below to read more about things I've done!
         </p>
+        <ul class="grid-4-columns icon-list">
+          <li class="row y-centered small-gap">
+            <img class="icon" src="/img/icons/person.svg" alt />
+            <span>
+              <span id="age-field"><!-- Set by age.js script --></span> years old
+            </span>
+          </li>
+          <li class="row y-centered small-gap">
+            <img class="icon" src="/img/icons/map-marker.svg" alt />
+            Trondheim,<br />Norway
+          </li>
+          <a
+            class="row y-centered small-gap grow"
+            href="https://github.com/hermannm"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/github.svg" alt />
+            GitHub
+          </a>
+          <a
+            class="row y-centered small-gap"
+            href="https://www.linkedin.com/in/hermannmorkrid/"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/linkedin.svg" alt />
+            LinkedIn
+          </a>
+        </ul>
+      </div>
+      <img class="profile-pic" src="/img/profile-pic.jpg" alt="Hermann's profile picture" />
+    </div>
 
-        <h3>Projects I've contributed to</h3>
-        <div class="column gap">
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">indok-web</div>
-                <img src="/img/projects/rubberdok.png" alt="Rubberdøk student organization" />
-              </div>
-            </summary>
-            <div class="column mini-gap">
-              <strong>Built with:</strong>
-              <ul class="column mini-gap icon-list">
-                <li class="row small-gap wrap">
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://www.typescriptlang.org/"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/tech/typescript.svg" alt />
-                    TypeScript
-                  </a>
-                  (frontend, with
-                  <a class="row y-centered mini-gap" href="https://reactjs.org/" target="_blank">
-                    <img class="icon" src="/img/tech/react.svg" alt />
-                    React
-                  </a>
-                  and
-                  <div class="row no-gap">
-                    <a class="row y-centered mini-gap" href="https://nextjs.org/" target="_blank">
-                      <img class="icon" src="/img/tech/next-js.svg" alt />
-                      Next.js
-                    </a>
-                    )
-                  </div>
-                </li>
-                <li class="row y-centered small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://www.python.org/" target="_blank">
-                    <img class="icon" src="/img/tech/python.svg" alt />
-                    Python
-                  </a>
-                  (backend, with
-                  <div class="row no-gap">
-                    <a
-                      class="row y-centered mini-gap"
-                      href="https://www.djangoproject.com/"
-                      target="_blank"
-                    >
-                      <img class="icon" src="/img/tech/django.svg" alt />
-                      Django
-                    </a>
-                    )
-                  </div>
-                </li>
-                <li>
-                  <a class="row y-centered mini-gap" href="https://graphql.org/" target="_blank">
-                    <img class="icon" src="/img/tech/graphql.svg" alt />
-                    GraphQL
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <p>
-              In the fall of 2020, <em>Rubberdøk</em> was founded, a student organization tasked
-              with developing <a href="https://indokntnu.no/" target="_blank">indokntnu.no</a>, a
-              new website for the study program I was studying at the time. For the following two
-              years, I worked 8 hours/week alongside 10 other student developers, using the
-              technologies listed above. It's hard to overstate how much I learned from this project
-              — it gave me a solid understanding of modern web development.
-            </p>
-            <p>
-              One year after our founding, I became project manager of <em>Rubberdøk</em> alongside
-              Lars, another member. In this role, I coordinated our continued work on the website,
-              and also dealt with feature requests from various stakeholders. In the fall of 2022, I
-              held courses in React, Django, Next.js and Git to our new members. We then elected a
-              new project manager, and I stepped down from the project, realizing that I needed more
-              time for school, work and other projects. Leaving the project was tough, but I felt
-              like I left it in good hands after teaching the foundations of web development to our
-              new members.
-            </p>
-            <div class="column mini-gap">
-              <strong>Code:</strong>
-              <ul class="column mini-gap icon-list">
-                <li>
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://github.com/rubberdok/indok-web"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/icons/github.svg" alt />
-                    rubberdok/indok-web
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://github.com/rubberdok/webdev-demo"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/icons/github.svg" alt />
-                    rubberdok/webdev-demo
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </details>
+    <h3 class="text-centered">Projects I've contributed to</h3>
 
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">bfh-client & bfh-server</div>
-                <img src="/img/projects/immerse.png" alt="Immerse student organization" />
-              </div>
-            </summary>
-            <div class="column mini-gap">
-              <strong>Built with:</strong>
-              <ul class="column mini-gap icon-list">
-                <li class="row small-gap wrap">
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/tech/csharp.svg" alt />
-                    C#
-                  </a>
-                  (client-side, with
-                  <div class="row no-gap">
-                    <a class="row y-centered mini-gap" href="https://unity.com/" target="_blank">
-                      <img class="icon" src="/img/tech/unity.svg" alt />
-                      Unity
-                    </a>
-                    )
-                  </div>
-                </li>
-                <li class="row small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
-                    <img class="icon" src="/img/tech/go.svg" alt />
-                    Go
-                  </a>
-                  (server-side)
-                </li>
-              </ul>
-            </div>
-            <p>
-              The story of this project starts in the fall of 2020, when my dad gave me one of the
-              coolest birthday gifts I've ever received. He made me my very own board game:
-              <em>The Battle for Hermannia</em>! The game involves strategy, diplomacy and intrigue,
-              and I've played it a lot with friends in Trondheim. A couple friends of mine were
-              particular fans of the game, and so in November 2021, we started developing a digital
-              edition of it as a hobby project.
-            </p>
-            <p>
-              We decided to build the digital edition as a proper multiplayer online game. I wrote
-              the server in Go, finding its native concurrency support suitable for the parallel
-              nature of the game. My friends and I collaborated on the client, where we used C# with
-              the Unity game engine. During this time, one of my friends also founded
-              <a href="https://immersentnu.no/" target="_blank">Immerse NTNU</a>, a student
-              organization for game development. He made this game client their first project, and
-              so we also got invaluable help from new members there.
-            </p>
-            <div class="column mini-gap">
-              <strong>Code:</strong>
-              <ul class="column mini-gap icon-list">
-                <li>
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://github.com/immerse-ntnu/bfh-client"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/icons/github.svg" alt />
-                    immerse-ntnu/bfh-client
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://github.com/hermannm/bfh-server"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/icons/github.svg" alt />
-                    hermannm/bfh-server
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </details>
+    <ul class="modal-opener-list grid-3-columns">
+      <li>
+        <button id="indok-web-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/rubberdok.png" alt="Rubberdøk student organization" />
+          <div class="grow">indok-web</div>
+        </button>
+      </li>
 
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">coffeetalk</div>
-                <img src="/img/projects/coffeetalk.png" alt="CoffeeTalk project" />
-              </div>
-            </summary>
-            <div class="column mini-gap">
-              <strong>Built with:</strong>
-              <ul class="column mini-gap icon-list">
-                <li class="row small-gap wrap">
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/tech/javascript.svg" alt />
-                    JavaScript
-                  </a>
-                  (frontend)
-                </li>
-                <li class="row small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
-                    <img class="icon" src="/img/tech/go.svg" alt />
-                    Go
-                  </a>
-                  (backend)
-                </li>
-                <li class="row small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://webrtc.org/" target="_blank">
-                    <img class="icon" src="/img/tech/webrtc.svg" alt />
-                    WebRTC
-                  </a>
-                </li>
-                <li class="row small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://mqtt.org/" target="_blank">
-                    <img class="icon" src="/img/tech/mqtt.svg" alt />
-                    MQTT
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <p>
-              In the spring semester of 2022, I took the course
-              <em>Design of Communicating Systems</em> at NTNU. A part of that course was a group
-              project to build a video chat application. And thus CoffeeTalk was born: a web app
-              with peer-to-peer video streaming, and even a basic quiz game! We developed the
-              application as 3 servers (one for serving the web app, one for WebRTC video stream
-              coordination, and one for the quiz game using MQTT). The servers were all written in
-              Go, while the web app was written in vanilla JavaScript.
-            </p>
-            <p>
-              In the end, we deployed the app with
-              <a href="https://www.digitalocean.com/" target="_blank">DigitalOcean</a>. My proudest
-              moment that semester was having an hour-long conversation with my dad through my own
-              video chat app!
-            </p>
-            <div class="row small-gap wrap">
-              <strong>Code:</strong>
+      <li>
+        <button id="bfh-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/immerse.png" alt="Immerse student organization" />
+          <div class="grow">bfh-client & bfh-server</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="coffeetalk-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/coffeetalk.png" alt="CoffeeTalk project" />
+          <div class="grow">coffeetalk</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="corona-defense-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/corona-defense.png" alt="Corona Defense project" />
+          <div class="grow">corona-defense</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="rov-sim-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/rov-sim.png" alt="ROV-SIM project" />
+          <div class="grow">rov-sim</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="export-control-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/safetec.png" alt="Safetec" />
+          <div class="grow">export-control</div>
+        </button>
+      </li>
+      <li>
+        <button id="advent-of-rust-modal-opener" class="row y-centered small-gap">
+          <img
+            src="/img/projects/ferris-the-crab-with-christmas-hat.png"
+            alt="Ferris the Crab, mascot of the Rust programming language, with a Christmas hat"
+          />
+          <div class="grow">advent-of-rust</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="minesweeper-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/minesweeper.png" alt="Minesweeper project" />
+          <div class="grow">minesweeper</div>
+        </button>
+      </li>
+      <li>
+        <button id="gruvbox-plain-modal-opener" class="row y-centered small-gap">
+          <img src="/img/projects/gruvbox-plain.png" alt="gruvbox-plain project" />
+          <div class="grow">gruvbox-plain</div>
+        </button>
+      </li>
+    </ul>
+
+    <h3 class="text-centered">Places I've worked</h3>
+
+    <ul class="modal-opener-list grid-3-columns">
+      <li>
+        <button id="ignite-modal-opener" class="row y-centered small-gap">
+          <img src="/img/companies/ignite.png" alt="Ignite Procurement" />
+          <div class="grow">Ignite Procurement</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="ntnu-work-modal-opener" class="row y-centered small-gap">
+          <img src="/img/companies/ntnu.png" alt="NTNU" />
+          <div class="grow">NTNU</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="fresh-modal-opener" class="row y-centered small-gap">
+          <img src="/img/companies/fresh.png" alt="Fresh Fitness" />
+          <div class="grow">Fresh Fitness</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="norlandia-modal-opener" class="row y-centered small-gap">
+          <img src="/img/companies/norlandia.png" alt="Norlandia Care" />
+          <div class="grow">Norlandia Care</div>
+        </button>
+      </li>
+    </ul>
+
+    <h3 class="text-centered">Places I've studied</h3>
+
+    <ul class="modal-opener-list grid-3-columns">
+      <li>
+        <button id="ntnu-study-modal-opener" class="row y-centered small-gap">
+          <img src="/img/schools/ntnu.jpg" alt="Facade of NTNU" />
+          <div class="grow">NTNU</div>
+        </button>
+      </li>
+
+      <li>
+        <button id="foss-modal-opener" class="row y-centered small-gap">
+          <img src="/img/schools/foss.jpg" alt="Facade of Foss high school" />
+          <div class="grow">Foss High School</div>
+        </button>
+      </li>
+    </ul>
+
+    <dialog id="indok-web-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/rubberdok.png" alt="Rubberdøk student organization" />
+        <div class="grow">indok-web</div>
+        <div id="indok-web-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="column mini-gap">
+          <strong>Built with:</strong>
+          <ul class="column mini-gap icon-list">
+            <li class="row small-gap wrap">
               <a
                 class="row y-centered mini-gap"
-                href="https://github.com/dcs-team4/coffeetalk"
+                href="https://www.typescriptlang.org/"
                 target="_blank"
               >
-                <img class="icon" src="/img/icons/github.svg" alt />
-                dcs-team4/coffeetalk
+                <img class="icon" src="/img/tech/typescript.svg" alt />
+                TypeScript
               </a>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">corona-defense</div>
-                <img src="/img/projects/corona-defense.png" alt="Corona Defense project" />
-              </div>
-            </summary>
-            <div class="column mini-gap">
-              <strong>Built with:</strong>
-              <ul class="column mini-gap icon-list">
-                <li class="row small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://kotlinlang.org/" target="_blank">
-                    <img class="icon" src="/img/tech/kotlin.svg" alt />
-                    Kotlin
-                  </a>
-                  (client-side, with
-                  <div class="row no-gap">
-                    <a class="row y-centered mini-gap" href="https://libgdx.com/" target="_blank">
-                      <img class="icon" src="/img/tech/libgdx.svg" alt />
-                      libGDX
-                    </a>
-                    )
-                  </div>
-                </li>
-                <li class="row small-gap wrap">
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/tech/csharp.svg" alt />
-                    C#
-                  </a>
-                  (server-side)
-                </li>
-              </ul>
-            </div>
-            <p>
-              In the spring semester of 2021, I took the course <em>Software Architecture</em> at
-              NTNU. The main part of that course was a group project to build a mobile game, with
-              particular emphasis on the game's architecture. My group came up with
-              <em>Corona Defense</em>, an online multiplayer variation of the classic tower defense
-              genre. The players fight swaths of incoming corona viruses, using "weapons" such as
-              doctors, nurses and vaccines.
-            </p>
-            <p>
-              I mainly worked on the mobile client, developing the user interface and display of
-              data coming from the server. Since we made the game for Android, I got the pleasure of
-              working with Kotlin, which was a breath of fresh air compared to what I'd previously
-              done with Java.
-            </p>
-            <div class="column mini-gap">
-              <strong>Code:</strong>
-              <ul class="column mini-gap icon-list">
-                <li>
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://github.com/swa-group1/corona-defense-client"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/icons/github.svg" alt />
-                    swa-group1/corona-defense-client
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://github.com/swa-group1/corona-defense-server"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/icons/github.svg" alt />
-                    swa-group1/corona-defense-server
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">rov-sim</div>
-                <img src="/img/projects/rov-sim.png" alt="ROV-SIM project" />
-              </div>
-            </summary>
-            <div class="row small-gap wrap">
-              <strong>Built with:</strong>
-              <a
-                class="row y-centered mini-gap"
-                href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
-                target="_blank"
-              >
-                <img class="icon" src="/img/tech/csharp.svg" alt />
-                C#
+              (frontend, with
+              <a class="row y-centered mini-gap" href="https://reactjs.org/" target="_blank">
+                <img class="icon" src="/img/tech/react.svg" alt />
+                React
               </a>
-              (with
+              and
               <div class="row no-gap">
-                <a class="row y-centered mini-gap" href="https://unity.com/" target="_blank">
-                  <img class="icon" src="/img/tech/unity.svg" alt />
-                  Unity
+                <a class="row y-centered mini-gap" href="https://nextjs.org/" target="_blank">
+                  <img class="icon" src="/img/tech/next-js.svg" alt />
+                  Next.js
                 </a>
                 )
               </div>
-            </div>
-            <p>
-              In the spring semester of 2022, I took the course <em>Experts in Teamwork</em> at
-              NTNU. The course involved a group project to build something related to video games in
-              the maritime sector. My group decided to build a simulator of ROVs (Remotely Operated
-              Vehicles; underwater drones), and named it <em>ROV-SIM</em>. We built it with the
-              Unity game engine, and in the end, we produced a working prototype with 2 simulated
-              ROV scenarios! I mostly worked with the game scripts for the ROV's movement controls
-              and the main menu.
-            </p>
-            <p>
-              In the research phase of the project, we contacted several different companies
-              producing ROVs, to gain a better understanding of how to build a realistic simulator.
-              We were quite overwhelmed by the responses &mdash; all our questions were answered by
-              every company, and many of them provided additional resources for further research.
-              <em>Blueye Robotics</em>, a drone company headquartered in Trondheim, went even
-              further: they invited us to their office, to test a real ROV! This was a great
-              experience, and helped us a lot to improve the realism of the simulator.
-            </p>
-            <div class="row small-gap wrap">
-              <strong>Code:</strong>
-              <a
-                class="row y-centered mini-gap"
-                href="https://github.com/eit-nemo-group3/rov-sim"
-                target="_blank"
-              >
-                <img class="icon" src="/img/icons/github.svg" alt />
-                eit-nemo-group3/rov-sim
-              </a>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">export-control</div>
-                <img src="/img/projects/safetec.png" alt="Safetec" />
-              </div>
-            </summary>
-            <div class="row small-gap wrap">
-              <strong>Built with:</strong>
+            </li>
+            <li class="row y-centered small-gap wrap">
               <a class="row y-centered mini-gap" href="https://www.python.org/" target="_blank">
                 <img class="icon" src="/img/tech/python.svg" alt />
                 Python
               </a>
-              (with
+              (backend, with
               <div class="row no-gap">
                 <a
                   class="row y-centered mini-gap"
@@ -491,372 +235,735 @@
                 </a>
                 )
               </div>
-            </div>
-            <p>
-              In the fall semester of 2022, I took the course <em>Customer-Driven Project</em> at
-              NTNU. In the course, five other Computer Science students and I were given a project
-              from a real customer: <em>Safetec</em>, a consulting firm specializing in risk
-              management. Our project was to build a tool for searching through the regulations of
-              the Norwegian Export Control Law, which restricts the export of certain sensitive
-              products and technologies. Just a year before our project, the regulations were
-              expanded, and now included a 250 page list with a wide variety of regulated items.
-              Several of Safetec's customers were worried about how the regulations might affect
-              them, and had trouble navigating the new lists. The goal of our tool was to be a
-              resource that Safetec could give to their customers, so they can find out if export
-              control affects them.
-            </p>
-            <p>
-              Our final product was a web application built with Django, using PostgreSQL for its
-              database. We deployed the application in Safetec's Azure cloud, where it is now
-              running at
-              <a href="https://exportcontrol.safetec.no/" target="_blank"
-                >exportcontrol.safetec.no</a
-              >. I was quite proud of our final result, as we were able to deliver a fully
-              functional product that the customer was happy with. The project taught me a lot about
-              the back-and-forth process of requirement elicitation, and dealing with changing
-              requirements.
-            </p>
-            <div class="row small-gap wrap">
-              <strong>Code:</strong>
-              <a
-                class="row y-centered mini-gap"
-                href="https://github.com/cdp-group4/export-control"
-                target="_blank"
-              >
-                <img class="icon" src="/img/icons/github.svg" alt />
-                cdp-group4/export-control
+            </li>
+            <li>
+              <a class="row y-centered mini-gap" href="https://graphql.org/" target="_blank">
+                <img class="icon" src="/img/tech/graphql.svg" alt />
+                GraphQL
               </a>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">advent-of-rust</div>
-                <img
-                  src="/img/projects/ferris-the-crab-with-christmas-hat.png"
-                  alt="Ferris the Crab, mascot of the Rust programming language, with a Christmas hat"
-                />
-              </div>
-            </summary>
-            <div class="row small-gap wrap">
-              <strong>Built with:</strong>
-              <a class="row y-centered mini-gap" href="https://www.rust-lang.org/" target="_blank">
-                <img class="icon" src="/img/tech/rust.svg" alt />
-                Rust
-              </a>
-            </div>
-            <p>
-              Before December 2022, I had never done Advent of Code, nor programmed in Rust. That
-              changed this advent, as I decided to use Advent of Code to learn Rust! Each morning, a
-              new coding task was published, and as the calendar went on, the tasks became harder
-              and harder. This format worked well to learn a new language, as the relatively easy
-              early days allowed me to familiarize myself with Rust's syntax, and then the growing
-              difficulty made me delve deeper and deeper into the language. The latter days were
-              some of the most mentally challenging programming I had done at that point, but
-              through blood, sweat, and tears, I was able to complete it by the 25th!
-            </p>
-            <div class="row small-gap wrap">
-              <strong>Code:</strong>
-              <a
-                class="row y-centered mini-gap"
-                href="https://github.com/hermannm/advent-of-rust"
-                target="_blank"
-              >
-                <img class="icon" src="/img/icons/github.svg" alt />
-                hermannm/advent-of-rust
-              </a>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">minesweeper</div>
-                <img src="/img/projects/minesweeper.png" alt="Minesweeper project" />
-              </div>
-            </summary>
-            <div class="row small-gap wrap">
-              <strong>Built with:</strong>
-              <a
-                class="row y-centered mini-gap"
-                href="https://www.java.com/en/download/help/whatis_java.html"
-                target="_blank"
-              >
-                <img class="icon" src="/img/tech/java.svg" alt />
-                Java
-              </a>
-            </div>
-            <p>
-              In the spring semester of 2019, I took a course on object-oriented programming at
-              NTNU. One part of the course was a project to develop an application with Java. I
-              chose to build a copy of Minesweeper, the classic Windows game. At this point, I had
-              little previous experience with programming, but this project helped ignite my passion
-              for software. Even after delivering the project, I stayed up one night to polish the
-              user interface (and kept going until 5 in the morning, to get the UI just right...).
-            </p>
-            <p>
-              This project still has a special place in my heart. In the spring of 2022, I went back
-              to the project to configure <a href="https://gradle.org/" target="_blank">Gradle</a>,
-              allowing me to build a distributable JAR file for the game.
-            </p>
-            <div class="row small-gap wrap">
-              <strong>Code:</strong>
-              <a
-                class="row y-centered mini-gap"
-                href="https://github.com/hermannm/minesweeper"
-                target="_blank"
-              >
-                <img class="icon" src="/img/icons/github.svg" alt />
-                hermannm/minesweeper
-              </a>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">gruvbox-plain</div>
-                <img src="/img/projects/gruvbox-plain.png" alt="gruvbox-plain project" />
-              </div>
-            </summary>
-            <p>
-              One of the things I enjoy is setting up my development environment to look just the
-              way I like it. When looking around for a good color theme for my code editor, I found
-              <a href="https://github.com/morhetz/gruvbox#readme" target="_blank">gruvbox</a>, and
-              quite liked it. But the theme's contrasts were still a bit too sharp for my taste, so
-              I decided to make my own, plainer variant: gruvbox-plain. Over the course of my
-              programming projects, I've kept improving the theme's support for various syntaxes,
-              and even made two different variants.
-            </p>
-            <div class="row small-gap wrap">
-              <strong>Code:</strong>
-              <a
-                class="row y-centered mini-gap"
-                href="https://github.com/hermannm/gruvbox-plain"
-                target="_blank"
-              >
-                <img class="icon" src="/img/icons/github.svg" alt />
-                hermannm/gruvbox-plain
-              </a>
-            </div>
-          </details>
+            </li>
+          </ul>
         </div>
-
-        <h3>Places I've worked</h3>
-        <div class="column gap">
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">Ignite Procurement</div>
-                <img src="/img/companies/ignite.png" alt="Ignite Procurement" />
-              </div>
-            </summary>
-            <div class="column mini-gap">
-              <strong>Technologies I worked with:</strong>
-              <ul class="column mini-gap icon-list">
-                <li class="row small-gap wrap">
-                  <a
-                    class="row y-centered mini-gap"
-                    href="https://www.typescriptlang.org/"
-                    target="_blank"
-                  >
-                    <img class="icon" src="/img/tech/typescript.svg" alt />
-                    TypeScript
-                  </a>
-                  (frontend, with
-                  <div class="row no-gap">
-                    <a class="row y-centered mini-gap" href="https://reactjs.org/" target="_blank">
-                      <img class="icon" src="/img/tech/react.svg" alt />
-                      React
-                    </a>
-                    )
-                  </div>
-                </li>
-                <li class="row y-centered small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://www.python.org/" target="_blank">
-                    <img class="icon" src="/img/tech/python.svg" alt />
-                    Python
-                  </a>
-                  (backend, with
-                  <div class="row no-gap">
-                    <a
-                      class="row y-centered mini-gap"
-                      href="https://www.djangoproject.com/"
-                      target="_blank"
-                    >
-                      <img class="icon" src="/img/tech/django.svg" alt />
-                      Django
-                    </a>
-                    )
-                  </div>
-                </li>
-                <li class="row small-gap wrap">
-                  <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
-                    <img class="icon" src="/img/tech/go.svg" alt />
-                    Go
-                  </a>
-                  (backend microservices)
-                </li>
-                <li>
-                  <a class="row y-centered mini-gap" href="https://grpc.io/" target="_blank">
-                    <img class="icon" src="/img/tech/grpc.svg" alt />
-                    gRPC
-                  </a>
-                </li>
-                <li>
-                  <a class="row y-centered mini-gap" href="https://graphql.org/" target="_blank">
-                    <img class="icon" src="/img/tech/graphql.svg" alt />
-                    GraphQL
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <p>
-              My work at Ignite began in January 2022, when I started working part-time one day a
-              week from Trondheim. In the summer of that year, I went to their Oslo office for 9
-              weeks to work full-time as a summer intern. After my internship, I continued working
-              part-time from Trondheim the following semester.
-            </p>
-            <p>
-              The work involved full-stack development of the Ignite Procurement platform, using the
-              technologies listed above. In many ways, it resembled what I had previously done in
-              the indok-web project (described above), but at a much larger scale. I also got to
-              work with Ignite's microservice architecture, which taught me a lot. Towards the end
-              of my internship, I even got to deploy my own Go microservice!
-            </p>
-            <p>
-              <strong>To read more about Ignite: </strong>
-              <a href="https://www.igniteprocurement.com/" target="_blank">igniteprocurement.com</a>
-            </p>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">Norwegian University of Science and Technology (NTNU)</div>
-                <img src="/img/companies/ntnu.png" alt="NTNU" />
-              </div>
-            </summary>
-            <p>
-              In the spring semester of 2019, I took the course Object-Oriented Programming at NTNU.
-              As described above in the section on my Minesweeper project, I found my passion for
-              programming in this course. And so I was delighted to get the opportunity to teach the
-              course to others the next year, in the spring of 2020, as a teaching assistant.
-            </p>
-            <p>
-              My work mostly involved helping students with the intricacies of Java and
-              object-oriented design. I found that I really enjoyed teaching these concepts ⁠— so
-              much that I returned to it again in the spring of 2021!
-            </p>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">Fresh Fitness</div>
-                <img src="/img/companies/fresh.png" alt="Fresh Fitness" />
-              </div>
-            </summary>
-            <p>
-              When I moved to Trondheim in the fall of 2018, I started training at the gym Fresh
-              Fitness along with a friend of mine. The following year, in May 2019, a poster came up
-              at the gym advertising an open position. I figured it could be nice to have a
-              part-time job next to my studies, so I applied ⁠— and I got the job! For the next year
-              and a half, I worked at Fresh one evening a week, and also every third weekend. The
-              work consisted of serving our customers, selling memberships and keeping the gym tidy.
-            </p>
-            <p>
-              I eventually quit in the fall of 2020, when I joined <em>Rubberdøk</em> (as described
-              above in the section on the indok-web project) and found it too much to handle beside
-              my studies.
-            </p>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">Norlandia Care</div>
-                <img src="/img/companies/norlandia.png" alt="Norlandia Care" />
-              </div>
-            </summary>
-            <p>
-              In January 2018, during my last semester of high school, I started working part-time
-              at Ullernhjemmet elderly care. I worked full-time for a few weeks the following
-              summer, and came back again for the summer of 2019.
-            </p>
-            <p>
-              The work mostly revolved around helping the elderly with all their needs, and keeping
-              them company. Although a tough job at times, I think it made me more compassionate and
-              caring.
-            </p>
-          </details>
-        </div>
-
-        <h3>Places I've studied</h3>
-        <div class="column gap">
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">Norwegian University of Science and Technology (NTNU)</div>
-                <img src="/img/schools/ntnu.jpg" alt="Facade of NTNU" />
-              </div>
-            </summary>
-            <p>
-              I first started considering NTNU in my first year of high school, when I was thinking
-              about what I wanted to study. At the time, I couldn't decide between studying tech or
-              economics, thinking I had to make a choice between the two. But then I discovered
-              Industrial Economics and Technology Management, a master's degree at NTNU which
-              combines technology, economics and management. That became my goal, which in turn
-              became reality in the fall of 2018.
-            </p>
-            <p>
-              At Industrial Economics, I specialized in Computer Science. Although I enjoyed my
-              studies, I found that I increasingly preferred the programming-focused courses over
-              the ones on economics and management. This came to a head in my fourth year, when I
-              was to choose the focus area for my master's thesis. I realized that what I
-              <em>really</em> wanted to do was write a pure Computer Science degree. And so I
-              decided to switch my degree, from Industrial Economics to Computer Science.
-            </p>
-            <p>
-              Due to my previous specialization in Industrial Economics, there was a lot of overlap
-              between what I'd studied there and what I needed for Computer Science. And so the
-              switch only extended my degree by half a year, meaning I would write my master's in
-              the fall of 2023, rather than the spring. Looking back, I couldn't be happier with
-              this choice. It allowed me to take Computer Science courses that I was passionate
-              about, and made me realize that software development is what I want to focus my career
-              on.
-            </p>
-            <p>
-              I've learned a lot through my time at NTNU. I think my favorite course has been
-              <em>Software Architecture</em>, which is where I helped build the
-              <em>Corona Defense</em> project described in sections above. In addition to this fun
-              project, the course taught me useful concepts and patterns of software architecture,
-              which I find myself thinking about when making technical choices as a developer.
-            </p>
-          </details>
-
-          <details>
-            <summary>
-              <div class="row y-centered small-gap">
-                <div class="grow">Foss High School</div>
-                <img src="/img/schools/foss.jpg" alt="Facade of Foss high school" />
-              </div>
-            </summary>
-            <p>
-              In the fall of 2015, I started studying at Foss High School in Oslo. During my 3 years
-              there, I took courses on engineering maths, physics, IT and macroeconomics, in
-              addition to the courses required for all Norwegian students.
-            </p>
-            <p>
-              IT became my favorite subject, in large part thanks to my teacher. He taught us the
-              building blocks of web development with HTML, CSS and JavaScript, even modern parts
-              like native animations with HTML5 and CSS3. We were also taught basic SQL and a tiny
-              bit of PHP, giving us a peek into the world of backend development.
-            </p>
-          </details>
+        <p>
+          In the fall of 2020, <em>Rubberdøk</em> was founded, a student organization tasked with
+          developing <a href="https://indokntnu.no/" target="_blank">indokntnu.no</a>, a new website
+          for the study program I was studying at the time. For the following two years, I worked 8
+          hours/week alongside 10 other student developers, using the technologies listed above.
+          It's hard to overstate how much I learned from this project — it gave me a solid
+          understanding of modern web development.
+        </p>
+        <p>
+          One year after our founding, I became project manager of <em>Rubberdøk</em> alongside
+          Lars, another member. In this role, I coordinated our continued work on the website, and
+          also dealt with feature requests from various stakeholders. In the fall of 2022, I held
+          courses in React, Django, Next.js and Git to our new members. We then elected a new
+          project manager, and I stepped down from the project, realizing that I needed more time
+          for school, work and other projects. Leaving the project was tough, but I felt like I left
+          it in good hands after teaching the foundations of web development to our new members.
+        </p>
+        <div class="column mini-gap">
+          <strong>Code:</strong>
+          <ul class="column mini-gap icon-list">
+            <li>
+              <a
+                class="row y-centered mini-gap"
+                href="https://github.com/rubberdok/indok-web"
+                target="_blank"
+              >
+                <img class="icon" src="/img/icons/github.svg" alt />
+                rubberdok/indok-web
+              </a>
+            </li>
+            <li>
+              <a
+                class="row y-centered mini-gap"
+                href="https://github.com/rubberdok/webdev-demo"
+                target="_blank"
+              >
+                <img class="icon" src="/img/icons/github.svg" alt />
+                rubberdok/webdev-demo
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
+    </dialog>
+
+    <dialog id="bfh-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/immerse.png" alt="Immerse student organization" />
+        <div class="grow">bfh-client & bfh-server</div>
+        <div id="bfh-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="column mini-gap">
+          <strong>Built with:</strong>
+          <ul class="column mini-gap icon-list">
+            <li class="row small-gap wrap">
+              <a
+                class="row y-centered mini-gap"
+                href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
+                target="_blank"
+              >
+                <img class="icon" src="/img/tech/csharp.svg" alt />
+                C#
+              </a>
+              (client-side, with
+              <div class="row no-gap">
+                <a class="row y-centered mini-gap" href="https://unity.com/" target="_blank">
+                  <img class="icon" src="/img/tech/unity.svg" alt />
+                  Unity
+                </a>
+                )
+              </div>
+            </li>
+            <li class="row small-gap wrap">
+              <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
+                <img class="icon" src="/img/tech/go.svg" alt />
+                Go
+              </a>
+              (server-side)
+            </li>
+          </ul>
+        </div>
+        <p>
+          The story of this project starts in the fall of 2020, when my dad gave me one of the
+          coolest birthday gifts I've ever received. He made me my very own board game:
+          <em>The Battle for Hermannia</em>! The game involves strategy, diplomacy and intrigue, and
+          I've played it a lot with friends in Trondheim. A couple friends of mine were particular
+          fans of the game, and so in November 2021, we started developing a digital edition of it
+          as a hobby project.
+        </p>
+        <p>
+          We decided to build the digital edition as a proper multiplayer online game. I wrote the
+          server in Go, finding its native concurrency support suitable for the parallel nature of
+          the game. My friends and I collaborated on the client, where we used C# with the Unity
+          game engine. During this time, one of my friends also founded
+          <a href="https://immersentnu.no/" target="_blank">Immerse NTNU</a>, a student organization
+          for game development. He made this game client their first project, and so we also got
+          invaluable help from new members there.
+        </p>
+        <div class="column mini-gap">
+          <strong>Code:</strong>
+          <ul class="column mini-gap icon-list">
+            <li>
+              <a
+                class="row y-centered mini-gap"
+                href="https://github.com/immerse-ntnu/bfh-client"
+                target="_blank"
+              >
+                <img class="icon" src="/img/icons/github.svg" alt />
+                immerse-ntnu/bfh-client
+              </a>
+            </li>
+            <li>
+              <a
+                class="row y-centered mini-gap"
+                href="https://github.com/hermannm/bfh-server"
+                target="_blank"
+              >
+                <img class="icon" src="/img/icons/github.svg" alt />
+                hermannm/bfh-server
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="coffeetalk-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/coffeetalk.png" alt="CoffeeTalk project" />
+        <div class="grow">coffeetalk</div>
+        <div id="coffeetalk-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="column mini-gap">
+          <strong>Built with:</strong>
+          <ul class="column mini-gap icon-list">
+            <li class="row small-gap wrap">
+              <a
+                class="row y-centered mini-gap"
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+                target="_blank"
+              >
+                <img class="icon" src="/img/tech/javascript.svg" alt />
+                JavaScript
+              </a>
+              (frontend)
+            </li>
+            <li class="row small-gap wrap">
+              <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
+                <img class="icon" src="/img/tech/go.svg" alt />
+                Go
+              </a>
+              (backend)
+            </li>
+            <li class="row small-gap wrap">
+              <a class="row y-centered mini-gap" href="https://webrtc.org/" target="_blank">
+                <img class="icon" src="/img/tech/webrtc.svg" alt />
+                WebRTC
+              </a>
+            </li>
+            <li class="row small-gap wrap">
+              <a class="row y-centered mini-gap" href="https://mqtt.org/" target="_blank">
+                <img class="icon" src="/img/tech/mqtt.svg" alt />
+                MQTT
+              </a>
+            </li>
+          </ul>
+        </div>
+        <p>
+          In the spring semester of 2022, I took the course
+          <em>Design of Communicating Systems</em> at NTNU. A part of that course was a group
+          project to build a video chat application. And thus CoffeeTalk was born: a web app with
+          peer-to-peer video streaming, and even a basic quiz game! We developed the application as
+          3 servers (one for serving the web app, one for WebRTC video stream coordination, and one
+          for the quiz game using MQTT). The servers were all written in Go, while the web app was
+          written in vanilla JavaScript.
+        </p>
+        <p>
+          In the end, we deployed the app with
+          <a href="https://www.digitalocean.com/" target="_blank">DigitalOcean</a>. My proudest
+          moment that semester was having an hour-long conversation with my dad through my own video
+          chat app!
+        </p>
+        <div class="row small-gap wrap">
+          <strong>Code:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://github.com/dcs-team4/coffeetalk"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/github.svg" alt />
+            dcs-team4/coffeetalk
+          </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="corona-defense-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/corona-defense.png" alt="Corona Defense project" />
+        <div class="grow">corona-defense</div>
+        <div id="corona-defense-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="column mini-gap">
+          <strong>Built with:</strong>
+          <ul class="column mini-gap icon-list">
+            <li class="row small-gap wrap">
+              <a class="row y-centered mini-gap" href="https://kotlinlang.org/" target="_blank">
+                <img class="icon" src="/img/tech/kotlin.svg" alt />
+                Kotlin
+              </a>
+              (client-side, with
+              <div class="row no-gap">
+                <a class="row y-centered mini-gap" href="https://libgdx.com/" target="_blank">
+                  <img class="icon" src="/img/tech/libgdx.svg" alt />
+                  libGDX
+                </a>
+                )
+              </div>
+            </li>
+            <li class="row small-gap wrap">
+              <a
+                class="row y-centered mini-gap"
+                href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
+                target="_blank"
+              >
+                <img class="icon" src="/img/tech/csharp.svg" alt />
+                C#
+              </a>
+              (server-side)
+            </li>
+          </ul>
+        </div>
+        <p>
+          In the spring semester of 2021, I took the course <em>Software Architecture</em> at NTNU.
+          The main part of that course was a group project to build a mobile game, with particular
+          emphasis on the game's architecture. My group came up with <em>Corona Defense</em>, an
+          online multiplayer variation of the classic tower defense genre. The players fight swaths
+          of incoming corona viruses, using "weapons" such as doctors, nurses and vaccines.
+        </p>
+        <p>
+          I mainly worked on the mobile client, developing the user interface and display of data
+          coming from the server. Since we made the game for Android, I got the pleasure of working
+          with Kotlin, which was a breath of fresh air compared to what I'd previously done with
+          Java.
+        </p>
+        <div class="column mini-gap">
+          <strong>Code:</strong>
+          <ul class="column mini-gap icon-list">
+            <li>
+              <a
+                class="row y-centered mini-gap"
+                href="https://github.com/swa-group1/corona-defense-client"
+                target="_blank"
+              >
+                <img class="icon" src="/img/icons/github.svg" alt />
+                swa-group1/corona-defense-client
+              </a>
+            </li>
+            <li>
+              <a
+                class="row y-centered mini-gap"
+                href="https://github.com/swa-group1/corona-defense-server"
+                target="_blank"
+              >
+                <img class="icon" src="/img/icons/github.svg" alt />
+                swa-group1/corona-defense-server
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="rov-sim-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/rov-sim.png" alt="ROV-SIM project" />
+        <div class="grow">rov-sim</div>
+        <div id="rov-sim-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="row small-gap wrap">
+          <strong>Built with:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/"
+            target="_blank"
+          >
+            <img class="icon" src="/img/tech/csharp.svg" alt />
+            C#
+          </a>
+          (with
+          <div class="row no-gap">
+            <a class="row y-centered mini-gap" href="https://unity.com/" target="_blank">
+              <img class="icon" src="/img/tech/unity.svg" alt />
+              Unity
+            </a>
+            )
+          </div>
+        </div>
+        <p>
+          In the spring semester of 2022, I took the course <em>Experts in Teamwork</em> at NTNU.
+          The course involved a group project to build something related to video games in the
+          maritime sector. My group decided to build a simulator of ROVs (Remotely Operated
+          Vehicles; underwater drones), and named it <em>ROV-SIM</em>. We built it with the Unity
+          game engine, and in the end, we produced a working prototype with 2 simulated ROV
+          scenarios! I mostly worked with the game scripts for the ROV's movement controls and the
+          main menu.
+        </p>
+        <p>
+          In the research phase of the project, we contacted several different companies producing
+          ROVs, to gain a better understanding of how to build a realistic simulator. We were quite
+          overwhelmed by the responses &mdash; all our questions were answered by every company, and
+          many of them provided additional resources for further research.
+          <em>Blueye Robotics</em>, a drone company headquartered in Trondheim, went even further:
+          they invited us to their office, to test a real ROV! This was a great experience, and
+          helped us a lot to improve the realism of the simulator.
+        </p>
+        <div class="row small-gap wrap">
+          <strong>Code:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://github.com/eit-nemo-group3/rov-sim"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/github.svg" alt />
+            eit-nemo-group3/rov-sim
+          </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="export-control-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/safetec.png" alt="Safetec" />
+        <div class="grow">export-control</div>
+        <div id="export-control-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="row small-gap wrap">
+          <strong>Built with:</strong>
+          <a class="row y-centered mini-gap" href="https://www.python.org/" target="_blank">
+            <img class="icon" src="/img/tech/python.svg" alt />
+            Python
+          </a>
+          (with
+          <div class="row no-gap">
+            <a
+              class="row y-centered mini-gap"
+              href="https://www.djangoproject.com/"
+              target="_blank"
+            >
+              <img class="icon" src="/img/tech/django.svg" alt />
+              Django
+            </a>
+            )
+          </div>
+        </div>
+        <p>
+          In the fall semester of 2022, I took the course <em>Customer-Driven Project</em> at NTNU.
+          In the course, five other Computer Science students and I were given a project from a real
+          customer: <em>Safetec</em>, a consulting firm specializing in risk management. Our project
+          was to build a tool for searching through the regulations of the Norwegian Export Control
+          Law, which restricts the export of certain sensitive products and technologies. Just a
+          year before our project, the regulations were expanded, and now included a 250 page list
+          with a wide variety of regulated items. Several of Safetec's customers were worried about
+          how the regulations might affect them, and had trouble navigating the new lists. The goal
+          of our tool was to be a resource that Safetec could give to their customers, so they can
+          find out if export control affects them.
+        </p>
+        <p>
+          Our final product was a web application built with Django, using PostgreSQL for its
+          database. We deployed the application in Safetec's Azure cloud, where it is now running at
+          <a href="https://exportcontrol.safetec.no/" target="_blank">exportcontrol.safetec.no</a>.
+          I was quite proud of our final result, as we were able to deliver a fully functional
+          product that the customer was happy with. The project taught me a lot about the
+          back-and-forth process of requirement elicitation, and dealing with changing requirements.
+        </p>
+        <div class="row small-gap wrap">
+          <strong>Code:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://github.com/cdp-group4/export-control"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/github.svg" alt />
+            cdp-group4/export-control
+          </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="advent-of-rust-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img
+          src="/img/projects/ferris-the-crab-with-christmas-hat.png"
+          alt="Ferris the Crab, mascot of the Rust programming language, with a Christmas hat"
+        />
+        <div class="grow">advent-of-rust</div>
+        <div id="advent-of-rust-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="row small-gap wrap">
+          <strong>Built with:</strong>
+          <a class="row y-centered mini-gap" href="https://www.rust-lang.org/" target="_blank">
+            <img class="icon" src="/img/tech/rust.svg" alt />
+            Rust
+          </a>
+        </div>
+        <p>
+          Before December 2022, I had never done Advent of Code, nor programmed in Rust. That
+          changed this advent, as I decided to use Advent of Code to learn Rust! Each morning, a new
+          coding task was published, and as the calendar went on, the tasks became harder and
+          harder. This format worked well to learn a new language, as the relatively easy early days
+          allowed me to familiarize myself with Rust's syntax, and then the growing difficulty made
+          me delve deeper and deeper into the language. The latter days were some of the most
+          mentally challenging programming I had done at that point, but through blood, sweat, and
+          tears, I was able to complete it by the 25th!
+        </p>
+        <div class="row small-gap wrap">
+          <strong>Code:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://github.com/hermannm/advent-of-rust"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/github.svg" alt />
+            hermannm/advent-of-rust
+          </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="minesweeper-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/minesweeper.png" alt="Minesweeper project" />
+        <div class="grow">minesweeper</div>
+        <div id="minesweeper-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="row small-gap wrap">
+          <strong>Built with:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://www.java.com/en/download/help/whatis_java.html"
+            target="_blank"
+          >
+            <img class="icon" src="/img/tech/java.svg" alt />
+            Java
+          </a>
+        </div>
+        <p>
+          In the spring semester of 2019, I took a course on object-oriented programming at NTNU.
+          One part of the course was a project to develop an application with Java. I chose to build
+          a copy of Minesweeper, the classic Windows game. At this point, I had little previous
+          experience with programming, but this project helped ignite my passion for software. Even
+          after delivering the project, I stayed up one night to polish the user interface (and kept
+          going until 5 in the morning, to get the UI just right...).
+        </p>
+        <p>
+          This project still has a special place in my heart. In the spring of 2022, I went back to
+          the project to configure <a href="https://gradle.org/" target="_blank">Gradle</a>,
+          allowing me to build a distributable JAR file for the game.
+        </p>
+        <div class="row small-gap wrap">
+          <strong>Code:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://github.com/hermannm/minesweeper"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/github.svg" alt />
+            hermannm/minesweeper
+          </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="gruvbox-plain-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/projects/gruvbox-plain.png" alt="gruvbox-plain project" />
+        <div class="grow">gruvbox-plain</div>
+        <div id="gruvbox-plain-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <p>
+          One of the things I enjoy is setting up my development environment to look just the way I
+          like it. When looking around for a good color theme for my code editor, I found
+          <a href="https://github.com/morhetz/gruvbox#readme" target="_blank">gruvbox</a>, and quite
+          liked it. But the theme's contrasts were still a bit too sharp for my taste, so I decided
+          to make my own, plainer variant: gruvbox-plain. Over the course of my programming
+          projects, I've kept improving the theme's support for various syntaxes, and even made two
+          different variants.
+        </p>
+        <div class="row small-gap wrap">
+          <strong>Code:</strong>
+          <a
+            class="row y-centered mini-gap"
+            href="https://github.com/hermannm/gruvbox-plain"
+            target="_blank"
+          >
+            <img class="icon" src="/img/icons/github.svg" alt />
+            hermannm/gruvbox-plain
+          </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="ignite-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/companies/ignite.png" alt="Ignite Procurement" />
+        <div class="grow">Ignite Procurement</div>
+        <div id="ignite-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <div class="column mini-gap">
+          <strong>Technologies I worked with:</strong>
+          <ul class="column mini-gap icon-list">
+            <li class="row small-gap wrap">
+              <a
+                class="row y-centered mini-gap"
+                href="https://www.typescriptlang.org/"
+                target="_blank"
+              >
+                <img class="icon" src="/img/tech/typescript.svg" alt />
+                TypeScript
+              </a>
+              (frontend, with
+              <div class="row no-gap">
+                <a class="row y-centered mini-gap" href="https://reactjs.org/" target="_blank">
+                  <img class="icon" src="/img/tech/react.svg" alt />
+                  React
+                </a>
+                )
+              </div>
+            </li>
+            <li class="row y-centered small-gap wrap">
+              <a class="row y-centered mini-gap" href="https://www.python.org/" target="_blank">
+                <img class="icon" src="/img/tech/python.svg" alt />
+                Python
+              </a>
+              (backend, with
+              <div class="row no-gap">
+                <a
+                  class="row y-centered mini-gap"
+                  href="https://www.djangoproject.com/"
+                  target="_blank"
+                >
+                  <img class="icon" src="/img/tech/django.svg" alt />
+                  Django
+                </a>
+                )
+              </div>
+            </li>
+            <li class="row small-gap wrap">
+              <a class="row y-centered mini-gap" href="https://go.dev/" target="_blank">
+                <img class="icon" src="/img/tech/go.svg" alt />
+                Go
+              </a>
+              (backend microservices)
+            </li>
+            <li>
+              <a class="row y-centered mini-gap" href="https://grpc.io/" target="_blank">
+                <img class="icon" src="/img/tech/grpc.svg" alt />
+                gRPC
+              </a>
+            </li>
+            <li>
+              <a class="row y-centered mini-gap" href="https://graphql.org/" target="_blank">
+                <img class="icon" src="/img/tech/graphql.svg" alt />
+                GraphQL
+              </a>
+            </li>
+          </ul>
+        </div>
+        <p>
+          My work at Ignite began in January 2022, when I started working part-time one day a week
+          from Trondheim. In the summer of that year, I went to their Oslo office for 9 weeks to
+          work full-time as a summer intern. After my internship, I continued working part-time from
+          Trondheim the following semester.
+        </p>
+        <p>
+          The work involved full-stack development of the Ignite Procurement platform, using the
+          technologies listed above. In many ways, it resembled what I had previously done in the
+          indok-web project (described above), but at a much larger scale. I also got to work with
+          Ignite's microservice architecture, which taught me a lot. Towards the end of my
+          internship, I even got to deploy my own Go microservice!
+        </p>
+        <p>
+          <strong>To read more about Ignite: </strong>
+          <a href="https://www.igniteprocurement.com/" target="_blank">igniteprocurement.com</a>
+        </p>
+      </div>
+    </dialog>
+
+    <dialog id="ntnu-work-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/companies/ntnu.png" alt="NTNU" />
+        <div class="grow">NTNU</div>
+        <div id="ntnu-work-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <p>
+          In the spring semester of 2019, I took the course Object-Oriented Programming at NTNU. As
+          described above in the section on my Minesweeper project, I found my passion for
+          programming in this course. And so I was delighted to get the opportunity to teach the
+          course to others the next year, in the spring of 2020, as a teaching assistant.
+        </p>
+        <p>
+          My work mostly involved helping students with the intricacies of Java and object-oriented
+          design. I found that I really enjoyed teaching these concepts ⁠— so much that I returned
+          to it again in the spring of 2021!
+        </p>
+      </div>
+    </dialog>
+
+    <dialog id="fresh-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/companies/fresh.png" alt="Fresh Fitness" />
+        <div class="grow">Fresh Fitness</div>
+        <div id="fresh-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <p>
+          When I moved to Trondheim in the fall of 2018, I started training at the gym Fresh Fitness
+          along with a friend of mine. The following year, in May 2019, a poster came up at the gym
+          advertising an open position. I figured it could be nice to have a part-time job next to
+          my studies, so I applied ⁠— and I got the job! For the next year and a half, I worked at
+          Fresh one evening a week, and also every third weekend. The work consisted of serving our
+          customers, selling memberships and keeping the gym tidy.
+        </p>
+        <p>
+          I eventually quit in the fall of 2020, when I joined <em>Rubberdøk</em> (as described
+          above in the section on the indok-web project) and found it too much to handle beside my
+          studies.
+        </p>
+      </div>
+    </dialog>
+
+    <dialog id="norlandia-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/companies/norlandia.png" alt="Norlandia Care" />
+        <div class="grow">Norlandia Care</div>
+        <div id="norlandia-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <p>
+          In January 2018, during my last semester of high school, I started working part-time at
+          Ullernhjemmet elderly care. I worked full-time for a few weeks the following summer, and
+          came back again for the summer of 2019.
+        </p>
+        <p>
+          The work mostly revolved around helping the elderly with all their needs, and keeping them
+          company. Although a tough job at times, I think it made me more compassionate and caring.
+        </p>
+      </div>
+    </dialog>
+
+    <dialog id="ntnu-study-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/schools/ntnu.jpg" alt="Facade of NTNU" />
+        <div class="grow">NTNU</div>
+        <div id="ntnu-study-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <p>
+          I first started considering NTNU in my first year of high school, when I was thinking
+          about what I wanted to study. At the time, I couldn't decide between studying tech or
+          economics, thinking I had to make a choice between the two. But then I discovered
+          Industrial Economics and Technology Management, a master's degree at NTNU which combines
+          technology, economics and management. That became my goal, which in turn became reality in
+          the fall of 2018.
+        </p>
+        <p>
+          At Industrial Economics, I specialized in Computer Science. Although I enjoyed my studies,
+          I found that I increasingly preferred the programming-focused courses over the ones on
+          economics and management. This came to a head in my fourth year, when I was to choose the
+          focus area for my master's thesis. I realized that what I
+          <em>really</em> wanted to do was write a pure Computer Science degree. And so I decided to
+          switch my degree, from Industrial Economics to Computer Science.
+        </p>
+        <p>
+          Due to my previous specialization in Industrial Economics, there was a lot of overlap
+          between what I'd studied there and what I needed for Computer Science. And so the switch
+          only extended my degree by half a year, meaning I would write my master's in the fall of
+          2023, rather than the spring. Looking back, I couldn't be happier with this choice. It
+          allowed me to take Computer Science courses that I was passionate about, and made me
+          realize that software development is what I want to focus my career on.
+        </p>
+        <p>
+          I've learned a lot through my time at NTNU. I think my favorite course has been
+          <em>Software Architecture</em>, which is where I helped build the
+          <em>Corona Defense</em> project described in sections above. In addition to this fun
+          project, the course taught me useful concepts and patterns of software architecture, which
+          I find myself thinking about when making technical choices as a developer.
+        </p>
+      </div>
+    </dialog>
+
+    <dialog id="foss-modal" class="modal">
+      <div class="modal-header row y-centered small-gap">
+        <img src="/img/schools/foss.jpg" alt="Facade of Foss high school" />
+        <div class="grow">Foss High School</div>
+        <div id="foss-modal-closer" class="modal-closer">╳</div>
+      </div>
+      <div class="modal-content">
+        <p>
+          In the fall of 2015, I started studying at Foss High School in Oslo. During my 3 years
+          there, I took courses on engineering maths, physics, IT and macroeconomics, in addition to
+          the courses required for all Norwegian students.
+        </p>
+        <p>
+          IT became my favorite subject, in large part thanks to my teacher. He taught us the
+          building blocks of web development with HTML, CSS and JavaScript, even modern parts like
+          native animations with HTML5 and CSS3. We were also taught basic SQL and a tiny bit of
+          PHP, giving us a peek into the world of backend development.
+        </p>
+      </div>
+    </dialog>
   </body>
 </html>

@@ -2,7 +2,7 @@ const birthday = new Date("1999-09-12");
 
 const ageField = document.querySelector("#age-field");
 if (ageField) {
-  ageField.innerHTML += `${ageFromBirthday(birthday)} years old`;
+  ageField.textContent = ageFromBirthday(birthday).toString();
 }
 
 /** @param {Date} birthday, @returns {number} */
