@@ -392,3 +392,11 @@ button {
   font: inherit;
   background-color: inherit;
 }
+
+p {
+  /*
+  Disables Font Boosting in Chrome for Android, for consistent font sizes.
+  Suggested workaround from WebKit ticket: https://bugs.webkit.org/show_bug.cgi?id=84186#c17
+  */
+  max-height: 1000000px;
+}
