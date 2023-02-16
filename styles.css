@@ -3,6 +3,7 @@
   --text-color: #ebdbb2;
   --background-color: #282828;
   --border-color: #504945;
+  --button-hover-background-color: #665c54;
   --scrollbar-thumb-color: #928374;
 
   --font-size: 15px;
@@ -99,21 +100,11 @@ body::-webkit-scrollbar-track {
 }
 
 .project-list button {
-  /* Resets default button styles */
-  padding: 0;
-  color: inherit;
-  outline: inherit;
-  text-align: start;
-  line-height: inherit;
-  font-style: inherit;
-  font-variant: inherit;
-  font-size: inherit;
-  font-family: inherit;
-
   cursor: pointer;
   border: var(--mini-gap-size) solid var(--border-color);
   border-radius: var(--default-border-radius);
   width: 100%;
+  text-align: start;
 }
 
 .project-banner {
@@ -123,6 +114,10 @@ body::-webkit-scrollbar-track {
   flex-direction: row;
   align-items: center;
   gap: var(--small-gap-size);
+}
+button.project-banner:hover {
+  background-color: var(--button-hover-background-color);
+  border-color: var(--button-hover-background-color);
 }
 
 .project-banner > img {
@@ -198,8 +193,14 @@ body::-webkit-scrollbar-track {
 .modal-closer {
   cursor: pointer;
   min-width: 1.75rem;
-  line-height: 1.75rem;
-  text-align: center;
+  min-height: 1.75rem;
+  border-radius: var(--default-border-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-closer:hover {
+  background-color: var(--button-hover-background-color);
 }
 
 @media screen and (max-width: 480px) {
@@ -373,4 +374,15 @@ body::-webkit-scrollbar-track {
 
 a {
   color: var(--text-color);
+}
+
+button {
+  /* Resets default button styles */
+  padding: 0;
+  border: none;
+  color: inherit;
+  outline: inherit;
+  line-height: inherit;
+  font: inherit;
+  background-color: inherit;
 }
