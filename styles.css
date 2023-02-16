@@ -1,59 +1,316 @@
 :root {
-  /* gruvbox colors */
+  /* gruvbox colors, from https://github.com/morhetz/gruvbox */
   --text-color: #ebdbb2;
   --background-color: #282828;
   --border-color: #504945;
+  --scrollbar-thumb-color: #928374;
 
   --font-size: 15px;
+  --page-width: 55rem;
   --content-width: 40rem;
-  --sidebar-width: 15rem;
+
+  --medium-gap-size: 1rem;
+  --small-gap-size: 0.5rem;
+  --mini-gap-size: 0.25rem;
+
+  --project-image-size: 3.25rem;
+  --profile-pic-size: calc(var(--page-width) - var(--content-width));
+
+  --default-border-radius: 0.5rem;
+
+  --small-screen-breakpoint: 480px;
+  --medium-screen-breakpoint: 624px;
+
+  --max-modal-height-small-screens: 100vh;
+  --max-modal-height-medium-screens: calc(100vh - 2 * var(--medium-gap-size));
+  --max-modal-height-in-transition: calc(
+    var(--max-modal-height-medium-screens) + var(--small-screen-breakpoint) - 100vw
+  );
+  --max-modal-height: clamp(
+    var(--max-modal-height-medium-screens),
+    var(--max-modal-height-in-transition),
+    var(--max-modal-height-small-screens)
+  );
+}
+
+* {
+  /*
+  Includes padding + border in an element's width/height values,
+  see https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing to read more
+  */
+  box-sizing: border-box;
 }
 
 body {
   background-color: var(--background-color);
-  margin: 1.5rem auto 1.5rem auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+
   font-family: "Roboto Mono", "Consolas", "Courier New", sans-serif;
   font-size: var(--font-size);
   color: var(--text-color);
+
+  max-width: var(--page-width);
+
+  --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--page-width) / 2));
+  margin-left: var(--horizontal-margin);
+  margin-right: var(--horizontal-margin);
+  margin-top: var(--medium-gap-size);
+  margin-bottom: 3rem;
+
+  /* Scrollbar customization in Firefox - Chrome/Safari use -webkit-scrollbar below */
+  scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
+  scrollbar-width: var(--small-gap-size);
+}
+body::-webkit-scrollbar {
+  width: var(--small-gap-size);
+  height: var(--small-gap-size);
+}
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+}
+body::-webkit-scrollbar-track {
+  background: var(--background-color);
 }
 
-.responsive-container {
+.header-container {
   display: flex;
+  gap: var(--medium-gap-size);
+  align-items: center;
 }
 
-.main,
-.sidebar {
-  margin: 0 1rem;
+.header-text > * {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-@media screen and (max-width: 600px) {
-  .responsive-container {
+.responsive-4-column-grid {
+  display: grid;
+  gap: var(--medium-gap-size);
+  place-items: center;
+}
+
+.profile-pic {
+  border-radius: var(--default-border-radius);
+  border: var(--mini-gap-size) solid var(--border-color);
+}
+
+.project-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.project-list button {
+  /* Resets default button styles */
+  padding: 0;
+  color: inherit;
+  outline: inherit;
+  text-align: start;
+  line-height: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  font-size: inherit;
+  font-family: inherit;
+
+  cursor: pointer;
+  border: var(--mini-gap-size) solid var(--border-color);
+  border-radius: var(--default-border-radius);
+  width: 100%;
+}
+
+.project-banner {
+  background-color: var(--border-color);
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--small-gap-size);
+}
+
+.project-banner > img {
+  border-radius: var(--default-border-radius);
+  max-width: var(--project-image-size);
+}
+
+.modal {
+  /* Resets default <dialog> styles */
+  color: inherit;
+  padding: 0;
+
+  background-color: var(--border-color);
+  border: var(--mini-gap-size) solid var(--border-color);
+  max-width: var(--content-width);
+  max-height: var(--max-modal-height);
+  overflow-y: hidden;
+
+  /*
+  --medium-gap-size / (2 * --default-border-radius)
+  Pre-calculated here since calc() does not accept divisors with units
+  */
+  --radius-width-ratio: 4;
+  --border-radius-in-transition: calc(
+    var(--default-border-radius) - var(--small-screen-breakpoint) / var(--radius-width-ratio) +
+      100vw / var(--radius-width-ratio)
+  );
+  border-radius: clamp(0px, var(--border-radius-in-transition), var(--default-border-radius));
+}
+.modal::backdrop {
+  backdrop-filter: blur(5px);
+}
+
+.modal-header {
+  border-bottom: var(--mini-gap-size) solid var(--border-color);
+  position: sticky;
+  top: 0px;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  overflow-y: auto;
+
+  --non-modal-content-height: calc(var(--project-image-size) + 3 * var(--mini-gap-size));
+  max-height: calc(var(--max-modal-height) - var(--non-modal-content-height));
+
+  scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
+  scrollbar-width: var(--small-gap-size);
+}
+.modal-content::-webkit-scrollbar {
+  width: var(--small-gap-size);
+  height: var(--small-gap-size);
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+}
+.modal-content::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+.modal-content > * {
+  padding: var(--small-gap-size);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Wrapper element to apply border radius to modal-content's scrollbar */
+.modal-content-wrapper {
+  border-radius: var(--default-border-radius);
+  overflow: hidden;
+}
+
+.modal-closer {
+  cursor: pointer;
+  min-width: 1.75rem;
+  line-height: 1.75rem;
+  text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+  .header-container {
     flex-direction: column;
   }
 
-  .desktop-visible {
-    display: none;
+  .profile-pic {
+    max-height: calc(50vw - var(--medium-gap-size));
+    width: calc(100vw - 2 * var(--medium-gap-size));
+
+    /*
+    Profile picture is cropped for small screens, this controls where it crops
+    See https://developer.mozilla.org/en-US/docs/Web/CSS/object-position to read more
+    */
+    object-position: 50% 28%;
+  }
+
+  .project-list > li {
+    flex-basis: 100%;
+  }
+
+  .modal {
+    --responsive-modal-margin: max(
+      0px,
+      calc(var(--medium-gap-size) - var(--small-screen-breakpoint) / 2 + 50vw)
+    );
+    margin-left: var(--responsive-modal-margin);
+    margin-right: var(--responsive-modal-margin);
   }
 }
 
-@media screen and (min-width: 601px) {
-  .responsive-container {
+@media screen and (min-width: 481px) and (max-width: 624px) {
+  .header-text {
+    --header-text-width: calc(
+      var(--medium-screen-breakpoint) - var(--profile-pic-size) - 3 * var(--medium-gap-size)
+    );
+    min-width: var(--header-text-width);
+    width: var(--header-text-width);
+    max-width: var(--header-text-width);
+  }
+
+  .profile-pic {
+    max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 481px) {
+  .header-container {
     flex-direction: row;
   }
 
-  .mobile-visible {
-    display: none;
+  .profile-pic {
+    height: var(--profile-pic-size);
   }
 
-  .sidebar {
-    max-width: var(--sidebar-width);
+  .modal {
+    --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--content-width) / 2));
+    margin-left: var(--horizontal-margin);
+    margin-right: var(--horizontal-margin);
   }
 }
 
-.full-width {
-  max-width: calc(var(--content-width) + var(--sidebar-width));
+@media screen and (max-width: 625px) {
+  .profile-pic {
+    object-fit: cover;
+  }
+}
+
+@media screen and (min-width: 625px) {
+  .profile-pic {
+    width: var(--profile-pic-size);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .responsive-4-column-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .project-list > li {
+    flex-basis: calc(50% - var(--medium-gap-size) / 2);
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .project-list > li:nth-child(3n + 2) {
+    flex-basis: calc(100% / 3 - var(--medium-gap-size));
+  }
+
+  .project-list > li:not(:nth-child(3n + 2)) {
+    flex-basis: calc(100% / 3 - var(--medium-gap-size) / 2);
+  }
+
+  .responsive-4-column-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+.icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.icon-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .content-width {
@@ -70,51 +327,6 @@ body {
   flex-direction: column;
 }
 
-.x-centered {
-  justify-content: center;
-}
-
-.y-centered {
-  align-items: center;
-}
-
-.aligned-top {
-  align-items: start;
-}
-
-.text-centered {
-  text-align: center;
-}
-
-.gap {
-  gap: 1rem;
-}
-
-.small-gap {
-  gap: 0.5rem;
-}
-
-.mini-gap {
-  gap: 0.25rem;
-}
-
-.no-gap {
-  gap: 0;
-}
-
-.no-vertical-margin {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.no-top-margin {
-  margin-top: 0;
-}
-
-.no-bottom-margin {
-  margin-bottom: 0;
-}
-
 .wrap {
   flex-wrap: wrap;
 }
@@ -123,147 +335,42 @@ body {
   flex-grow: 1;
 }
 
-.bottom-border {
-  border-bottom: 1px solid var(--border-color);
+.x-centered {
+  justify-content: center;
 }
 
-.icon {
-  height: 1rem;
-  width: 1rem;
+.y-centered {
+  align-items: center;
+}
+
+.text-centered {
+  text-align: center;
+}
+
+.no-text-wrap {
+  white-space: nowrap;
+}
+
+.shrink-text {
+  width: min-content;
+}
+
+.gap {
+  gap: var(--medium-gap-size);
+}
+
+.small-gap {
+  gap: var(--small-gap-size);
+}
+
+.mini-gap {
+  gap: var(--mini-gap-size);
+}
+
+.no-gap {
+  gap: 0;
 }
 
 a {
   color: var(--text-color);
-}
-
-.grid-3-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-}
-
-.grid-4-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 1rem;
-  place-items: center;
-}
-
-.modal-opener-list {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.modal-opener-list button {
-  text-align: start;
-  color: inherit;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-
-  background-color: var(--border-color);
-  border: 0.25rem solid var(--border-color);
-  border-radius: 0.5rem;
-  font-weight: bold;
-  width: 100%;
-}
-
-.modal-opener-list img {
-  border-radius: 0.5rem;
-  max-width: 3.25rem;
-}
-
-.modal {
-  background-color: var(--border-color);
-  border: 0.25rem solid var(--border-color);
-  border-radius: 0.5rem;
-  color: inherit;
-  max-width: var(--content-width);
-  padding: 0;
-}
-
-.modal::backdrop {
-  backdrop-filter: blur(5px);
-}
-
-.modal-header {
-  border-bottom: 0.25rem solid var(--border-color);
-  font-weight: bold;
-  padding-right: 0.25rem;
-}
-
-.modal-header img {
-  border-radius: 0.5rem;
-  max-width: 3.25rem;
-}
-
-.modal-content {
-  background-color: var(--background-color);
-  border-radius: 0.5rem;
-}
-
-.modal-content > * {
-  padding: 0.5rem;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.modal-closer {
-  cursor: pointer;
-}
-
-details summary {
-  display: block;
-}
-
-details summary::marker,
-details summary::-webkit-details-marker {
-  display: none;
-}
-
-details summary > div:before {
-  content: "➤";
-  font-size: calc(0.8 * var(--font-size));
-  min-width: calc(0.8 * var(--font-size));
-  text-align: center;
-  margin-left: 0.25rem;
-}
-
-details[open] summary > div:before {
-  content: "⮟";
-}
-
-details[open] summary {
-  border-bottom: 0.25rem solid var(--border-color);
-}
-
-details > :not(summary) {
-  padding: 0.5rem;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.icon-list {
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.icon-list li {
-  list-style-type: none;
-}
-
-.main details summary {
-  min-height: 3rem;
-}
-
-.sidebar details {
-  width: 100%;
-}
-
-.profile-pic {
-  max-width: 15rem;
-  border-radius: 0.5rem;
-  border: 0.25rem solid var(--border-color);
 }

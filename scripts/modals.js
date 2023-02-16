@@ -40,18 +40,24 @@ for (const modalId of MODAL_IDS) {
 
   /** Closes the modal when clicking outside it. */
   modal?.addEventListener("click", (event) => {
-    if (!modal) return;
-
-    const modalBounds = modal.getBoundingClientRect();
-
-    const clickedOutsideModal =
-      event.clientY < modalBounds.top ||
-      event.clientX < modalBounds.left ||
-      event.clientY > modalBounds.bottom ||
-      event.clientX > modalBounds.right;
-
-    if (clickedOutsideModal) {
-      modal?.close();
+    if (modal && clickedOutsideModal(event, modal)) {
+      modal.close();
     }
   });
+}
+
+/**
+ * @param {MouseEvent} click
+ * @param {HTMLDialogElement} modal
+ * @returns {boolean}
+ */
+function clickedOutsideModal(click, modal) {
+  const modalBounds = modal.getBoundingClientRect();
+
+  return (
+    click.clientY < modalBounds.top ||
+    click.clientX < modalBounds.left ||
+    click.clientY > modalBounds.bottom ||
+    click.clientX > modalBounds.right
+  );
 }
