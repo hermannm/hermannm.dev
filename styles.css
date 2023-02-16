@@ -22,8 +22,14 @@
   --small-screen-breakpoint: 480px;
   --medium-screen-breakpoint: 624px;
 
-  --max-modal-height-small-screens: 100%;
-  --max-modal-height-medium-screens: calc(100% - 2 * var(--medium-gap-size));
+  /* Fallback for browsers without dvh support */
+  --max-modal-height-small-screens: 100vh;
+  --max-modal-height-small-screens: 100dvh;
+
+  /* Fallback for browsers without dvh support */
+  --max-modal-height-medium-screens: calc(100vh - 2 * var(--medium-gap-size));
+  --max-modal-height-medium-screens: calc(100dvh - 2 * var(--medium-gap-size));
+
   --max-modal-height-in-transition: calc(
     var(--max-modal-height-medium-screens) + var(--small-screen-breakpoint) - 100vw
   );
