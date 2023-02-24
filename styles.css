@@ -55,11 +55,6 @@ body {
   font-size: var(--font-size);
   color: var(--text-color);
 
-  max-width: var(--page-width);
-
-  --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--page-width) / 2));
-  margin-left: var(--horizontal-margin);
-  margin-right: var(--horizontal-margin);
   margin-top: var(--medium-gap-size);
   margin-bottom: 3rem;
 
@@ -76,6 +71,22 @@ body::-webkit-scrollbar-thumb {
 }
 body::-webkit-scrollbar-track {
   background: var(--background-color);
+}
+
+.full-width-body {
+  max-width: var(--page-width);
+
+  --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--page-width) / 2));
+  margin-left: var(--horizontal-margin);
+  margin-right: var(--horizontal-margin);
+}
+
+.content-width-body {
+  max-width: var(--content-width);
+
+  --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--content-width) / 2));
+  margin-left: var(--horizontal-margin);
+  margin-right: var(--horizontal-margin);
 }
 
 .header-container {
@@ -376,6 +387,10 @@ button.project-banner:hover {
 
 .no-gap {
   gap: 0;
+}
+
+.no-margin {
+  margin: 0;
 }
 
 a {
