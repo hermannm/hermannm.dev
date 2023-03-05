@@ -14,8 +14,9 @@
   --small-gap-size: 0.5rem;
   --mini-gap-size: 0.25rem;
 
-  --project-image-size: 3.25rem;
+  --project-image-size: 3.125rem;
   --profile-pic-size: calc(var(--page-width) - var(--content-width));
+  --icon-size: 1rem;
 
   --default-border-radius: 0.5rem;
 
@@ -320,8 +321,8 @@ button.project-banner:hover {
 }
 
 .icon {
-  height: 1rem;
-  width: 1rem;
+  height: var(--icon-size);
+  width: var(--icon-size);
 }
 
 .icon-list {
