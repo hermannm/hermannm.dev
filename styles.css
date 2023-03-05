@@ -117,14 +117,6 @@ body::-webkit-scrollbar-track {
   padding-left: 0;
 }
 
-.project-list button {
-  cursor: pointer;
-  border: var(--mini-gap-size) solid var(--border-color);
-  border-radius: var(--default-border-radius);
-  width: 100%;
-  text-align: start;
-}
-
 .project-banner {
   background-color: var(--border-color);
   font-weight: bold;
@@ -133,7 +125,16 @@ body::-webkit-scrollbar-track {
   align-items: center;
   gap: var(--small-gap-size);
 }
-button.project-banner:hover {
+
+button.project-banner {
+  cursor: pointer;
+  border: var(--mini-gap-size) solid var(--border-color);
+  border-radius: var(--default-border-radius);
+  width: 100%;
+  text-align: start;
+}
+button.project-banner:hover,
+button.project-banner:focus {
   background-color: var(--button-hover-background-color);
   border-color: var(--button-hover-background-color);
 }
