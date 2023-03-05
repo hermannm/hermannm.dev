@@ -394,6 +394,12 @@ button.project-banner:hover {
   margin: 0;
 }
 
+h2 {
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}
+
 a {
   color: var(--text-color);
 }
