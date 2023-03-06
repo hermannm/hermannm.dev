@@ -70,13 +70,25 @@
         </ul>
       </div>
       <div>
-        <img
-          class="profile-pic"
-          width="240"
-          height="240"
-          src="/img/profile-pic.jpg"
-          alt="Hermann's profile picture"
-        />
+        <picture>
+          <source
+            media="(max-width: 480px)"
+            width="440"
+            height="216"
+            srcset="/img/profile-picture-mobile.jpg"
+          />
+          <source
+            media="(min-width: 481px)"
+            width="240"
+            height="240"
+            srcset="/img/profile-picture-desktop.jpg"
+          />
+          <img
+            class="profile-picture"
+            src="/img/profile-picture-desktop.jpg"
+            alt="Hermann's profile picture"
+          />
+        </picture>
       </div>
     </div>
 
@@ -181,7 +193,12 @@
     <ul class="project-list row wrap gap x-centered">
       <li>
         <button id="ignite-modal-opener" class="project-banner">
-          <img width="50" height="50" src="/img/companies/ignite.png" alt="Ignite Procurement" />
+          <img
+            width="50"
+            height="50"
+            src="/img/companies/ignite-procurement.png"
+            alt="Ignite Procurement"
+          />
           <div class="grow">Ignite Procurement</div>
         </button>
       </li>
@@ -195,14 +212,19 @@
 
       <li>
         <button id="fresh-modal-opener" class="project-banner">
-          <img width="50" height="50" src="/img/companies/fresh.png" alt="Fresh Fitness" />
+          <img width="50" height="50" src="/img/companies/fresh-fitness.png" alt="Fresh Fitness" />
           <div class="grow">Fresh Fitness</div>
         </button>
       </li>
 
       <li>
         <button id="norlandia-modal-opener" class="project-banner">
-          <img width="50" height="50" src="/img/companies/norlandia.png" alt="Norlandia Care" />
+          <img
+            width="50"
+            height="50"
+            src="/img/companies/norlandia-care.png"
+            alt="Norlandia Care"
+          />
           <div class="grow">Norlandia Care</div>
         </button>
       </li>
@@ -846,7 +868,12 @@
 
     <dialog id="ignite-modal" class="modal">
       <div class="modal-header project-banner">
-        <img width="50" height="50" src="/img/companies/ignite.png" alt="Ignite Procurement" />
+        <img
+          width="50"
+          height="50"
+          src="/img/companies/ignite-procurement.png"
+          alt="Ignite Procurement"
+        />
         <div class="grow">Ignite Procurement</div>
         <button id="ignite-modal-closer" class="modal-closer" aria-label="Close">╳</button>
       </div>
@@ -958,7 +985,7 @@
 
     <dialog id="fresh-modal" class="modal">
       <div class="modal-header project-banner">
-        <img width="50" height="50" src="/img/companies/fresh.png" alt="Fresh Fitness" />
+        <img width="50" height="50" src="/img/companies/fresh-fitness.png" alt="Fresh Fitness" />
         <div class="grow">Fresh Fitness</div>
         <button id="fresh-modal-closer" class="modal-closer" aria-label="Close">╳</button>
       </div>
@@ -983,7 +1010,7 @@
 
     <dialog id="norlandia-modal" class="modal">
       <div class="modal-header project-banner">
-        <img width="50" height="50" src="/img/companies/norlandia.png" alt="Norlandia Care" />
+        <img width="50" height="50" src="/img/companies/norlandia-care.png" alt="Norlandia Care" />
         <div class="grow">Norlandia Care</div>
         <button id="norlandia-modal-closer" class="modal-closer" aria-label="Close">╳</button>
       </div>

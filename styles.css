@@ -15,7 +15,7 @@
   --mini-gap-size: 0.25rem;
 
   --project-image-size: 3.125rem;
-  --profile-pic-size: calc(var(--page-width) - var(--content-width));
+  --profile-picture-size: calc(var(--page-width) - var(--content-width));
   --icon-size: 1rem;
 
   --default-border-radius: 0.5rem;
@@ -107,7 +107,7 @@ body::-webkit-scrollbar-track {
   place-items: center;
 }
 
-.profile-pic {
+.profile-picture {
   border-radius: var(--default-border-radius);
   border: var(--mini-gap-size) solid var(--border-color);
 }
@@ -227,15 +227,9 @@ button.project-banner:focus {
     flex-direction: column;
   }
 
-  .profile-pic {
-    max-height: calc(50vw - var(--medium-gap-size));
-    width: calc(100vw - 2 * var(--medium-gap-size));
-
-    /*
-    Profile picture is cropped for small screens, this controls where it crops
-    See https://developer.mozilla.org/en-US/docs/Web/CSS/object-position to read more
-    */
-    object-position: 50% 28%;
+  .profile-picture {
+    height: 100%;
+    width: 100%;
   }
 
   .project-list > li {
@@ -255,14 +249,15 @@ button.project-banner:focus {
 @media screen and (min-width: 481px) and (max-width: 624px) {
   .header-text {
     --header-text-width: calc(
-      var(--medium-screen-breakpoint) - var(--profile-pic-size) - 3 * var(--medium-gap-size)
+      var(--medium-screen-breakpoint) - var(--profile-picture-size) - 3 * var(--medium-gap-size)
     );
     min-width: var(--header-text-width);
     width: var(--header-text-width);
     max-width: var(--header-text-width);
   }
 
-  .profile-pic {
+  .profile-picture {
+    object-fit: cover;
     max-width: 100%;
   }
 }
@@ -272,8 +267,8 @@ button.project-banner:focus {
     flex-direction: row;
   }
 
-  .profile-pic {
-    height: var(--profile-pic-size);
+  .profile-picture {
+    height: var(--profile-picture-size);
   }
 
   .modal {
@@ -283,15 +278,9 @@ button.project-banner:focus {
   }
 }
 
-@media screen and (max-width: 625px) {
-  .profile-pic {
-    object-fit: cover;
-  }
-}
-
 @media screen and (min-width: 625px) {
-  .profile-pic {
-    width: var(--profile-pic-size);
+  .profile-picture {
+    width: var(--profile-picture-size);
   }
 }
 
