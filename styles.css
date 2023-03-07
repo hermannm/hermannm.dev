@@ -10,9 +10,10 @@
   --page-width: 55rem;
   --content-width: 40rem;
 
-  --medium-gap-size: 1rem;
-  --small-gap-size: 0.5rem;
-  --mini-gap-size: 0.25rem;
+  --large-gap-size: 1rem;
+  --medium-gap-size: 0.5rem;
+  --small-gap-size: 0.25rem;
+  --mini-gap-size: 0.1rem;
 
   --project-image-size: 3.125rem;
   --profile-picture-size: calc(var(--page-width) - var(--content-width));
@@ -29,8 +30,8 @@
   --max-modal-height-small-screens: 100dvh;
 
   /* Fallback for browsers without dvh support */
-  --max-modal-height-medium-screens: calc(100vh - 2 * var(--medium-gap-size));
-  --max-modal-height-medium-screens: calc(100dvh - 2 * var(--medium-gap-size));
+  --max-modal-height-medium-screens: calc(100vh - 2 * var(--large-gap-size));
+  --max-modal-height-medium-screens: calc(100dvh - 2 * var(--large-gap-size));
 
   --max-modal-height-in-transition: calc(
     var(--max-modal-height-medium-screens) + var(--small-screen-breakpoint) - 100vw
@@ -81,16 +82,16 @@ body {
   font-size: var(--font-size);
   color: var(--text-color);
 
-  margin-top: var(--medium-gap-size);
+  margin-top: var(--large-gap-size);
   margin-bottom: 3rem;
 
   /* Scrollbar customization in Firefox - Chrome/Safari use -webkit-scrollbar below */
   scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
-  scrollbar-width: var(--small-gap-size);
+  scrollbar-width: var(--medium-gap-size);
 }
 body::-webkit-scrollbar {
-  width: var(--small-gap-size);
-  height: var(--small-gap-size);
+  width: var(--medium-gap-size);
+  height: var(--medium-gap-size);
 }
 body::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb-color);
@@ -102,7 +103,7 @@ body::-webkit-scrollbar-track {
 .full-width-body {
   max-width: var(--page-width);
 
-  --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--page-width) / 2));
+  --horizontal-margin: max(var(--large-gap-size), calc(50vw - var(--page-width) / 2));
   margin-left: var(--horizontal-margin);
   margin-right: var(--horizontal-margin);
 }
@@ -110,14 +111,14 @@ body::-webkit-scrollbar-track {
 .content-width-body {
   max-width: var(--content-width);
 
-  --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--content-width) / 2));
+  --horizontal-margin: max(var(--large-gap-size), calc(50vw - var(--content-width) / 2));
   margin-left: var(--horizontal-margin);
   margin-right: var(--horizontal-margin);
 }
 
 .header-container {
   display: flex;
-  gap: var(--medium-gap-size);
+  gap: var(--large-gap-size);
   align-items: center;
 }
 
@@ -128,13 +129,13 @@ body::-webkit-scrollbar-track {
 
 .responsive-4-column-grid {
   display: grid;
-  gap: var(--medium-gap-size);
+  gap: var(--large-gap-size);
   place-items: center;
 }
 
 .profile-picture {
   border-radius: var(--default-border-radius);
-  border: var(--mini-gap-size) solid var(--border-color);
+  border: var(--small-gap-size) solid var(--border-color);
 }
 
 .project-list {
@@ -148,12 +149,12 @@ body::-webkit-scrollbar-track {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--small-gap-size);
+  gap: var(--medium-gap-size);
 }
 
 button.project-banner {
   cursor: pointer;
-  border: var(--mini-gap-size) solid var(--border-color);
+  border: var(--small-gap-size) solid var(--border-color);
   border-radius: var(--default-border-radius);
   width: 100%;
   text-align: start;
@@ -174,7 +175,7 @@ button.project-banner:hover {
   padding: 0;
 
   background-color: var(--border-color);
-  border: var(--mini-gap-size) solid var(--border-color);
+  border: var(--small-gap-size) solid var(--border-color);
   max-width: var(--content-width);
   max-height: var(--max-modal-height);
   overflow-y: hidden;
@@ -195,7 +196,7 @@ button.project-banner:hover {
 }
 
 .modal-header {
-  border-bottom: var(--mini-gap-size) solid var(--border-color);
+  border-bottom: var(--small-gap-size) solid var(--border-color);
   position: sticky;
   top: 0px;
 }
@@ -204,15 +205,15 @@ button.project-banner:hover {
   background-color: var(--background-color);
   overflow-y: auto;
 
-  --non-modal-content-height: calc(var(--project-image-size) + 3 * var(--mini-gap-size));
+  --non-modal-content-height: calc(var(--project-image-size) + 3 * var(--small-gap-size));
   max-height: calc(var(--max-modal-height) - var(--non-modal-content-height));
 
   scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
-  scrollbar-width: var(--small-gap-size);
+  scrollbar-width: var(--medium-gap-size);
 }
 .modal-content::-webkit-scrollbar {
-  width: var(--small-gap-size);
-  height: var(--small-gap-size);
+  width: var(--medium-gap-size);
+  height: var(--medium-gap-size);
 }
 .modal-content::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb-color);
@@ -222,7 +223,7 @@ button.project-banner:hover {
 }
 
 .modal-content > * {
-  padding: var(--small-gap-size);
+  padding: var(--medium-gap-size);
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -241,7 +242,7 @@ button.project-banner:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  outline-offset: -0.1em;
+  outline-offset: calc(var(--mini-gap-size) * -1);
 }
 .modal-closer:hover {
   background-color: var(--button-hover-background-color);
@@ -264,7 +265,7 @@ button.project-banner:hover {
   .modal {
     --responsive-modal-margin: max(
       0px,
-      calc(var(--medium-gap-size) - var(--small-screen-breakpoint) / 2 + 50vw)
+      calc(var(--large-gap-size) - var(--small-screen-breakpoint) / 2 + 50vw)
     );
     margin-left: var(--responsive-modal-margin);
     margin-right: var(--responsive-modal-margin);
@@ -274,7 +275,7 @@ button.project-banner:hover {
 @media screen and (min-width: 481px) and (max-width: 624px) {
   .header-text {
     --header-text-width: calc(
-      var(--medium-screen-breakpoint) - var(--profile-picture-size) - 3 * var(--medium-gap-size)
+      var(--medium-screen-breakpoint) - var(--profile-picture-size) - 3 * var(--large-gap-size)
     );
     min-width: var(--header-text-width);
     width: var(--header-text-width);
@@ -297,7 +298,7 @@ button.project-banner:hover {
   }
 
   .modal {
-    --horizontal-margin: max(var(--medium-gap-size), calc(50vw - var(--content-width) / 2));
+    --horizontal-margin: max(var(--large-gap-size), calc(50vw - var(--content-width) / 2));
     margin-left: var(--horizontal-margin);
     margin-right: var(--horizontal-margin);
   }
@@ -317,17 +318,17 @@ button.project-banner:hover {
 
 @media screen and (min-width: 481px) and (max-width: 768px) {
   .project-list > li {
-    flex-basis: calc(50% - var(--medium-gap-size) / 2);
+    flex-basis: calc(50% - var(--large-gap-size) / 2);
   }
 }
 
 @media screen and (min-width: 769px) {
   .project-list > li:nth-child(3n + 2) {
-    flex-basis: calc(100% / 3 - var(--medium-gap-size));
+    flex-basis: calc(100% / 3 - var(--large-gap-size));
   }
 
   .project-list > li:not(:nth-child(3n + 2)) {
-    flex-basis: calc(100% / 3 - var(--medium-gap-size) / 2);
+    flex-basis: calc(100% / 3 - var(--large-gap-size) / 2);
   }
 
   .responsive-4-column-grid {
@@ -389,16 +390,16 @@ button.project-banner:hover {
   width: min-content;
 }
 
-.gap {
+.large-gap {
+  gap: var(--large-gap-size);
+}
+
+.medium-gap {
   gap: var(--medium-gap-size);
 }
 
 .small-gap {
   gap: var(--small-gap-size);
-}
-
-.mini-gap {
-  gap: var(--mini-gap-size);
 }
 
 .no-gap {
@@ -434,7 +435,7 @@ button {
 }
 
 :focus:focus-visible {
-  outline: var(--text-color) solid 0.1rem;
+  outline: var(--text-color) solid var(--mini-gap-size);
 }
 a:focus:focus-visible {
   border-radius: var(--small-border-radius);
