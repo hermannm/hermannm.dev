@@ -416,14 +416,6 @@ button.project-banner:hover {
   margin: 0;
 }
 
-.no-margin-children > * {
-  margin: 0;
-}
-
-.grow-top-margin {
-  margin-top: auto;
-}
-
 .large-font {
   font-size: var(--large-font-size);
 }
@@ -441,6 +433,7 @@ footer {
   flex-wrap: wrap;
   column-gap: var(--medium-gap-size);
   row-gap: var(--small-gap-size);
+  margin-top: auto;
   padding-top: 3rem;
 }
 
