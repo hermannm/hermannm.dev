@@ -9,6 +9,7 @@ const MODAL_IDS = [
   "corona-defense",
   "rov-sim",
   "export-control",
+  "gadd",
   "advent-of-rust",
   "minesweeper",
   "gruvbox-plain",

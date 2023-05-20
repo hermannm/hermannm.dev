@@ -164,6 +164,19 @@
           <div class="grow">export-control</div>
         </button>
       </li>
+
+      <li>
+        <button id="gadd-modal-opener" class="project-banner">
+          <img
+            width="50"
+            height="50"
+            src="/img/projects/ferris-the-git-crab.webp"
+            alt="Ferris the Crab, mascot of the Rust programming language, holding the Git logo"
+          />
+          <div class="grow">gadd</div>
+        </button>
+      </li>
+
       <li>
         <button id="advent-of-rust-modal-opener" class="project-banner">
           <img
@@ -756,6 +769,68 @@
             >
               <img class="icon" width="16" height="16" src="/img/icons/github.svg" alt />
               cdp-group4/export-control
+            </a>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="gadd-modal" class="modal">
+      <div class="modal-header project-banner">
+        <img
+          width="50"
+          height="50"
+          src="/img/projects/ferris-the-git-crab.webp"
+          alt="Ferris the Crab, mascot of the Rust programming language, holding the Git logo"
+        />
+        <div class="grow">gadd</div>
+        <button id="gadd-modal-closer" class="modal-closer" aria-label="Close">╳</button>
+      </div>
+      <div class="modal-content-wrapper">
+        <div class="modal-content">
+          <div class="row medium-gap wrap">
+            <strong>Built with:</strong>
+            <a class="row y-centered small-gap" href="https://www.rust-lang.org/" target="_blank">
+              <img class="icon" width="16" height="16" src="/img/tech/rust.svg" alt />
+              Rust
+            </a>
+          </div>
+          <p>
+            Ever since I learned Git, I've used it in all my development projects. Even on solo
+            projects, I like to commit to Git, as it's such an ingrained part of my workflow.
+          </p>
+          <p>
+            I generally prefer using Git from the terminal rather than a GUI. I feel it gives me
+            more control, since Git was built for the terminal. However, one thing annoyed me about
+            Git's terminal experience: staging individual files.
+            <em>git-add</em> has an
+            <a href="https://git-scm.com/docs/git-add#_interactive_mode" target="_blank"
+              >interactive mode</a
+            >
+            that aims to alleviate this, but I found its interface clunky. I looked around for
+            alternatives, but those I found either did too much or had other problems. Thus, I
+            decided to create <em>gadd</em>: a small command-line utility for staging files to Git.
+          </p>
+          <p>
+            I wanted to program more in Rust after using it for Advent of Code, and found it
+            suitable for a terminal application like this. I used Rust bindings for
+            <a href="https://libgit2.org/" target="_blank">libgit2</a> to interact with Git. This
+            taught me a lot about how Git works under the hood ⁠— as is often the case, it is more
+            complex than it looks on the surface!
+          </p>
+          <p>
+            Now I use <em>gadd</em> almost daily, and quite enjoy it. There's something extra
+            satisfying about creating your own tool and tailoring it exactly to your needs.
+          </p>
+          <div class="row medium-gap wrap">
+            <strong>Code:</strong>
+            <a
+              class="row y-centered small-gap"
+              href="https://github.com/hermannm/gadd"
+              target="_blank"
+            >
+              <img class="icon" width="16" height="16" src="/img/icons/github.svg" alt />
+              hermannm/gadd
             </a>
           </div>
         </div>
