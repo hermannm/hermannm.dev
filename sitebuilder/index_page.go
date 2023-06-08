@@ -29,19 +29,15 @@ type IndexPageMarkdown struct {
 	ProjectCategories []ProjectCategoryMarkdown `yaml:"projectCategories,flow"`
 }
 
-type ProjectCategoryBase struct {
-	Title          string `yaml:"title"`
-	ContentDirName string `yaml:"contentDirName"`
-}
-
 type ProjectCategoryTemplate struct {
-	ProjectCategoryBase
+	Title    string
 	Projects []ProjectTemplate
 }
 
 type ProjectCategoryMarkdown struct {
-	ProjectCategoryBase `yaml:",inline"`
-	ProjectSlugs        []string `yaml:"projectSlugs,flow"`
+	Title        string   `yaml:"title"`
+	ProjectSlugs []string `yaml:"projectSlugs,flow"`
+	ContentDir   string   `yaml:"contentDir"`
 }
 
 type Image struct {
@@ -53,18 +49,18 @@ type Image struct {
 
 func GetIndexPageTemplate(
 	commonMetadata CommonMetadata,
-	projectTemplatesBySlug map[string]ProjectTemplate,
+	projectTemplates map[ProjectID]ProjectTemplate,
 	birthday time.Time,
 ) (IndexPageTemplate, error) {
-	indexMarkdownPath := fmt.Sprintf("%s/index.md", ContentDir)
+	indexMarkdownPath := fmt.Sprintf("%s/index.md", BaseContentDir)
 	aboutMeBuffer := new(bytes.Buffer)
 	var meta IndexPageMarkdown
 	if err := ReadMarkdownWithFrontmatter(indexMarkdownPath, aboutMeBuffer, &meta); err != nil {
 		return IndexPageTemplate{}, fmt.Errorf("failed to read markdown for index page: %w", err)
 	}
 
-	projectCategories, err := getProjectCategoriesFromMarkdown(
-		meta.ProjectCategories, projectTemplatesBySlug,
+	projectCategories, err := projectCategoriesFromMarkdown(
+		meta.ProjectCategories, projectTemplates,
 	)
 	if err != nil {
 		return IndexPageTemplate{}, err
@@ -84,8 +80,8 @@ func GetIndexPageTemplate(
 	}, nil
 }
 
-func getProjectCategoriesFromMarkdown(
-	markdownCategories []ProjectCategoryMarkdown, projectTemplatesBySlug map[string]ProjectTemplate,
+func projectCategoriesFromMarkdown(
+	markdownCategories []ProjectCategoryMarkdown, projectTemplates map[ProjectID]ProjectTemplate,
 ) ([]ProjectCategoryTemplate, error) {
 	categories := make([]ProjectCategoryTemplate, len(markdownCategories))
 
@@ -93,7 +89,8 @@ func getProjectCategoriesFromMarkdown(
 		projects := make([]ProjectTemplate, len(markdownCategory.ProjectSlugs))
 
 		for i, projectSlug := range markdownCategory.ProjectSlugs {
-			project, ok := projectTemplatesBySlug[projectSlug]
+			id := ProjectID{slug: projectSlug, contentDir: markdownCategory.ContentDir}
+			project, ok := projectTemplates[id]
 			if !ok {
 				return nil, fmt.Errorf(
 					"failed to find project template with slug '%s'", projectSlug,
@@ -108,8 +105,8 @@ func getProjectCategoriesFromMarkdown(
 		}
 
 		categories[i] = ProjectCategoryTemplate{
-			ProjectCategoryBase: markdownCategory.ProjectCategoryBase,
-			Projects:            projects,
+			Title:    markdownCategory.Title,
+			Projects: projects,
 		}
 	}
 

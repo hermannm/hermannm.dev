@@ -14,12 +14,12 @@ var commonMetadata = sitebuilder.CommonMetadata{
 	GitHubIconPath:   "/img/icons/github.svg",
 }
 
-var projectDirNames = []string{"projects", "companies", "schools"}
+var projectContentDirs = []string{"projects", "companies", "schools"}
 
 var birthday = time.Date(1999, time.September, 12, 2, 0, 0, 0, time.UTC)
 
 func main() {
-	projectTemplates, err := sitebuilder.GetProjectTemplates(projectDirNames)
+	projectTemplates, err := sitebuilder.GetProjectTemplates(projectContentDirs)
 	if err != nil {
 		log.Fatalln(fmt.Errorf("failed to get project templates: %w", err))
 	}

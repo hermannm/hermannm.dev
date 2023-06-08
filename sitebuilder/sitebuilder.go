@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	ContentDir    = "content"
-	TemplatesDir  = "templates"
-	BaseOutputDir = "static"
+	BaseContentDir = "content"
+	BaseOutputDir  = "static"
+	TemplatesDir   = "templates"
 )
 
 func CreateAndRenderTemplate(meta TemplateMetadata, data any) error {

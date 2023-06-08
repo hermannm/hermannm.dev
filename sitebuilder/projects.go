@@ -55,33 +55,38 @@ type LinkCategory struct {
 	Links []LinkItem `yaml:"links,flow"`
 }
 
-type ProjectDir struct {
-	name    string
-	entries []fs.DirEntry
+type ProjectID struct {
+	slug       string
+	contentDir string
 }
 
 func GetProjectTemplates(
-	projectDirNames []string,
-) (templatesBySlug map[string]ProjectTemplate, err error) {
-	projectDirs := make([]ProjectDir, len(projectDirNames))
-	contentDir := os.DirFS(ContentDir)
+	contentDirNames []string,
+) (templatesBySlug map[ProjectID]ProjectTemplate, err error) {
+	type ContentDir struct {
+		name    string
+		entries []fs.DirEntry
+	}
 
-	for i, dirName := range projectDirNames {
-		entries, err := fs.ReadDir(contentDir, dirName)
+	contentDirs := make([]ContentDir, len(contentDirNames))
+	baseContentDir := os.DirFS(BaseContentDir)
+
+	for i, dirName := range contentDirNames {
+		entries, err := fs.ReadDir(baseContentDir, dirName)
 		if err != nil {
 			return nil, fmt.Errorf("failed to read project directory '%s': %w", dirName, err)
 		}
 
-		projectDirs[i] = ProjectDir{name: dirName, entries: entries}
+		contentDirs[i] = ContentDir{name: dirName, entries: entries}
 	}
 
-	projectTemplates := make(map[string]ProjectTemplate)
+	projectTemplates := make(map[ProjectID]ProjectTemplate)
 	var group errgroup.Group
 
-	for _, projectDir := range projectDirs {
-		projectDir := projectDir // Copy mutating loop variable to use in goroutine
+	for _, contentDir := range contentDirs {
+		contentDir := contentDir // Copy mutating loop variable to use in goroutine
 
-		for _, dirEntry := range projectDir.entries {
+		for _, dirEntry := range contentDir.entries {
 			if dirEntry.IsDir() {
 				continue
 			}
@@ -89,13 +94,16 @@ func GetProjectTemplates(
 			dirEntry := dirEntry // Copy mutating loop variable to use in goroutine
 
 			group.Go(func() error {
-				markdownFilePath := fmt.Sprintf("%s/%s/%s", ContentDir, projectDir.name, dirEntry.Name())
+				markdownFilePath := fmt.Sprintf(
+					"%s/%s/%s", BaseContentDir, contentDir.name, dirEntry.Name(),
+				)
 				projectTemplate, err := GetProjectTemplate(markdownFilePath)
 				if err != nil {
 					return err
 				}
 
-				projectTemplates[projectTemplate.Slug] = projectTemplate
+				id := ProjectID{slug: projectTemplate.Slug, contentDir: contentDir.name}
+				projectTemplates[id] = projectTemplate
 				return nil
 			})
 		}
