@@ -13,9 +13,6 @@
   <title>{{ .Page.Title }}</title>
   <meta name="description" content="{{ .Page.Description }}" />
   <link rel="canonical" href="{{ .Common.BaseURL }}{{ .Page.Path }}" />
-  {{ range $script := .Page.IncludedScripts -}}
-    <script type="module" src="/scripts/{{ $script }}"></script>
-  {{- end }}
   <link rel="stylesheet" href="/styles.css" />
   <link rel="shortcut icon" href="/favicon.ico" />
   <meta charset="utf8" />

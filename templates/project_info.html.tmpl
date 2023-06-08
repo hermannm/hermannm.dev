@@ -1,6 +1,6 @@
 {{ define "linkItem" }}
   {{ if .IconPath -}}
-    <a class="row y-centered small-gap" href="{{ .Link }}" target="_blank">
+    <a class="row align-center small-gap" href="{{ .Link }}" target="_blank">
       <img class="icon" width="16" height="16" src="{{ .IconPath }}" alt />
       {{ .Text }}
     </a>
@@ -43,50 +43,53 @@
   {{- end }}
 {{- end }}
 
-{{- $techStackLength := len .TechStack -}}
-{{- if ge $techStackLength 2 -}}
-  <div class="column small-gap">
-    <strong>{{ .TechStackTitle }}:</strong>
-    <ul class="column small-gap icon-list">
-      {{- range $technology := .TechStack }}
-        <li class="row medium-gap wrap">
-          {{- template "techStackItem" $technology }}
-        </li>
-      {{- end }}
-    </ul>
-  </div>
-{{- else if eq $techStackLength 1 }}
-  {{- $technology := index .TechStack 0 -}}
-  <div class="row medium-gap wrap">
-    <strong>{{ .TechStackTitle }}</strong>
-    {{- template "techStackItem" $technology -}}
-  </div>
-{{- end }}
 
-{{- .Description -}}
-
-{{- range $linkCategory := .LinkCategories }}
-  {{- $linkCategoryLength := len $linkCategory.Links -}}
-  {{- if ge $linkCategoryLength 2 -}}
+<div class="project-info column large-gap">
+  {{- $techStackLength := len .TechStack -}}
+  {{- if ge $techStackLength 2 -}}
     <div class="column small-gap">
-      <strong>{{ $linkCategory.Title }}:</strong>
+      <strong>{{ .TechStackTitle }}:</strong>
       <ul class="column small-gap icon-list">
-        {{- range $linkItem := $linkCategory.Links }}
-          <li class="row">
-            {{- template "linkItem" $linkItem -}}
+        {{- range $technology := .TechStack }}
+          <li class="row medium-gap wrap">
+            {{- template "techStackItem" $technology }}
           </li>
         {{- end }}
       </ul>
     </div>
-  {{- else if eq $linkCategoryLength 1 }}
-    {{ $linkItem := index $linkCategory.Links 0 }}
+  {{- else if eq $techStackLength 1 }}
+    {{- $technology := index .TechStack 0 -}}
     <div class="row medium-gap wrap">
-      <strong>{{ $linkCategory.Title }}:</strong>
-      {{- template "linkItem" $linkItem -}}
+      <strong>{{ .TechStackTitle }}</strong>
+      {{- template "techStackItem" $technology -}}
     </div>
   {{- end }}
-{{- end -}}
 
-{{ if .Footnote }}
-  <em>{{ .Footnote }}</em>
-{{ end }}
+  {{- .Description -}}
+
+  {{- range $linkCategory := .LinkCategories }}
+    {{- $linkCategoryLength := len $linkCategory.Links -}}
+    {{- if ge $linkCategoryLength 2 -}}
+      <div class="column small-gap">
+        <strong>{{ $linkCategory.Title }}:</strong>
+        <ul class="column small-gap icon-list">
+          {{- range $linkItem := $linkCategory.Links }}
+            <li class="row">
+              {{- template "linkItem" $linkItem -}}
+            </li>
+          {{- end }}
+        </ul>
+      </div>
+    {{- else if eq $linkCategoryLength 1 }}
+      {{ $linkItem := index $linkCategory.Links 0 }}
+      <div class="row medium-gap wrap">
+        <strong>{{ $linkCategory.Title }}:</strong>
+        {{- template "linkItem" $linkItem -}}
+      </div>
+    {{- end }}
+  {{- end -}}
+
+  {{ if .Footnote }}
+    <em>{{ .Footnote }}</em>
+  {{ end }}
+</div>

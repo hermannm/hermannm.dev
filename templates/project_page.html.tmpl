@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  {{- template "head.html.tmpl" .Meta -}}
+  <body class="content-width-body column large-gap">
+    <h1 class="row justify-center no-margin"><a href="/">hermannm.dev</a></h1>
+
+    <div class="column large-gap-minus-border">
+      <div class="project-banner">
+        <img width="50" height="50" src="{{ .Project.IconPath }}" alt="{{ .Project.IconAlt }}" />
+        <h2>{{ .Project.Name }}</h2>
+      </div>
+
+      {{- template "project_info.html.tmpl" .Project -}}
+    </div>
+
+    {{ template "footer.html.tmpl" .Meta.Common }}
+  </body>
+</html>

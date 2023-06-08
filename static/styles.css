@@ -26,23 +26,6 @@
 
   --small-screen-breakpoint: 480px;
   --medium-screen-breakpoint: 624px;
-
-  /* Fallback for browsers without dvh support */
-  --max-modal-height-small-screens: 100vh;
-  --max-modal-height-small-screens: 100dvh;
-
-  /* Fallback for browsers without dvh support */
-  --max-modal-height-medium-screens: calc(100vh - 2 * var(--large-gap-size));
-  --max-modal-height-medium-screens: calc(100dvh - 2 * var(--large-gap-size));
-
-  --max-modal-height-in-transition: calc(
-    var(--max-modal-height-medium-screens) + var(--small-screen-breakpoint) - 100vw
-  );
-  --max-modal-height: clamp(
-    var(--max-modal-height-medium-screens),
-    var(--max-modal-height-in-transition),
-    var(--max-modal-height-small-screens)
-  );
 }
 
 @font-face {
@@ -156,102 +139,32 @@ body::-webkit-scrollbar-track {
   flex-direction: row;
   align-items: center;
   gap: var(--medium-gap-size);
-}
-
-button.project-banner {
-  cursor: pointer;
   border: var(--small-gap-size) solid var(--border-color);
   border-radius: var(--default-border-radius);
-  width: 100%;
-  text-align: start;
 }
-button.project-banner:hover {
-  background-color: var(--button-hover-background-color);
-  border-color: var(--button-hover-background-color);
-}
-
 .project-banner > img {
   border-radius: var(--default-border-radius);
   max-width: var(--project-image-size);
 }
-
-.modal {
-  /* Resets default <dialog> styles */
-  color: inherit;
-  padding: 0;
-
-  background-color: var(--border-color);
-  border: var(--small-gap-size) solid var(--border-color);
-  max-width: var(--content-width);
-  max-height: var(--max-modal-height);
-  overflow-y: hidden;
-
-  /*
-  --medium-gap-size / (2 * --default-border-radius)
-  Pre-calculated here since calc() does not accept divisors with units
-  */
-  --radius-width-ratio: 4;
-  --border-radius-in-transition: calc(
-    var(--default-border-radius) - var(--small-screen-breakpoint) / var(--radius-width-ratio) +
-      100vw / var(--radius-width-ratio)
-  );
-  border-radius: clamp(0px, var(--border-radius-in-transition), var(--default-border-radius));
+a.project-banner {
+  text-decoration: none;
 }
-.modal::backdrop {
-  backdrop-filter: blur(5px);
+a.project-banner:hover {
+  background-color: var(--button-hover-background-color);
+  border-color: var(--button-hover-background-color);
+}
+.project-banner h2 {
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
-.modal-header {
-  border-bottom: var(--small-gap-size) solid var(--border-color);
-  position: sticky;
-  top: 0px;
+.project-info {
+  padding-left: var(--medium-gap-size);
+  padding-right: var(--medium-gap-size);
 }
-
-.modal-content {
-  background-color: var(--background-color);
-  overflow-y: auto;
-
-  --non-modal-content-height: calc(var(--project-image-size) + 3 * var(--small-gap-size));
-  max-height: calc(var(--max-modal-height) - var(--non-modal-content-height));
-
-  scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
-  scrollbar-width: var(--medium-gap-size);
-}
-.modal-content::-webkit-scrollbar {
-  width: var(--medium-gap-size);
-  height: var(--medium-gap-size);
-}
-.modal-content::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb-color);
-}
-.modal-content::-webkit-scrollbar-track {
-  background: var(--background-color);
-}
-
-.modal-content > * {
-  padding: var(--medium-gap-size);
+.project-info > * {
   margin-top: 0;
   margin-bottom: 0;
-}
-
-/* Wrapper element to apply border radius to modal-content's scrollbar */
-.modal-content-wrapper {
-  border-radius: var(--default-border-radius);
-  overflow: hidden;
-}
-
-.modal-closer {
-  cursor: pointer;
-  min-width: 1.75rem;
-  min-height: 1.75rem;
-  border-radius: var(--default-border-radius);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  outline-offset: calc(var(--mini-gap-size) * -1);
-}
-.modal-closer:hover {
-  background-color: var(--button-hover-background-color);
 }
 
 @media screen and (max-width: 480px) {
@@ -266,15 +179,6 @@ button.project-banner:hover {
 
   .project-list > li {
     flex-basis: 100%;
-  }
-
-  .modal {
-    --responsive-modal-margin: max(
-      0px,
-      calc(var(--large-gap-size) - var(--small-screen-breakpoint) / 2 + 50vw)
-    );
-    margin-left: var(--responsive-modal-margin);
-    margin-right: var(--responsive-modal-margin);
   }
 }
 
@@ -301,12 +205,6 @@ button.project-banner:hover {
 
   .profile-picture {
     height: var(--profile-picture-size);
-  }
-
-  .modal {
-    --horizontal-margin: max(var(--large-gap-size), calc(50vw - var(--content-width) / 2));
-    margin-left: var(--horizontal-margin);
-    margin-right: var(--horizontal-margin);
   }
 }
 
@@ -376,15 +274,15 @@ button.project-banner:hover {
   flex-grow: 1;
 }
 
-.x-centered {
+.justify-center {
   justify-content: center;
 }
 
-.y-centered {
+.align-center {
   align-items: center;
 }
 
-.text-centered {
+.text-center {
   text-align: center;
 }
 
@@ -398,6 +296,10 @@ button.project-banner:hover {
 
 .large-gap {
   gap: var(--large-gap-size);
+}
+
+.large-gap-minus-border {
+  gap: calc(var(--large-gap-size) - var(--small-gap-size));
 }
 
 .medium-gap {
@@ -439,16 +341,6 @@ footer {
 
 a {
   color: var(--text-color);
-}
-
-button {
-  /* Resets default button styles */
-  padding: 0;
-  border: none;
-  color: inherit;
-  line-height: inherit;
-  font: inherit;
-  background-color: inherit;
 }
 
 :focus:focus-visible {

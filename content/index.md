@@ -4,8 +4,6 @@ page:
   description: Hermann Mørkrid's personal website.
   path: ""
   templateName: index.html.tmpl
-  includedScripts:
-    - modals.js
 personalInfo:
   - text: ${age} years old # Age field set when parsed
     iconPath: /img/icons/person.svg
