@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    {{ template "head.html.tmpl" .Meta }}
+  </head>
+  <body class="full-width-body column large-gap">
+    <div class="header-container">
+      <div class="header-text column large-gap">
+        <h1 class="text-centered">{{ .Meta.Page.Title }}</h1>
+        <p class="content-width">
+          {{ .AboutMe }}
+        </p>
+        <ul class="responsive-4-column-grid icon-list">
+          {{ range $infoField := .PersonalInfo }}
+            {{ if $infoField.Link }}
+              <li>
+                <a class="row y-centered medium-gap" href="{{ $infoField.Link }}" target="_blank">
+                  <img class="icon" width="16" height="16" src="{{ $infoField.IconPath }}" alt />
+                  <div class="shrink-text text-centered">
+                    {{ personalInfoTextWrapping $infoField.Text }}
+                  </div>
+                </a>
+              </li>
+            {{ else }}
+              <li class="row y-centered medium-gap">
+                <img class="icon" width="16" height="16" src="{{ $infoField.IconPath }}" alt />
+                <div class="shrink-text text-centered">
+                  {{ personalInfoTextWrapping $infoField.Text }}
+                </div>
+              </li>
+            {{ end }}
+          {{ end }}
+        </ul>
+      </div>
+      <div>
+        <picture>
+          <source
+            media="(max-width: 480px)"
+            width="{{ .ProfilePictureMobile.Width }}"
+            height="{{ .ProfilePictureMobile.Height }}"
+            srcset="{{ .ProfilePictureMobile.Path }}"
+          />
+          <source
+            media="(min-width: 481px)"
+            width="{{ .ProfilePictureDesktop.Width }}"
+            height="{{ .ProfilePictureDesktop.Height }}"
+            srcset="{{ .ProfilePictureDesktop.Path }}"
+          />
+          <img
+            class="profile-picture"
+            src="{{ .ProfilePictureDesktop.Path }}"
+            alt="{{ .ProfilePictureDesktop.Alt }}"
+          />
+        </picture>
+      </div>
+    </div>
+
+    {{ range $projectCategory := .ProjectCategories }}
+      <h2 class="text-centered no-margin">{{ $projectCategory.Title }}</h2>
+      <ul class="project-list row wrap large-gap x-centered no-margin">
+        {{ range $project := $projectCategory.Projects }}
+          <li>
+            <button id="{{ $project.Slug }}-modal-opener" class="project-banner">
+              <img
+                width="50"
+                height="50"
+                src="{{ $project.IconPath }}"
+                alt="{{ $project.IconAlt }}"
+              />
+              <div class="grow">{{ $project.Name }}</div>
+            </button>
+          </li>
+        {{ end }}
+      </ul>
+    {{ end }}
+
+    {{ template "footer.html.tmpl" .Meta.Common }}
+
+    {{ range $projectCategory := .ProjectCategories }}
+      {{ range $project := $projectCategory.Projects }}
+        <dialog id="{{ $project.Slug }}-modal" class="modal">
+          <div class="modal-header project-banner">
+            <img
+              width="50"
+              height="50"
+              src="{{ $project.IconPath }}"
+              alt="{{ $project.IconAlt }}"
+            />
+            <div class="grow">{{ $project.Name }}</div>
+            <button id="{{ $project.Slug }}-modal-closer" class="modal-closer" aria-label="Close">
+              ╳
+            </button>
+          </div>
+          <div class="modal-content-wrapper">
+            <div class="modal-content">
+              {{ template "project_info.html.tmpl" $project }}
+            </div>
+          </div>
+        </dialog>
+      {{ end }}
+    {{ end }}
+  </body>
+</html>
