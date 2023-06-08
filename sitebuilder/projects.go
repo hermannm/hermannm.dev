@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io/fs"
 	"os"
+	"sync"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -78,7 +79,8 @@ func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplat
 		contentDirs[i] = ContentDir{name: dirName, entries: entries}
 	}
 
-	projectTemplates := make(map[ProjectID]ProjectTemplate)
+	projects := make(map[ProjectID]ProjectTemplate)
+	lock := &sync.Mutex{}
 	var group errgroup.Group
 
 	for _, contentDir := range contentDirs {
@@ -95,13 +97,15 @@ func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplat
 				markdownFilePath := fmt.Sprintf(
 					"%s/%s/%s", BaseContentDir, contentDir.name, dirEntry.Name(),
 				)
-				projectTemplate, err := GetProjectTemplate(markdownFilePath)
+				project, err := GetProjectTemplate(markdownFilePath)
 				if err != nil {
 					return err
 				}
 
-				id := ProjectID{slug: projectTemplate.Slug, contentDir: contentDir.name}
-				projectTemplates[id] = projectTemplate
+				id := ProjectID{slug: project.Slug, contentDir: contentDir.name}
+				lock.Lock()
+				projects[id] = project
+				lock.Unlock()
 				return nil
 			})
 		}
@@ -111,7 +115,7 @@ func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplat
 		return nil, err
 	}
 
-	return projectTemplates, nil
+	return projects, nil
 }
 
 func GetProjectTemplate(markdownFilePath string) (ProjectTemplate, error) {
