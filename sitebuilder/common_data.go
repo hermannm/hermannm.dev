@@ -17,17 +17,17 @@ type TemplateMetadata struct {
 }
 
 type CommonMetadata struct {
+	SiteName         string
 	BaseURL          string
 	GitHubIssuesLink string
 	GitHubIconPath   string
 }
 
 type Page struct {
-	Title           string   `yaml:"title"`
-	Description     string   `yaml:"description"`
-	Path            string   `yaml:"path"`
-	IncludedScripts []string `yaml:"includedScripts,flow"`
-	TemplateName    string   `yaml:"templateName"`
+	Title        string `yaml:"title"`
+	Description  string `yaml:"description"`
+	Path         string `yaml:"path"`
+	TemplateName string `yaml:"templateName"`
 
 	// Nil if page does not host a Go package.
 	GoPackage *GoPackage `yaml:"goPackage"`

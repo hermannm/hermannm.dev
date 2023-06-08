@@ -16,6 +16,12 @@ type IndexPageBase struct {
 	ProfilePictureDesktop Image      `yaml:"profilePictureDesktop"`
 }
 
+type IndexPageMarkdown struct {
+	IndexPageBase     `yaml:",inline"`
+	Page              Page                      `yaml:"page"`
+	ProjectCategories []ProjectCategoryMarkdown `yaml:"projectCategories,flow"`
+}
+
 type IndexPageTemplate struct {
 	IndexPageBase
 	Meta              TemplateMetadata
@@ -23,21 +29,15 @@ type IndexPageTemplate struct {
 	ProjectCategories []ProjectCategoryTemplate
 }
 
-type IndexPageMarkdown struct {
-	IndexPageBase     `yaml:",inline"`
-	Page              Page                      `yaml:"page"`
-	ProjectCategories []ProjectCategoryMarkdown `yaml:"projectCategories,flow"`
-}
-
-type ProjectCategoryTemplate struct {
-	Title    string
-	Projects []ProjectTemplate
-}
-
 type ProjectCategoryMarkdown struct {
 	Title        string   `yaml:"title"`
 	ProjectSlugs []string `yaml:"projectSlugs,flow"`
 	ContentDir   string   `yaml:"contentDir"`
+}
+
+type ProjectCategoryTemplate struct {
+	Title    string
+	Projects []ProjectProfile
 }
 
 type Image struct {
@@ -47,31 +47,49 @@ type Image struct {
 	Height int    `yaml:"height"`
 }
 
-func GetIndexPageTemplate(
-	commonMetadata CommonMetadata, projects map[ProjectID]ProjectTemplate, birthday time.Time,
+func RenderIndexPage(
+	projects ParsedProjects,
+	metadata CommonMetadata,
+	birthday time.Time,
+	templates *template.Template,
+) error {
+	indexPage, err := ParseIndexPageData(projects, metadata, birthday)
+	if err != nil {
+		return fmt.Errorf("failed to parse index page data: %w", err)
+	}
+
+	if err := RenderPage(templates, indexPage.Meta, indexPage); err != nil {
+		return fmt.Errorf("failed to render index page: %w", err)
+	}
+
+	return nil
+}
+
+func ParseIndexPageData(
+	projects ParsedProjects, metadata CommonMetadata, birthday time.Time,
 ) (IndexPageTemplate, error) {
 	indexMarkdownPath := fmt.Sprintf("%s/index.md", BaseContentDir)
 	aboutMeBuffer := new(bytes.Buffer)
-	var meta IndexPageMarkdown
-	if err := ReadMarkdownWithFrontmatter(indexMarkdownPath, aboutMeBuffer, &meta); err != nil {
+	var indexPage IndexPageMarkdown
+	if err := ReadMarkdownWithFrontmatter(indexMarkdownPath, aboutMeBuffer, &indexPage); err != nil {
 		return IndexPageTemplate{}, fmt.Errorf("failed to read markdown for index page: %w", err)
 	}
 
 	projectCategories, err := projectCategoriesFromMarkdown(
-		meta.ProjectCategories, projects,
+		indexPage.ProjectCategories, projects,
 	)
 	if err != nil {
 		return IndexPageTemplate{}, err
 	}
 
 	aboutMeText := removeParagraphTagsAroundHTML(aboutMeBuffer.String())
-	setAge(meta.PersonalInfo, birthday)
+	setAge(indexPage.PersonalInfo, birthday)
 
 	return IndexPageTemplate{
-		IndexPageBase: meta.IndexPageBase,
+		IndexPageBase: indexPage.IndexPageBase,
 		Meta: TemplateMetadata{
-			Common: commonMetadata,
-			Page:   meta.Page,
+			Common: metadata,
+			Page:   indexPage.Page,
 		},
 		AboutMe:           template.HTML(aboutMeText),
 		ProjectCategories: projectCategories,
@@ -79,12 +97,12 @@ func GetIndexPageTemplate(
 }
 
 func projectCategoriesFromMarkdown(
-	markdownCategories []ProjectCategoryMarkdown, projects map[ProjectID]ProjectTemplate,
+	markdownCategories []ProjectCategoryMarkdown, projects ParsedProjects,
 ) ([]ProjectCategoryTemplate, error) {
 	categories := make([]ProjectCategoryTemplate, len(markdownCategories))
 
 	for i, markdownCategory := range markdownCategories {
-		includedProjects := make([]ProjectTemplate, len(markdownCategory.ProjectSlugs))
+		includedProjects := make([]ProjectProfile, len(markdownCategory.ProjectSlugs))
 
 		for i, projectSlug := range markdownCategory.ProjectSlugs {
 			id := ProjectID{slug: projectSlug, contentDir: markdownCategory.ContentDir}
@@ -93,11 +111,7 @@ func projectCategoriesFromMarkdown(
 				return nil, fmt.Errorf("failed to find project with slug '%s'", projectSlug)
 			}
 
-			if project.TechStackTitle == "" {
-				project.TechStackTitle = DefaultTechStackTitle
-			}
-
-			includedProjects[i] = project
+			includedProjects[i] = project.ProjectProfile
 		}
 
 		categories[i] = ProjectCategoryTemplate{

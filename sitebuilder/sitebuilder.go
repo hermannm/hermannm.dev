@@ -8,9 +8,11 @@ import (
 	"io/fs"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/adrg/frontmatter"
 	"github.com/yuin/goldmark"
+	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -19,27 +21,46 @@ const (
 	TemplatesDir   = "templates"
 )
 
-func CreateAndRenderTemplate(meta TemplateMetadata, data any) error {
-	template, err := CreateTemplate(meta.Page.TemplateName)
+func RenderPages(
+	projects ParsedProjects, commonMetadata CommonMetadata, birthday time.Time,
+) error {
+	templates, err := ParseTemplates()
 	if err != nil {
 		return err
 	}
 
-	return RenderTemplate(template, meta, data)
+	var goroutines errgroup.Group
+
+	for _, project := range projects {
+		if project.Page == nil {
+			continue
+		}
+		project := project // Copy mutating loop variable to use in goroutine
+
+		goroutines.Go(func() error {
+			return RenderProjectPage(project, commonMetadata, templates)
+		})
+	}
+
+	goroutines.Go(func() error {
+		return RenderIndexPage(projects, commonMetadata, birthday, templates)
+	})
+
+	return goroutines.Wait()
 }
 
-func CreateTemplate(templateName string) (*template.Template, error) {
-	template, err := template.New(templateName).
+func ParseTemplates() (*template.Template, error) {
+	templates, err := template.New(ProjectPageTemplateFile).
 		Funcs(TemplateFunctions).
 		ParseGlob(fmt.Sprintf("%s/*.tmpl", TemplatesDir))
 	if err != nil {
-		return nil, fmt.Errorf("failed to create template '%s': %w", templateName, err)
+		return nil, fmt.Errorf("failed to parse templates: %w", err)
 	}
 
-	return template, nil
+	return templates, nil
 }
 
-func RenderTemplate(template *template.Template, meta TemplateMetadata, data any) error {
+func RenderPage(templates *template.Template, meta TemplateMetadata, data any) error {
 	outputDir := fmt.Sprintf("%s%s", BaseOutputDir, meta.Page.Path)
 	permissions := fs.FileMode(0755)
 	if err := os.MkdirAll(outputDir, permissions); err != nil {
@@ -52,8 +73,8 @@ func RenderTemplate(template *template.Template, meta TemplateMetadata, data any
 		return fmt.Errorf("failed to create template output file '%s': %w", outputPath, err)
 	}
 
-	if err := template.Execute(outputFile, data); err != nil {
-		errMessage := fmt.Sprintf("failed to execute template '%s'", template.Name())
+	if err := templates.ExecuteTemplate(outputFile, meta.Page.TemplateName, data); err != nil {
+		errMessage := fmt.Sprintf("failed to execute template '%s'", meta.Page.TemplateName)
 		return closeOnErr(outputFile, err, errMessage)
 	}
 
@@ -64,7 +85,7 @@ func RenderTemplate(template *template.Template, meta TemplateMetadata, data any
 	return nil
 }
 
-func FormatRenderedTemplates() error {
+func FormatRenderedPages() error {
 	patternToFormat := fmt.Sprintf("%s/**/*.html", BaseOutputDir)
 	command := exec.Command("npx", "prettier", "--write", patternToFormat)
 

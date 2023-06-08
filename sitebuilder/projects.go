@@ -2,23 +2,27 @@ package sitebuilder
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/fs"
 	"os"
+	"strings"
 	"sync"
 
+	"github.com/yuin/goldmark"
 	"golang.org/x/sync/errgroup"
 )
 
-const DefaultTechStackTitle = "Built with"
-
-type ProjectBase struct {
-	Name string `yaml:"name"`
-	Slug string `yaml:"slug"`
-
+type ProjectProfile struct {
+	Name     string `yaml:"name"`
+	Slug     string `yaml:"slug"`
 	IconPath string `yaml:"iconPath"`
 	IconAlt  string `yaml:"iconAlt"`
+}
+
+type ProjectBase struct {
+	ProjectProfile `yaml:",inline"`
 
 	// Optional.
 	TechStack []TechStackItem `yaml:"techStack,flow"`
@@ -26,20 +30,8 @@ type ProjectBase struct {
 	TechStackTitle string `yaml:"techstackTitle"`
 	// Optional.
 	LinkCategories []LinkCategory `yaml:"linkCategories,flow"`
-	// Optional.
+	//Optional.
 	Footnote template.HTML `yaml:"footnote"`
-}
-
-type ProjectTemplate struct {
-	ProjectBase
-	Description template.HTML
-}
-
-type ProjectMarkdown struct {
-	ProjectBase `yaml:",inline"`
-
-	// Nil if project should not have its own page.
-	Page *Page `yaml:"page"`
 }
 
 type TechStackItem struct {
@@ -56,12 +48,39 @@ type LinkCategory struct {
 	Links []LinkItem `yaml:"links,flow"`
 }
 
+type ProjectMarkdown struct {
+	ProjectBase `yaml:",inline"`
+
+	// Nil if project should not have its own page.
+	Page *Page `yaml:"page"`
+}
+
+type ProjectTemplate struct {
+	ProjectBase
+	Description template.HTML
+}
+
+type ProjectPageTemplate struct {
+	Meta    TemplateMetadata
+	Project ProjectTemplate
+}
+
+type ParsedProject struct {
+	ProjectTemplate
+
+	// Nil if project should not have its own page.
+	// Path is set to the project's slug.
+	Page *Page
+}
+
 type ProjectID struct {
 	slug       string
 	contentDir string
 }
 
-func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplate, error) {
+type ParsedProjects map[ProjectID]ParsedProject
+
+func ParseProjects(contentDirNames []string) (ParsedProjects, error) {
 	type ContentDir struct {
 		name    string
 		entries []fs.DirEntry
@@ -79,7 +98,7 @@ func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplat
 		contentDirs[i] = ContentDir{name: dirName, entries: entries}
 	}
 
-	projects := make(map[ProjectID]ProjectTemplate)
+	projects := make(map[ProjectID]ParsedProject)
 	lock := &sync.Mutex{}
 	var group errgroup.Group
 
@@ -97,7 +116,7 @@ func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplat
 				markdownFilePath := fmt.Sprintf(
 					"%s/%s/%s", BaseContentDir, contentDir.name, dirEntry.Name(),
 				)
-				project, err := GetProjectTemplate(markdownFilePath)
+				project, err := ParseProject(markdownFilePath)
 				if err != nil {
 					return err
 				}
@@ -118,15 +137,64 @@ func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplat
 	return projects, nil
 }
 
-func GetProjectTemplate(markdownFilePath string) (ProjectTemplate, error) {
+const (
+	ProjectPageTemplateFile = "project_page.html.tmpl"
+	DefaultTechStackTitle   = "Built with"
+)
+
+func ParseProject(markdownFilePath string) (ParsedProject, error) {
 	descriptionBuffer := new(bytes.Buffer)
 	var meta ProjectMarkdown
 	if err := ReadMarkdownWithFrontmatter(markdownFilePath, descriptionBuffer, &meta); err != nil {
-		return ProjectTemplate{}, fmt.Errorf("failed to read markdown for project: %w", err)
+		return ParsedProject{}, fmt.Errorf("failed to read markdown for project: %w", err)
 	}
 
-	return ProjectTemplate{
-		ProjectBase: meta.ProjectBase,
-		Description: template.HTML(descriptionBuffer.String()),
+	meta.Page.Path = fmt.Sprintf("/%s", meta.Slug)
+	meta.Page.TemplateName = ProjectPageTemplateFile
+
+	if meta.TechStackTitle == "" {
+		meta.TechStackTitle = DefaultTechStackTitle
+	}
+
+	if meta.Footnote != "" {
+		var builder strings.Builder
+		if err := goldmark.Convert([]byte(meta.Footnote), &builder); err != nil {
+			return ParsedProject{}, fmt.Errorf(
+				"failed to parse project footnote as markdown: %w", err,
+			)
+		}
+		meta.Footnote = template.HTML(builder.String())
+	}
+
+	return ParsedProject{
+		ProjectTemplate: ProjectTemplate{
+			ProjectBase: meta.ProjectBase,
+			Description: template.HTML(descriptionBuffer.String()),
+		},
+		Page: meta.Page,
 	}, nil
+}
+
+func RenderProjectPage(
+	project ParsedProject, commonMetadata CommonMetadata, templates *template.Template,
+) error {
+	if project.Page == nil {
+		return errors.New("attempted to render project with page field unset")
+	}
+
+	projectPage := ProjectPageTemplate{
+		Meta: TemplateMetadata{
+			Common: commonMetadata,
+			Page:   *project.Page,
+		},
+		Project: project.ProjectTemplate,
+	}
+
+	if err := RenderPage(templates, projectPage.Meta, projectPage); err != nil {
+		return fmt.Errorf(
+			"failed to render page for project '%s': %w", project.Name, err,
+		)
+	}
+
+	return nil
 }
