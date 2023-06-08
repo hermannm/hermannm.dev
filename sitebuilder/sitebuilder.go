@@ -92,23 +92,23 @@ func FormatRenderedTemplates() error {
 func ReadMarkdownWithFrontmatter(
 	markdownFilePath string, bodyDest io.Writer, frontmatterDest any,
 ) error {
-	projectFile, err := os.Open(markdownFilePath)
+	markdownFile, err := os.Open(markdownFilePath)
 	if err != nil {
 		return fmt.Errorf("failed to open file '%s': %w", markdownFilePath, err)
 	}
 
-	restOfFile, err := frontmatter.MustParse(projectFile, frontmatterDest)
+	restOfFile, err := frontmatter.MustParse(markdownFile, frontmatterDest)
 	if err != nil {
 		errMessage := fmt.Sprintf("failed to parse markdown frontmatter of '%s'", markdownFilePath)
-		return closeOnErr(projectFile, err, errMessage)
+		return closeOnErr(markdownFile, err, errMessage)
 	}
 
-	if err := projectFile.Close(); err != nil {
+	if err := markdownFile.Close(); err != nil {
 		return fmt.Errorf("failed to close file '%s': %w", markdownFilePath, err)
 	}
 
 	if err := goldmark.Convert(restOfFile, bodyDest); err != nil {
-		return fmt.Errorf("failed to read body of markdown file '%s': %w", markdownFilePath, err)
+		return fmt.Errorf("failed to parse body of markdown file '%s': %w", markdownFilePath, err)
 	}
 
 	return nil
