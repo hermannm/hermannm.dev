@@ -11,22 +11,24 @@
   {{- end }}
 {{ end }}
 
-{{ define "techStackItem" }}
+{{- define "techStackItem" }}
   {{- template "linkItem" . -}}
-  {{ $usedWithLength := len .UsedWith }}
+  {{- $usedWithLength := len .UsedWith -}}
   {{- if eq $usedWithLength  0 -}}
-    {{ .UsedFor }}
+    {{- if .UsedFor -}}
+      ({{ .UsedFor }})
+    {{- end -}}
   {{- else if eq $usedWithLength 1 -}}
-    {{ $usedWith := index .UsedWith 0 }}
+    {{- $usedWith := index .UsedWith 0 -}}
     ({{ .UsedFor }}, with
     <div class="row no-gap">
       {{- template "linkItem" $usedWith -}}
       )
     </div>
-  {{- else }}
+  {{- else -}}
     ({{ .UsedFor }}, with
     {{- range $index, $usedWith := .UsedWith -}}
-      {{ $indexPlus1 := plus1 $index }}
+      {{- $indexPlus1 := plus1 $index -}}
       {{- if eq $usedWithLength $indexPlus1 -}}
         and
         <div class="row no-gap">
@@ -36,54 +38,54 @@
       {{- else -}}
         {{- if ne $index 0 -}},{{- end -}}
         {{- template "linkItem" $usedWith -}}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-{{ end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
 
-{{ $techStackLength := len .TechStack }}
-{{ if ge $techStackLength 2 }}
+{{- $techStackLength := len .TechStack -}}
+{{- if ge $techStackLength 2 -}}
   <div class="column small-gap">
     <strong>{{ .TechStackTitle }}:</strong>
     <ul class="column small-gap icon-list">
-      {{ range $technology := .TechStack }}
+      {{- range $technology := .TechStack }}
         <li class="row medium-gap wrap">
-          {{ template "techStackItem" $technology }}
+          {{- template "techStackItem" $technology }}
         </li>
-      {{ end }}
+      {{- end }}
     </ul>
   </div>
-{{ else if eq $techStackLength 1 }}
-  {{ $technology := index .TechStack 0 }}
+{{- else if eq $techStackLength 1 }}
+  {{- $technology := index .TechStack 0 -}}
   <div class="row medium-gap wrap">
     <strong>{{ .TechStackTitle }}</strong>
-    {{ template "techStackItem" $technology }}
+    {{- template "techStackItem" $technology -}}
   </div>
-{{ end }}
+{{- end }}
 
-{{ .Description }}
+{{- .Description -}}
 
-{{ range $linkCategory := .LinkCategories }}
-  {{ $linkCategoryLength := len $linkCategory.Links }}
-  {{ if ge $linkCategoryLength 2 }}
+{{- range $linkCategory := .LinkCategories }}
+  {{- $linkCategoryLength := len $linkCategory.Links -}}
+  {{- if ge $linkCategoryLength 2 -}}
     <div class="column small-gap">
       <strong>{{ $linkCategory.Title }}:</strong>
       <ul class="column small-gap icon-list">
-        {{ range $linkItem := $linkCategory.Links }}
+        {{- range $linkItem := $linkCategory.Links }}
           <li class="row">
-            {{ template "linkItem" $linkItem }}
+            {{- template "linkItem" $linkItem -}}
           </li>
-        {{ end }}
+        {{- end }}
       </ul>
     </div>
-  {{ else if eq $linkCategoryLength 1 }}
+  {{- else if eq $linkCategoryLength 1 }}
     {{ $linkItem := index $linkCategory.Links 0 }}
     <div class="row medium-gap wrap">
       <strong>{{ $linkCategory.Title }}:</strong>
-      {{ template "linkItem" $linkItem }}
+      {{- template "linkItem" $linkItem -}}
     </div>
-  {{ end }}
-{{ end }}
+  {{- end }}
+{{- end -}}
 
 {{ if .Footnote }}
   <em>{{ .Footnote }}</em>

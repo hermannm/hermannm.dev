@@ -1,39 +1,47 @@
-{{ if .Page.GoPackage }}
-  {{ $package := .Page.GoPackage }}
-  <!-- Metadata for Go package hosting -->
-  <meta name="go-import" content="{{ $package.FullName }} git {{ $package.GitHubURL }}" />
-  <meta
-    name="go-source"
-    content="{{ $package.FullName }} {{ $package.GitHubURL }} {{ $package.GitHubURL }}/tree/main{/dir} {{ $package.GitHubURL }}/blob/main{/dir}/{file}#L{line}"
+<head>
+  {{- if .Page.GoPackage -}}
+    {{- $package := .Page.GoPackage -}}
+    <!-- Metadata for Go package hosting -->
+    <meta name="go-import" content="{{ $package.FullName }} git {{ $package.GitHubURL }}" />
+    <meta
+      name="go-source"
+      content="{{ $package.FullName }} {{ $package.GitHubURL }} {{ $package.GitHubURL }}/tree/main{/dir} {{ $package.GitHubURL }}/blob/main{/dir}/{file}#L{line}"
+    />
+  {{- end }}
+
+
+  <title>{{ .Page.Title }}</title>
+  <meta name="description" content="{{ .Page.Description }}" />
+  <link rel="canonical" href="{{ .Common.BaseURL }}{{ .Page.Path }}" />
+  {{ range $script := .Page.IncludedScripts -}}
+    <script type="module" src="/scripts/{{ $script }}"></script>
+  {{- end }}
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <meta charset="utf8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Preloads fonts to shorten request chains -->
+  <link rel="preload" href="/fonts/roboto-mono.woff2" as="font" type="font/woff2" crossorigin />
+  <link
+    rel="preload"
+    href="/fonts/roboto-mono-bold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
   />
-{{ end }}
+  <link
+    rel="preload"
+    href="/fonts/roboto-mono-italic.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
 
-
-<title>{{ .Page.Title }}</title>
-<meta name="description" content="{{ .Page.Description }}" />
-<link rel="canonical" href="{{ .Common.BaseURL }}{{ .Page.Path }}" />
-{{ range $script := .Page.IncludedScripts -}}
-  <script type="module" src="/scripts/{{ $script }}"></script>
-{{- end }}
-<link rel="stylesheet" href="/styles.css" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<meta charset="utf8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<!-- Preloads fonts to shorten request chains -->
-<link rel="preload" href="/fonts/roboto-mono.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/fonts/roboto-mono-bold.woff2" as="font" type="font/woff2" crossorigin />
-<link
-  rel="preload"
-  href="/fonts/roboto-mono-italic.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin
-/>
-
-<!-- Metadata for Open Graph protocol -->
-<meta property="og:title" content="{{ .Page.Title }}" />
-<meta property="og:description" content="{{ .Page.Description }}" />
-<meta property="og:url" content="{{ .Common.BaseURL }}{{ .Page.Path }}" />
-<meta property="og:type" content="website" />
-<meta property="og:image" content="https://hermannm.dev/img/preview.png" />
+  <!-- Metadata for Open Graph protocol -->
+  <meta property="og:title" content="{{ .Page.Title }}" />
+  <meta property="og:description" content="{{ .Page.Description }}" />
+  <meta property="og:url" content="{{ .Common.BaseURL }}{{ .Page.Path }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://hermannm.dev/img/preview.png" />
+</head>

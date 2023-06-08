@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    {{ template "head.html.tmpl" .Meta }}
-  </head>
+  {{- template "head.html.tmpl" .Meta -}}
   <body class="full-width-body column large-gap">
     <div class="header-container">
       <div class="header-text column large-gap">
@@ -11,8 +9,8 @@
           {{ .AboutMe }}
         </p>
         <ul class="responsive-4-column-grid icon-list">
-          {{ range $infoField := .PersonalInfo }}
-            {{ if $infoField.Link }}
+          {{- range $infoField := .PersonalInfo }}
+            {{- if $infoField.Link }}
               <li>
                 <a class="row y-centered medium-gap" href="{{ $infoField.Link }}" target="_blank">
                   <img class="icon" width="16" height="16" src="{{ $infoField.IconPath }}" alt />
@@ -21,14 +19,14 @@
                   </div>
                 </a>
               </li>
-            {{ else }}
+            {{- else }}
               <li class="row y-centered medium-gap">
                 <img class="icon" width="16" height="16" src="{{ $infoField.IconPath }}" alt />
                 <div class="shrink-text text-centered">
                   {{ personalInfoTextWrapping $infoField.Text }}
                 </div>
               </li>
-            {{ end }}
+            {{- end -}}
           {{ end }}
         </ul>
       </div>
@@ -57,8 +55,9 @@
 
     {{ range $projectCategory := .ProjectCategories }}
       <h2 class="text-centered no-margin">{{ $projectCategory.Title }}</h2>
+
       <ul class="project-list row wrap large-gap x-centered no-margin">
-        {{ range $project := $projectCategory.Projects }}
+        {{- range $project := $projectCategory.Projects }}
           <li>
             <button id="{{ $project.Slug }}-modal-opener" class="project-banner">
               <img
@@ -70,13 +69,13 @@
               <div class="grow">{{ $project.Name }}</div>
             </button>
           </li>
-        {{ end }}
+        {{- end }}
       </ul>
     {{ end }}
 
     {{ template "footer.html.tmpl" .Meta.Common }}
 
-    {{ range $projectCategory := .ProjectCategories }}
+    {{- range $projectCategory := .ProjectCategories }}
       {{ range $project := $projectCategory.Projects }}
         <dialog id="{{ $project.Slug }}-modal" class="modal">
           <div class="modal-header project-banner">
@@ -93,11 +92,11 @@
           </div>
           <div class="modal-content-wrapper">
             <div class="modal-content">
-              {{ template "project_info.html.tmpl" $project }}
+              {{- template "project_info.html.tmpl" $project -}}
             </div>
           </div>
         </dialog>
       {{ end }}
-    {{ end }}
+    {{- end }}
   </body>
 </html>
