@@ -48,9 +48,7 @@ type Image struct {
 }
 
 func GetIndexPageTemplate(
-	commonMetadata CommonMetadata,
-	projectTemplates map[ProjectID]ProjectTemplate,
-	birthday time.Time,
+	commonMetadata CommonMetadata, projects map[ProjectID]ProjectTemplate, birthday time.Time,
 ) (IndexPageTemplate, error) {
 	indexMarkdownPath := fmt.Sprintf("%s/index.md", BaseContentDir)
 	aboutMeBuffer := new(bytes.Buffer)
@@ -60,7 +58,7 @@ func GetIndexPageTemplate(
 	}
 
 	projectCategories, err := projectCategoriesFromMarkdown(
-		meta.ProjectCategories, projectTemplates,
+		meta.ProjectCategories, projects,
 	)
 	if err != nil {
 		return IndexPageTemplate{}, err
@@ -81,32 +79,30 @@ func GetIndexPageTemplate(
 }
 
 func projectCategoriesFromMarkdown(
-	markdownCategories []ProjectCategoryMarkdown, projectTemplates map[ProjectID]ProjectTemplate,
+	markdownCategories []ProjectCategoryMarkdown, projects map[ProjectID]ProjectTemplate,
 ) ([]ProjectCategoryTemplate, error) {
 	categories := make([]ProjectCategoryTemplate, len(markdownCategories))
 
 	for i, markdownCategory := range markdownCategories {
-		projects := make([]ProjectTemplate, len(markdownCategory.ProjectSlugs))
+		includedProjects := make([]ProjectTemplate, len(markdownCategory.ProjectSlugs))
 
 		for i, projectSlug := range markdownCategory.ProjectSlugs {
 			id := ProjectID{slug: projectSlug, contentDir: markdownCategory.ContentDir}
-			project, ok := projectTemplates[id]
+			project, ok := projects[id]
 			if !ok {
-				return nil, fmt.Errorf(
-					"failed to find project template with slug '%s'", projectSlug,
-				)
+				return nil, fmt.Errorf("failed to find project with slug '%s'", projectSlug)
 			}
 
 			if project.TechStackTitle == "" {
-				project.TechStackTitle = "Built with"
+				project.TechStackTitle = DefaultTechStackTitle
 			}
 
-			projects[i] = project
+			includedProjects[i] = project
 		}
 
 		categories[i] = ProjectCategoryTemplate{
 			Title:    markdownCategory.Title,
-			Projects: projects,
+			Projects: includedProjects,
 		}
 	}
 

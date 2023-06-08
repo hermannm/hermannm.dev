@@ -60,9 +60,7 @@ type ProjectID struct {
 	contentDir string
 }
 
-func GetProjectTemplates(
-	contentDirNames []string,
-) (templatesBySlug map[ProjectID]ProjectTemplate, err error) {
+func GetProjectTemplates(contentDirNames []string) (map[ProjectID]ProjectTemplate, error) {
 	type ContentDir struct {
 		name    string
 		entries []fs.DirEntry
