@@ -2,15 +2,16 @@ package sitebuilder
 
 import (
 	"fmt"
+	"html/template"
 	"os"
 	"strings"
 )
 
-func removeParagraphTagsAroundHTML(html string) string {
+func removeParagraphTagsAroundHTML(html string) template.HTML {
 	html = strings.TrimSpace(html)
 	html, _ = strings.CutPrefix(html, "<p>")
 	html, _ = strings.CutSuffix(html, "</p>")
-	return html
+	return template.HTML(html)
 }
 
 func closeOnErr(file *os.File, err error, wrappingErrMessage string) error {

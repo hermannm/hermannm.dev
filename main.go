@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	commonMetadata = sitebuilder.CommonMetadata{
+	metadata = sitebuilder.CommonMetadata{
 		SiteName:         "hermannm.dev",
 		BaseURL:          "https://hermannm.dev",
 		GitHubIssuesLink: "https://github.com/hermannm/hermannm.dev/issues",
@@ -22,12 +22,7 @@ var (
 )
 
 func main() {
-	projects, err := sitebuilder.ParseProjects(projectContentDirs)
-	if err != nil {
-		log.Fatalln(fmt.Errorf("failed to parse projects: %w", err))
-	}
-
-	if err := sitebuilder.RenderPages(projects, commonMetadata, birthday); err != nil {
+	if err := sitebuilder.RenderPages(projectContentDirs, metadata, birthday); err != nil {
 		log.Fatalln(err)
 	}
 

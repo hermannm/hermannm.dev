@@ -2,6 +2,7 @@ package sitebuilder
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"html/template"
 	"io"
@@ -21,68 +22,25 @@ const (
 	TemplatesDir   = "templates"
 )
 
-func RenderPages(
-	projects ParsedProjects, commonMetadata CommonMetadata, birthday time.Time,
-) error {
-	templates, err := ParseTemplates()
+func RenderPages(projectContentDirs []string, metadata CommonMetadata, birthday time.Time) error {
+	templates, err := parseTemplates()
 	if err != nil {
 		return err
 	}
 
 	var goroutines errgroup.Group
-
-	for _, project := range projects {
-		if project.Page == nil {
-			continue
-		}
-		project := project // Copy mutating loop variable to use in goroutine
-
-		goroutines.Go(func() error {
-			return RenderProjectPage(project, commonMetadata, templates)
-		})
-	}
+	parsedProjects := make(chan ProjectWithContentDir)
+	ctx, cancel := context.WithCancel(context.Background())
 
 	goroutines.Go(func() error {
-		return RenderIndexPage(projects, commonMetadata, birthday, templates)
+		return RenderProjectPages(ctx, projectContentDirs, parsedProjects, metadata, templates)
+	})
+
+	goroutines.Go(func() error {
+		return RenderIndexPage(ctx, cancel, parsedProjects, metadata, birthday, templates)
 	})
 
 	return goroutines.Wait()
-}
-
-func ParseTemplates() (*template.Template, error) {
-	templates, err := template.New(ProjectPageTemplateFile).
-		Funcs(TemplateFunctions).
-		ParseGlob(fmt.Sprintf("%s/*.tmpl", TemplatesDir))
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse templates: %w", err)
-	}
-
-	return templates, nil
-}
-
-func RenderPage(templates *template.Template, meta TemplateMetadata, data any) error {
-	outputDir := fmt.Sprintf("%s%s", BaseOutputDir, meta.Page.Path)
-	permissions := fs.FileMode(0755)
-	if err := os.MkdirAll(outputDir, permissions); err != nil {
-		return fmt.Errorf("failed to create template output directory '%s': %w", outputDir, err)
-	}
-
-	outputPath := fmt.Sprintf("%s/index.html", outputDir)
-	outputFile, err := os.Create(outputPath)
-	if err != nil {
-		return fmt.Errorf("failed to create template output file '%s': %w", outputPath, err)
-	}
-
-	if err := templates.ExecuteTemplate(outputFile, meta.Page.TemplateName, data); err != nil {
-		errMessage := fmt.Sprintf("failed to execute template '%s'", meta.Page.TemplateName)
-		return closeOnErr(outputFile, err, errMessage)
-	}
-
-	if err := outputFile.Close(); err != nil {
-		return fmt.Errorf("failed to close file '%s': %w", outputPath, err)
-	}
-
-	return nil
 }
 
 func FormatRenderedPages() error {
@@ -110,7 +68,43 @@ func FormatRenderedPages() error {
 	return nil
 }
 
-func ReadMarkdownWithFrontmatter(
+func parseTemplates() (*template.Template, error) {
+	templates, err := template.New(ProjectPageTemplateFile).
+		Funcs(TemplateFunctions).
+		ParseGlob(fmt.Sprintf("%s/*.tmpl", TemplatesDir))
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse templates: %w", err)
+	}
+
+	return templates, nil
+}
+
+func renderPage(templates *template.Template, meta TemplateMetadata, data any) error {
+	outputDir := fmt.Sprintf("%s%s", BaseOutputDir, meta.Page.Path)
+	permissions := fs.FileMode(0755)
+	if err := os.MkdirAll(outputDir, permissions); err != nil {
+		return fmt.Errorf("failed to create template output directory '%s': %w", outputDir, err)
+	}
+
+	outputPath := fmt.Sprintf("%s/index.html", outputDir)
+	outputFile, err := os.Create(outputPath)
+	if err != nil {
+		return fmt.Errorf("failed to create template output file '%s': %w", outputPath, err)
+	}
+
+	if err := templates.ExecuteTemplate(outputFile, meta.Page.TemplateName, data); err != nil {
+		errMessage := fmt.Sprintf("failed to execute template '%s'", meta.Page.TemplateName)
+		return closeOnErr(outputFile, err, errMessage)
+	}
+
+	if err := outputFile.Close(); err != nil {
+		return fmt.Errorf("failed to close file '%s': %w", outputPath, err)
+	}
+
+	return nil
+}
+
+func readMarkdownWithFrontmatter(
 	markdownFilePath string, bodyDest io.Writer, frontmatterDest any,
 ) error {
 	markdownFile, err := os.Open(markdownFilePath)
