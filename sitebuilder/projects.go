@@ -87,9 +87,9 @@ type ParsedProject struct {
 }
 
 func RenderProjectPages(
-	ctx context.Context,
-	contentDirNames []string,
 	parsedProjects chan<- ProjectWithContentDir,
+	projectReceiverCtx context.Context,
+	contentDirNames []string,
 	metadata CommonMetadata,
 	templates *template.Template,
 ) error {
@@ -124,7 +124,7 @@ func RenderProjectPages(
 					ProjectProfile: project.ProjectProfile,
 					ContentDir:     contentDir.name,
 				}: // Sends if receiver is listening
-				case <-ctx.Done(): // If context is canceled, receiver is done listening
+				case <-projectReceiverCtx.Done(): // If context is done, receiver is done listening
 				}
 
 				return renderProjectPage(project, metadata, templates)

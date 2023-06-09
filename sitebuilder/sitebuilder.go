@@ -30,14 +30,14 @@ func RenderPages(projectContentDirs []string, metadata CommonMetadata, birthday 
 
 	var goroutines errgroup.Group
 	parsedProjects := make(chan ProjectWithContentDir)
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	goroutines.Go(func() error {
-		return RenderProjectPages(ctx, projectContentDirs, parsedProjects, metadata, templates)
+		return RenderProjectPages(parsedProjects, ctx, projectContentDirs, metadata, templates)
 	})
 
 	goroutines.Go(func() error {
-		return RenderIndexPage(ctx, cancel, parsedProjects, metadata, birthday, templates)
+		return RenderIndexPage(parsedProjects, cancelCtx, metadata, birthday, templates)
 	})
 
 	return goroutines.Wait()

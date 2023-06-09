@@ -51,9 +51,8 @@ type Image struct {
 }
 
 func RenderIndexPage(
-	ctx context.Context,
-	cancelCtx context.CancelFunc,
 	parsedProjects <-chan ProjectWithContentDir,
+	stopReceivingParsedProjects context.CancelFunc,
 	metadata CommonMetadata,
 	birthday time.Time,
 	templates *template.Template,
@@ -77,7 +76,7 @@ func RenderIndexPage(
 		// Since we remove from projectIDs when we receive a project, we are done when there are
 		// none left
 		if projectIDs.IsEmpty() {
-			cancelCtx()
+			stopReceivingParsedProjects()
 			break
 		}
 	}
