@@ -6,7 +6,6 @@ require (
 	github.com/adrg/frontmatter v0.2.0
 	github.com/yuin/goldmark v1.5.4
 	golang.org/x/sync v0.2.0
-	hermannm.dev/set v0.1.0
 )
 
 require (

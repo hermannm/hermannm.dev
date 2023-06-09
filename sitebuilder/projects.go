@@ -69,15 +69,6 @@ type ProjectWithContentDir struct {
 	ContentDir string
 }
 
-type ProjectID struct {
-	slug       string
-	contentDir string
-}
-
-func (project ProjectWithContentDir) ID() ProjectID {
-	return ProjectID{slug: project.Slug, contentDir: project.ContentDir}
-}
-
 type ParsedProject struct {
 	ProjectTemplate
 

@@ -8,8 +8,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"hermannm.dev/set"
 )
 
 type IndexPageBase struct {
@@ -59,23 +57,18 @@ func RenderIndexPage(
 ) error {
 	pageData, aboutMeText, err := parseIndexPageData(metadata, birthday)
 	if err != nil {
+		stopReceivingParsedProjects()
 		return fmt.Errorf("failed to parse index page data: %w", err)
 	}
 
-	categories, projectIDs := parseProjectCategories(pageData.ProjectCategories)
+	categories := parseProjectCategories(pageData.ProjectCategories)
 	for project := range parsedProjects {
-		id := project.ID()
-		if projectIDs.Contains(id) {
-			if err := categories.Add(project); err != nil {
-				return err
-			}
-
-			projectIDs.Remove(id)
+		if err := categories.AddIfIncluded(project); err != nil {
+			stopReceivingParsedProjects()
+			return fmt.Errorf("failed to add project '%s' to categories: %w", project.Slug, err)
 		}
 
-		// Since we remove from projectIDs when we receive a project, we are done when there are
-		// none left
-		if projectIDs.IsEmpty() {
+		if categories.IsFull() {
 			stopReceivingParsedProjects()
 			break
 		}
@@ -90,7 +83,6 @@ func RenderIndexPage(
 		AboutMe:           aboutMeText,
 		ProjectCategories: categories.ToSlice(),
 	}
-
 	if err := renderPage(templates, pageTemplate.Meta, pageTemplate); err != nil {
 		return fmt.Errorf("failed to render index page: %w", err)
 	}
@@ -140,47 +132,76 @@ func ageFromBirthday(birthday time.Time) int {
 	return age
 }
 
-func parseProjectCategories(
-	categories []ProjectCategoryMarkdown,
-) (emptyCategories ProjectCategoriesByContentDir, projectIDs set.Set[ProjectID]) {
-	emptyCategories = make(map[string]ProjectCategoryTemplate, len(categories))
-	projectIDs = set.New[ProjectID]()
+func parseProjectCategories(categories []ProjectCategoryMarkdown) ParsedProjectCategories {
+	parsedCategories := make(map[string]ParsedProjectCategory, len(categories))
+	targetNumberOfProjects := 0
 
 	for _, category := range categories {
-		emptyCategories[category.ContentDir] = ProjectCategoryTemplate{
-			Title:    category.Title,
-			Projects: make([]ProjectProfile, 0, len(category.ProjectSlugs)),
+		projectsLength := len(category.ProjectSlugs)
+
+		projectIndicesBySlug := make(map[string]int, projectsLength)
+		for i, slug := range category.ProjectSlugs {
+			projectIndicesBySlug[slug] = i
+			targetNumberOfProjects++
 		}
 
-		for _, slug := range category.ProjectSlugs {
-			projectIDs.Add(ProjectID{slug: slug, contentDir: category.ContentDir})
+		parsedCategories[category.ContentDir] = ParsedProjectCategory{
+			ProjectCategoryTemplate: ProjectCategoryTemplate{
+				Title:    category.Title,
+				Projects: make([]ProjectProfile, projectsLength),
+			},
+			projectIndicesBySlug: projectIndicesBySlug,
 		}
 	}
 
-	return emptyCategories, projectIDs
+	return ParsedProjectCategories{
+		categoriesByContentDir: parsedCategories,
+		numberOfProjects:       0,
+		targetNumberOfProjects: targetNumberOfProjects,
+	}
 }
 
-type ProjectCategoriesByContentDir map[string]ProjectCategoryTemplate
+type ParsedProjectCategories struct {
+	categoriesByContentDir map[string]ParsedProjectCategory
+	numberOfProjects       int
+	targetNumberOfProjects int
+}
 
-func (categories ProjectCategoriesByContentDir) Add(project ProjectWithContentDir) error {
-	category, ok := categories[project.ContentDir]
-	if !ok {
-		return fmt.Errorf(
-			"attempted to add project '%s' from content directory '%s' to category map, but no entry exists for it",
-			project.Slug, project.ContentDir,
-		)
+type ParsedProjectCategory struct {
+	ProjectCategoryTemplate
+	projectIndicesBySlug map[string]int
+}
+
+func (categories *ParsedProjectCategories) AddIfIncluded(project ProjectWithContentDir) error {
+	category, isIncluded := categories.categoriesByContentDir[project.ContentDir]
+	if !isIncluded {
+		return nil
 	}
 
-	category.Projects = append(category.Projects, project.ProjectProfile)
-	categories[project.ContentDir] = category
+	index, isIncluded := category.projectIndicesBySlug[project.Slug]
+	if !isIncluded {
+		return nil
+	}
+
+	projects := category.Projects
+	if index >= len(projects) {
+		return fmt.Errorf("project index in category '%s' is out-of-bounds", category.Title)
+	}
+
+	category.Projects[index] = project.ProjectProfile
+	categories.numberOfProjects++
 	return nil
 }
 
-func (categories ProjectCategoriesByContentDir) ToSlice() []ProjectCategoryTemplate {
-	slice := make([]ProjectCategoryTemplate, 0, len(categories))
+func (categories *ParsedProjectCategories) IsFull() bool {
+	return categories.numberOfProjects == categories.targetNumberOfProjects
+}
 
-	for _, category := range categories {
-		slice = append(slice, category)
+func (categories *ParsedProjectCategories) ToSlice() []ProjectCategoryTemplate {
+	slice := make([]ProjectCategoryTemplate, 0, len(categories.categoriesByContentDir))
+
+	for _, category := range categories.categoriesByContentDir {
+		slice = append(slice, category.ProjectCategoryTemplate)
 	}
 
 	return slice
