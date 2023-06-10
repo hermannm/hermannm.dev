@@ -50,8 +50,9 @@ type LinkCategory struct {
 type ProjectMarkdown struct {
 	ProjectBase `yaml:",inline"`
 
-	// Nil if project should not have its own page.
-	Page *Page `yaml:"page"`
+	// Optional if project page only needs Title, Path and TemplateName (these are set
+	// automatically). Other fields can be set here, e.g. if project page should host a Go package.
+	Page Page `yaml:"page"`
 }
 
 type ProjectTemplate struct {
@@ -71,10 +72,7 @@ type ProjectWithContentDir struct {
 
 type ParsedProject struct {
 	ProjectTemplate
-
-	// Nil if project should not have its own page.
-	// Path is set to the project's slug.
-	Page *Page
+	Page Page
 }
 
 func RenderProjectPages(
@@ -86,6 +84,7 @@ func RenderProjectPages(
 ) error {
 	contentDirs, err := readProjectContentDirs(contentDirNames)
 	if err != nil {
+		close(parsedProjects)
 		return err
 	}
 
@@ -105,7 +104,7 @@ func RenderProjectPages(
 				markdownFilePath := fmt.Sprintf(
 					"%s/%s/%s", BaseContentDir, contentDir.name, dirEntry.Name(),
 				)
-				project, err := parseProject(markdownFilePath)
+				project, err := parseProject(markdownFilePath, metadata.SiteName)
 				if err != nil {
 					return fmt.Errorf("failed to parse project: %w", err)
 				}
@@ -123,7 +122,12 @@ func RenderProjectPages(
 		}
 	}
 
-	return goroutines.Wait()
+	if err := goroutines.Wait(); err != nil {
+		close(parsedProjects)
+		return err
+	}
+
+	return nil
 }
 
 const (
@@ -131,13 +135,14 @@ const (
 	DefaultTechStackTitle   = "Built with"
 )
 
-func parseProject(markdownFilePath string) (ParsedProject, error) {
+func parseProject(markdownFilePath string, siteName string) (ParsedProject, error) {
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
 	if err := readMarkdownWithFrontmatter(markdownFilePath, descriptionBuffer, &project); err != nil {
 		return ParsedProject{}, fmt.Errorf("failed to read markdown for project: %w", err)
 	}
 
+	project.Page.Title = fmt.Sprintf("%s/%s", siteName, project.Slug)
 	project.Page.Path = fmt.Sprintf("/%s", project.Slug)
 	project.Page.TemplateName = ProjectPageTemplateName
 
@@ -167,15 +172,10 @@ func parseProject(markdownFilePath string) (ParsedProject, error) {
 func renderProjectPage(
 	project ParsedProject, metadata CommonMetadata, templates *template.Template,
 ) error {
-	// If project has page field unset, there is nothing to render
-	if project.Page == nil {
-		return nil
-	}
-
 	projectPage := ProjectPageTemplate{
 		Meta: TemplateMetadata{
 			Common: metadata,
-			Page:   *project.Page,
+			Page:   project.Page,
 		},
 		Project: project.ProjectTemplate,
 	}
