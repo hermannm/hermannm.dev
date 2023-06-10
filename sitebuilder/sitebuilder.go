@@ -21,7 +21,7 @@ import (
 const (
 	BaseContentDir        = "content"
 	BaseOutputDir         = "static"
-	TemplatesDir          = "templates"
+	BaseTemplatesDir      = "templates"
 	PageTemplatesDir      = "pages"
 	ComponentTemplatesDir = "components"
 )
@@ -92,14 +92,14 @@ func FormatRenderedPages() error {
 func parseTemplates() (*template.Template, error) {
 	templates := template.New(ProjectPageTemplateName).Funcs(TemplateFunctions)
 
-	pageTemplatesPattern := fmt.Sprintf("%s/%s/*.tmpl", TemplatesDir, PageTemplatesDir)
-	templates, err := templates.ParseGlob(pageTemplatesPattern)
+	pageTemplates := fmt.Sprintf("%s/%s/*.tmpl", BaseTemplatesDir, PageTemplatesDir)
+	templates, err := templates.ParseGlob(pageTemplates)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse page templates: %w", err)
 	}
 
-	componentTemplatesPattern := fmt.Sprintf("%s/%s/*.tmpl", TemplatesDir, ComponentTemplatesDir)
-	templates, err = templates.ParseGlob(componentTemplatesPattern)
+	componentTemplates := fmt.Sprintf("%s/%s/*.tmpl", BaseTemplatesDir, ComponentTemplatesDir)
+	templates, err = templates.ParseGlob(componentTemplates)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse component templates: %w", err)
 	}
