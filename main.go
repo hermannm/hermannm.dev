@@ -16,13 +16,17 @@ var (
 		GitHubIconPath:   "/img/icons/github.svg",
 	}
 
-	projectContentDirs = []string{"projects", "companies", "schools"}
+	contentPaths = sitebuilder.ContentPaths{
+		IndexPage:   "index_page.md",
+		ProjectDirs: []string{"projects", "companies", "schools"},
+		BasicPages:  []string{"404_page.md"},
+	}
 
 	birthday = time.Date(1999, time.September, 12, 2, 0, 0, 0, time.UTC)
 )
 
 func main() {
-	if err := sitebuilder.RenderPages(projectContentDirs, metadata, birthday); err != nil {
+	if err := sitebuilder.RenderPages(contentPaths, metadata, birthday); err != nil {
 		log.Fatalln(err)
 	}
 

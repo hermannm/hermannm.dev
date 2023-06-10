@@ -3,7 +3,7 @@ page:
   title: hermannm.dev
   description: Hermann Mørkrid's personal website.
   path: ""
-  templateName: index.html.tmpl
+  templateName: index_page.html.tmpl
 personalInfo:
   - text: ${age} years old # Age field set when parsed
     iconPath: /img/icons/person.svg
@@ -25,6 +25,12 @@ profilePictureDesktop:
   alt: "Hermann's profile picture"
   width: 240
   height: 240
+projectCategories:
+  - title: Projects I've contributed to
+    contentDir: projects
+    projectSlugs:
+      - indok-web
+      - bfh
 ---
 
 Hello there! I'm Hermann Mørkrid, a Computer Science student at NTNU Trondheim. I mostly do web

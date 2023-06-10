@@ -9,20 +9,30 @@ import (
 	"io/fs"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/adrg/frontmatter"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/renderer/html"
 	"golang.org/x/sync/errgroup"
 )
 
 const (
-	BaseContentDir = "content"
-	BaseOutputDir  = "static"
-	TemplatesDir   = "templates"
+	BaseContentDir        = "content"
+	BaseOutputDir         = "static"
+	TemplatesDir          = "templates"
+	PageTemplatesDir      = "pages"
+	ComponentTemplatesDir = "components"
 )
 
-func RenderPages(projectContentDirs []string, metadata CommonMetadata, birthday time.Time) error {
+type ContentPaths struct {
+	IndexPage   string
+	ProjectDirs []string
+	BasicPages  []string
+}
+
+func RenderPages(contentPaths ContentPaths, metadata CommonMetadata, birthday time.Time) error {
 	templates, err := parseTemplates()
 	if err != nil {
 		return err
@@ -33,12 +43,23 @@ func RenderPages(projectContentDirs []string, metadata CommonMetadata, birthday 
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	goroutines.Go(func() error {
-		return RenderProjectPages(parsedProjects, ctx, projectContentDirs, metadata, templates)
+		return RenderProjectPages(
+			parsedProjects, ctx, contentPaths.ProjectDirs, metadata, templates,
+		)
 	})
 
 	goroutines.Go(func() error {
-		return RenderIndexPage(parsedProjects, cancelCtx, metadata, birthday, templates)
+		return RenderIndexPage(
+			parsedProjects, cancelCtx, contentPaths.IndexPage, metadata, birthday, templates,
+		)
 	})
+
+	for _, basicPage := range contentPaths.BasicPages {
+		basicPage := basicPage // Copy mutating loop variable to use in goroutine
+		goroutines.Go(func() error {
+			return RenderBasicPage(basicPage, metadata, templates)
+		})
+	}
 
 	return goroutines.Wait()
 }
@@ -69,24 +90,29 @@ func FormatRenderedPages() error {
 }
 
 func parseTemplates() (*template.Template, error) {
-	templates, err := template.New(ProjectPageTemplateFile).
-		Funcs(TemplateFunctions).
-		ParseGlob(fmt.Sprintf("%s/*.tmpl", TemplatesDir))
+	templates := template.New(ProjectPageTemplateName).Funcs(TemplateFunctions)
+
+	pageTemplatesPattern := fmt.Sprintf("%s/%s/*.tmpl", TemplatesDir, PageTemplatesDir)
+	templates, err := templates.ParseGlob(pageTemplatesPattern)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse templates: %w", err)
+		return nil, fmt.Errorf("failed to parse page templates: %w", err)
+	}
+
+	componentTemplatesPattern := fmt.Sprintf("%s/%s/*.tmpl", TemplatesDir, ComponentTemplatesDir)
+	templates, err = templates.ParseGlob(componentTemplatesPattern)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse component templates: %w", err)
 	}
 
 	return templates, nil
 }
 
-func renderPage(templates *template.Template, meta TemplateMetadata, data any) error {
-	outputDir := fmt.Sprintf("%s%s", BaseOutputDir, meta.Page.Path)
-	permissions := fs.FileMode(0755)
-	if err := os.MkdirAll(outputDir, permissions); err != nil {
-		return fmt.Errorf("failed to create template output directory '%s': %w", outputDir, err)
+func renderPage(meta TemplateMetadata, data any, templates *template.Template) error {
+	outputPath, err := getRenderOutputPath(meta.Page.Path)
+	if err != nil {
+		return err
 	}
 
-	outputPath := fmt.Sprintf("%s/index.html", outputDir)
 	outputFile, err := os.Create(outputPath)
 	if err != nil {
 		return fmt.Errorf("failed to create template output file '%s': %w", outputPath, err)
@@ -102,6 +128,37 @@ func renderPage(templates *template.Template, meta TemplateMetadata, data any) e
 	}
 
 	return nil
+}
+
+func getRenderOutputPath(basePath string) (string, error) {
+	var dir string
+	var file string
+	if strings.HasSuffix(basePath, ".html") {
+		pathElements := strings.Split(basePath, "/")
+
+		dirs := make([]string, 0, len(pathElements))
+		for i, pathElement := range pathElements {
+			if i == len(pathElements)-1 {
+				file = pathElement
+			} else {
+				dirs = append(dirs, pathElement)
+			}
+		}
+
+		dir = strings.Join(dirs, "/")
+	} else {
+		dir = basePath
+		file = "index.html"
+	}
+
+	dir = fmt.Sprintf("%s%s", BaseOutputDir, dir)
+
+	permissions := fs.FileMode(0755)
+	if err := os.MkdirAll(dir, permissions); err != nil {
+		return "", fmt.Errorf("failed to create template output directory '%s': %w", dir, err)
+	}
+
+	return fmt.Sprintf("%s/%s", dir, file), nil
 }
 
 func readMarkdownWithFrontmatter(
@@ -122,7 +179,8 @@ func readMarkdownWithFrontmatter(
 		return fmt.Errorf("failed to close file '%s': %w", markdownFilePath, err)
 	}
 
-	if err := goldmark.Convert(restOfFile, bodyDest); err != nil {
+	markdownParser := goldmark.New(goldmark.WithRendererOptions(html.WithUnsafe()))
+	if err := markdownParser.Convert(restOfFile, bodyDest); err != nil {
 		return fmt.Errorf("failed to parse body of markdown file '%s': %w", markdownFilePath, err)
 	}
 

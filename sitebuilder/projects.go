@@ -127,7 +127,7 @@ func RenderProjectPages(
 }
 
 const (
-	ProjectPageTemplateFile = "project_page.html.tmpl"
+	ProjectPageTemplateName = "project_page.html.tmpl"
 	DefaultTechStackTitle   = "Built with"
 )
 
@@ -139,7 +139,7 @@ func parseProject(markdownFilePath string) (ParsedProject, error) {
 	}
 
 	project.Page.Path = fmt.Sprintf("/%s", project.Slug)
-	project.Page.TemplateName = ProjectPageTemplateFile
+	project.Page.TemplateName = ProjectPageTemplateName
 
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
@@ -180,7 +180,7 @@ func renderProjectPage(
 		Project: project.ProjectTemplate,
 	}
 
-	if err := renderPage(templates, projectPage.Meta, projectPage); err != nil {
+	if err := renderPage(projectPage.Meta, projectPage, templates); err != nil {
 		return fmt.Errorf(
 			"failed to render page for project '%s': %w", project.Slug, err,
 		)

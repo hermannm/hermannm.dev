@@ -51,17 +51,18 @@ type Image struct {
 func RenderIndexPage(
 	parsedProjects <-chan ProjectWithContentDir,
 	stopReceivingParsedProjects context.CancelFunc,
+	contentPath string,
 	metadata CommonMetadata,
 	birthday time.Time,
 	templates *template.Template,
 ) error {
-	pageData, aboutMeText, err := parseIndexPageData(metadata, birthday)
+	content, aboutMeText, err := parseIndexPageContent(contentPath, metadata, birthday)
 	if err != nil {
 		stopReceivingParsedProjects()
 		return fmt.Errorf("failed to parse index page data: %w", err)
 	}
 
-	categories := parseProjectCategories(pageData.ProjectCategories)
+	categories := parseProjectCategories(content.ProjectCategories)
 	for project := range parsedProjects {
 		if err := categories.AddIfIncluded(project); err != nil {
 			stopReceivingParsedProjects()
@@ -75,36 +76,36 @@ func RenderIndexPage(
 	}
 
 	pageTemplate := IndexPageTemplate{
-		IndexPageBase: pageData.IndexPageBase,
+		IndexPageBase: content.IndexPageBase,
 		Meta: TemplateMetadata{
 			Common: metadata,
-			Page:   pageData.Page,
+			Page:   content.Page,
 		},
 		AboutMe:           aboutMeText,
 		ProjectCategories: categories.ToSlice(),
 	}
-	if err := renderPage(templates, pageTemplate.Meta, pageTemplate); err != nil {
+	if err := renderPage(pageTemplate.Meta, pageTemplate, templates); err != nil {
 		return fmt.Errorf("failed to render index page: %w", err)
 	}
 
 	return nil
 }
 
-func parseIndexPageData(
-	metadata CommonMetadata, birthday time.Time,
-) (pageData IndexPageMarkdown, aboutMeText template.HTML, err error) {
-	path := fmt.Sprintf("%s/index.md", BaseContentDir)
+func parseIndexPageContent(
+	contentPath string, metadata CommonMetadata, birthday time.Time,
+) (content IndexPageMarkdown, aboutMeText template.HTML, err error) {
+	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)
-	if err := readMarkdownWithFrontmatter(path, aboutMeBuffer, &pageData); err != nil {
+	if err := readMarkdownWithFrontmatter(path, aboutMeBuffer, &content); err != nil {
 		return IndexPageMarkdown{}, "", fmt.Errorf(
 			"failed to read markdown for index page: %w", err,
 		)
 	}
 
 	aboutMeText = removeParagraphTagsAroundHTML(aboutMeBuffer.String())
-	setAge(pageData.PersonalInfo, birthday)
+	setAge(content.PersonalInfo, birthday)
 
-	return pageData, aboutMeText, nil
+	return content, aboutMeText, nil
 }
 
 const ageReplacementPattern = "${age}"
