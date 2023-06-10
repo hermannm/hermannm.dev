@@ -14,7 +14,9 @@ import (
 
 	"github.com/adrg/frontmatter"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/util"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -179,10 +181,18 @@ func readMarkdownWithFrontmatter(
 		return fmt.Errorf("failed to close file '%s': %w", markdownFilePath, err)
 	}
 
-	markdownParser := goldmark.New(goldmark.WithRendererOptions(html.WithUnsafe()))
-	if err := markdownParser.Convert(restOfFile, bodyDest); err != nil {
+	if err := newMarkdownParser().Convert(restOfFile, bodyDest); err != nil {
 		return fmt.Errorf("failed to parse body of markdown file '%s': %w", markdownFilePath, err)
 	}
 
 	return nil
+}
+
+func newMarkdownParser() goldmark.Markdown {
+	markdownOptions := goldmark.WithRendererOptions(
+		html.WithUnsafe(),
+		renderer.WithNodeRenderers(util.Prioritized(NewMarkdownLinkRenderer(), 1)),
+	)
+
+	return goldmark.New(markdownOptions)
 }

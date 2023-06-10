@@ -9,7 +9,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/yuin/goldmark"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -152,7 +151,7 @@ func parseProject(markdownFilePath string, siteName string) (ParsedProject, erro
 
 	if project.Footnote != "" {
 		var builder strings.Builder
-		if err := goldmark.Convert([]byte(project.Footnote), &builder); err != nil {
+		if err := newMarkdownParser().Convert([]byte(project.Footnote), &builder); err != nil {
 			return ParsedProject{}, fmt.Errorf(
 				"failed to parse footnote for project '%s' as markdown: %w", project.Slug, err,
 			)
