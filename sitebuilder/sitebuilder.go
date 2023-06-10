@@ -21,12 +21,14 @@ import (
 )
 
 const (
-	BaseContentDir        = "content"
-	BaseOutputDir         = "static"
+	BaseContentDir = "content"
+	BaseOutputDir  = "static"
+
 	BaseTemplatesDir      = "templates"
 	PageTemplatesDir      = "pages"
 	ComponentTemplatesDir = "components"
-	TechIconDir           = "/img/tech"
+
+	TechIconDir = "img/tech"
 )
 
 type ContentPaths struct {

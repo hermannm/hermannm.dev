@@ -232,7 +232,7 @@ func techLinkItemFromResource(
 		)
 	}
 
-	iconPath := fmt.Sprintf("%s/%s", TechIconDir, techResource.IconFile)
+	iconPath := fmt.Sprintf("/%s/%s", TechIconDir, techResource.IconFile)
 	return LinkItem{Text: techName, Link: techResource.Link, IconPath: iconPath}, nil
 }
 
