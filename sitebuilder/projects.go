@@ -112,7 +112,9 @@ func RenderProjectPages(
 				markdownFilePath := fmt.Sprintf(
 					"%s/%s/%s", BaseContentDir, contentDir.name, dirEntry.Name(),
 				)
-				project, err := parseProject(markdownFilePath, techResources, metadata.SiteName)
+				project, err := parseProject(
+					markdownFilePath, techResources, metadata.SiteName, metadata.GitHubIconPath,
+				)
 				if err != nil {
 					return fmt.Errorf("failed to parse project: %w", err)
 				}
@@ -144,7 +146,10 @@ const (
 )
 
 func parseProject(
-	markdownFilePath string, techResources map[string]TechResource, siteName string,
+	markdownFilePath string,
+	techResources map[string]TechResource,
+	siteName string,
+	githubIconPath string,
 ) (ParsedProject, error) {
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
@@ -158,6 +163,7 @@ func parseProject(
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
 	}
+	setGitHubLinkIcons(project.LinkCategories, githubIconPath)
 
 	techStack, err := parseTechStack(project.TechStack, techResources)
 	if err != nil {
@@ -228,6 +234,19 @@ func techLinkItemFromResource(
 
 	iconPath := fmt.Sprintf("%s/%s", TechIconDir, techResource.IconFile)
 	return LinkItem{Text: techName, Link: techResource.Link, IconPath: iconPath}, nil
+}
+
+const githubBaseURL = "https://github.com"
+
+func setGitHubLinkIcons(linkCategories []LinkCategory, githubIconPath string) {
+	for _, category := range linkCategories {
+		for i, link := range category.Links {
+			if link.IconPath == "" && strings.HasPrefix(link.Link, githubBaseURL) {
+				link.IconPath = githubIconPath
+				category.Links[i] = link
+			}
+		}
+	}
 }
 
 func renderProjectPage(

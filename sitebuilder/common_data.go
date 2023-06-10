@@ -20,8 +20,8 @@ type CommonMetadata struct {
 	SiteName         string
 	SiteDescription  string
 	BaseURL          string
-	GitHubIssuesLink string
 	GitHubIconPath   string
+	GitHubIssuesLink string
 }
 
 type Page struct {
