@@ -26,6 +26,7 @@ const (
 	BaseTemplatesDir      = "templates"
 	PageTemplatesDir      = "pages"
 	ComponentTemplatesDir = "components"
+	TechIconDir           = "/img/tech"
 )
 
 type ContentPaths struct {
@@ -34,7 +35,17 @@ type ContentPaths struct {
 	BasicPages  []string
 }
 
-func RenderPages(contentPaths ContentPaths, metadata CommonMetadata, birthday time.Time) error {
+type TechResource struct {
+	Link     string
+	IconFile string
+}
+
+func RenderPages(
+	contentPaths ContentPaths,
+	metadata CommonMetadata,
+	techResources map[string]TechResource,
+	birthday time.Time,
+) error {
 	templates, err := parseTemplates()
 	if err != nil {
 		return err
@@ -46,7 +57,7 @@ func RenderPages(contentPaths ContentPaths, metadata CommonMetadata, birthday ti
 
 	goroutines.Go(func() error {
 		return RenderProjectPages(
-			parsedProjects, ctx, contentPaths.ProjectDirs, metadata, templates,
+			parsedProjects, ctx, contentPaths.ProjectDirs, metadata, techResources, templates,
 		)
 	})
 

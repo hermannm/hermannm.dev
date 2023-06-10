@@ -22,22 +22,12 @@ type ProjectProfile struct {
 type ProjectBase struct {
 	ProjectProfile `yaml:",inline"`
 
-	// Optional.
-	TechStack []TechStackItem `yaml:"techStack,flow"`
-	// Optional, defaults to TechStackDefaultTitle when TechStack is not empty.
+	// Optional, defaults to DefaultTechStackTitle when TechStack is not empty.
 	TechStackTitle string `yaml:"techstackTitle"`
 	// Optional.
 	LinkCategories []LinkCategory `yaml:"linkCategories,flow"`
 	//Optional.
 	Footnote template.HTML `yaml:"footnote"`
-}
-
-type TechStackItem struct {
-	LinkItem `yaml:",inline"`
-	// Optional.
-	UsedWith []LinkItem `yaml:"usedWith,flow"`
-	// Optional, but required if UsedWith is not empty.
-	UsedFor string `yaml:"usedFor"`
 }
 
 type LinkCategory struct {
@@ -49,6 +39,9 @@ type LinkCategory struct {
 type ProjectMarkdown struct {
 	ProjectBase `yaml:",inline"`
 
+	// Optional.
+	TechStack []TechStackItemMarkdown `yaml:"techStack,flow"`
+
 	// Optional if project page only needs Title, Path and TemplateName (these are set
 	// automatically). Other fields can be set here, e.g. if project page should host a Go package.
 	Page Page `yaml:"page"`
@@ -57,6 +50,21 @@ type ProjectMarkdown struct {
 type ProjectTemplate struct {
 	ProjectBase
 	Description template.HTML
+	TechStack   []TechStackItemTemplate
+}
+
+type TechStackItemMarkdown struct {
+	Tech string
+	// Optional, but required if UsedWith is set.
+	UsedFor string `yaml:"usedFor"`
+	// Optional.
+	UsedWith []string `yaml:"usedWith,flow"`
+}
+
+type TechStackItemTemplate struct {
+	LinkItem
+	UsedFor  string
+	UsedWith []LinkItem
 }
 
 type ProjectPageTemplate struct {
@@ -79,6 +87,7 @@ func RenderProjectPages(
 	projectReceiverCtx context.Context,
 	contentDirNames []string,
 	metadata CommonMetadata,
+	techResources map[string]TechResource,
 	templates *template.Template,
 ) error {
 	contentDirs, err := readProjectContentDirs(contentDirNames)
@@ -103,7 +112,7 @@ func RenderProjectPages(
 				markdownFilePath := fmt.Sprintf(
 					"%s/%s/%s", BaseContentDir, contentDir.name, dirEntry.Name(),
 				)
-				project, err := parseProject(markdownFilePath, metadata.SiteName)
+				project, err := parseProject(markdownFilePath, techResources, metadata.SiteName)
 				if err != nil {
 					return fmt.Errorf("failed to parse project: %w", err)
 				}
@@ -134,7 +143,9 @@ const (
 	DefaultTechStackTitle   = "Built with"
 )
 
-func parseProject(markdownFilePath string, siteName string) (ParsedProject, error) {
+func parseProject(
+	markdownFilePath string, techResources map[string]TechResource, siteName string,
+) (ParsedProject, error) {
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
 	if err := readMarkdownWithFrontmatter(markdownFilePath, descriptionBuffer, &project); err != nil {
@@ -144,9 +155,15 @@ func parseProject(markdownFilePath string, siteName string) (ParsedProject, erro
 	project.Page.Title = fmt.Sprintf("%s/%s", siteName, project.Slug)
 	project.Page.Path = fmt.Sprintf("/%s", project.Slug)
 	project.Page.TemplateName = ProjectPageTemplateName
-
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
+	}
+
+	techStack, err := parseTechStack(project.TechStack, techResources)
+	if err != nil {
+		return ParsedProject{}, fmt.Errorf(
+			"failed to parse tech stack for project %s: %w", project.Name, err,
+		)
 	}
 
 	if project.Footnote != "" {
@@ -163,9 +180,54 @@ func parseProject(markdownFilePath string, siteName string) (ParsedProject, erro
 		ProjectTemplate: ProjectTemplate{
 			ProjectBase: project.ProjectBase,
 			Description: template.HTML(descriptionBuffer.String()),
+			TechStack:   techStack,
 		},
 		Page: project.Page,
 	}, nil
+}
+
+func parseTechStack(
+	techStack []TechStackItemMarkdown, techResources map[string]TechResource,
+) ([]TechStackItemTemplate, error) {
+	parsed := make([]TechStackItemTemplate, len(techStack))
+	for i, tech := range techStack {
+		linkItem, err := techLinkItemFromResource(tech.Tech, techResources)
+		if err != nil {
+			return nil, err
+		}
+
+		usedWith := make([]LinkItem, len(tech.UsedWith))
+		for i, tech2 := range tech.UsedWith {
+			linkItem2, err := techLinkItemFromResource(tech2, techResources)
+			if err != nil {
+				return nil, err
+			}
+
+			usedWith[i] = linkItem2
+		}
+
+		parsed[i] = TechStackItemTemplate{
+			LinkItem: linkItem,
+			UsedFor:  tech.UsedFor,
+			UsedWith: usedWith,
+		}
+	}
+
+	return parsed, nil
+}
+
+func techLinkItemFromResource(
+	techName string, techResources map[string]TechResource,
+) (LinkItem, error) {
+	techResource, ok := techResources[techName]
+	if !ok {
+		return LinkItem{}, fmt.Errorf(
+			"failed to find technology '%s' in tech resource map", techName,
+		)
+	}
+
+	iconPath := fmt.Sprintf("%s/%s", TechIconDir, techResource.IconFile)
+	return LinkItem{Text: techName, Link: techResource.Link, IconPath: iconPath}, nil
 }
 
 func renderProjectPage(
