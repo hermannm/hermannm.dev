@@ -9,6 +9,10 @@
     />
   {{- end }}
 
+  {{ if .Page.RedirectURL -}}
+    <meta http-equiv="Refresh" content="0; url='{{ .Page.RedirectURL }}'" />
+  {{- end }}
+
 
   <title>{{ .Page.Title }}</title>
   <meta name="description" content="{{ .Common.SiteDescription }}" />

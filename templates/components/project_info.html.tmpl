@@ -60,7 +60,7 @@
   {{- else if eq $techStackLength 1 }}
     {{- $technology := index .TechStack 0 -}}
     <div class="row medium-gap wrap">
-      <strong>{{ .TechStackTitle }}</strong>
+      <strong>{{ .TechStackTitle }}:</strong>
       {{- template "techStackItem" $technology -}}
     </div>
   {{- end }}

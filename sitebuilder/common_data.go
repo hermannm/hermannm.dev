@@ -29,6 +29,9 @@ type Page struct {
 	Path         string `yaml:"path"`
 	TemplateName string `yaml:"templateName"`
 
+	// Optional.
+	RedirectURL string `yaml:"redirectURL"`
+
 	// Nil if page does not host a Go package.
 	GoPackage *GoPackage `yaml:"goPackage"`
 }
