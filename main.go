@@ -11,6 +11,7 @@ import (
 var (
 	metadata = sitebuilder.CommonMetadata{
 		SiteName:         "hermannm.dev",
+		SiteDescription:  "Hermann Mørkrid's personal website.",
 		BaseURL:          "https://hermannm.dev",
 		GitHubIssuesLink: "https://github.com/hermannm/hermannm.dev/issues",
 		GitHubIconPath:   "/img/icons/github.svg",

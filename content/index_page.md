@@ -1,7 +1,6 @@
 ---
 page:
   title: hermannm.dev
-  description: Hermann Mørkrid's personal website.
   path: ""
   templateName: index_page.html.tmpl
 personalInfo:

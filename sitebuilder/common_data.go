@@ -18,6 +18,7 @@ type TemplateMetadata struct {
 
 type CommonMetadata struct {
 	SiteName         string
+	SiteDescription  string
 	BaseURL          string
 	GitHubIssuesLink string
 	GitHubIconPath   string
@@ -25,7 +26,6 @@ type CommonMetadata struct {
 
 type Page struct {
 	Title        string `yaml:"title"`
-	Description  string `yaml:"description"`
 	Path         string `yaml:"path"`
 	TemplateName string `yaml:"templateName"`
 

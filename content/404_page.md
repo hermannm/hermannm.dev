@@ -1,7 +1,6 @@
 ---
 page:
   title: hermannm.dev/???
-  description: Not Found
   path: 404.html
 ---
 
