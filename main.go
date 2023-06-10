@@ -40,7 +40,7 @@ var (
 
 	birthday = time.Date(1999, time.September, 12, 2, 0, 0, 0, time.UTC)
 
-	techResources = map[string]sitebuilder.TechResource{
+	techResources = sitebuilder.TechResourceMap{
 		"Go": {
 			Link:     "https://go.dev/",
 			IconFile: "go.svg",

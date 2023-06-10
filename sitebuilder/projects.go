@@ -87,7 +87,7 @@ func RenderProjectPages(
 	projectReceiverCtx context.Context,
 	contentDirNames []string,
 	metadata CommonMetadata,
-	techResources map[string]TechResource,
+	techResources TechResourceMap,
 	templates *template.Template,
 ) error {
 	contentDirs, err := readProjectContentDirs(contentDirNames)
@@ -147,7 +147,7 @@ const (
 
 func parseProject(
 	markdownFilePath string,
-	techResources map[string]TechResource,
+	techResources TechResourceMap,
 	siteName string,
 	githubIconPath string,
 ) (ParsedProject, error) {
@@ -193,7 +193,7 @@ func parseProject(
 }
 
 func parseTechStack(
-	techStack []TechStackItemMarkdown, techResources map[string]TechResource,
+	techStack []TechStackItemMarkdown, techResources TechResourceMap,
 ) ([]TechStackItemTemplate, error) {
 	parsed := make([]TechStackItemTemplate, len(techStack))
 	for i, tech := range techStack {
@@ -222,9 +222,7 @@ func parseTechStack(
 	return parsed, nil
 }
 
-func techLinkItemFromResource(
-	techName string, techResources map[string]TechResource,
-) (LinkItem, error) {
+func techLinkItemFromResource(techName string, techResources TechResourceMap) (LinkItem, error) {
 	techResource, ok := techResources[techName]
 	if !ok {
 		return LinkItem{}, fmt.Errorf(

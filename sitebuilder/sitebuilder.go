@@ -37,7 +37,7 @@ type ContentPaths struct {
 	BasicPages  []string
 }
 
-type TechResource struct {
+type TechResourceMap map[string]struct {
 	Link     string
 	IconFile string
 }
@@ -45,7 +45,7 @@ type TechResource struct {
 func RenderPages(
 	contentPaths ContentPaths,
 	metadata CommonMetadata,
-	techResources map[string]TechResource,
+	techResources TechResourceMap,
 	birthday time.Time,
 ) error {
 	templates, err := parseTemplates()
