@@ -24,7 +24,6 @@ jobs:
       - name: Pull Vercel environment information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Move build to Vercel output directory
-        run: mkdir --parents .vercel/output; mv ./static/* .vercel/output/
+        run: mv static/* .vercel/output/
       - name: Deploy website to Vercel
-        # prettier-ignore
-        run: vercel deploy --prebuilt --prod --local-config=./vercel.json --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
