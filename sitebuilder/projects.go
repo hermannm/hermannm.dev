@@ -18,7 +18,6 @@ type ProjectProfile struct {
 
 type ProjectBase struct {
 	ProjectProfile `yaml:",inline"`
-
 	// Optional, defaults to DefaultTechStackTitle when TechStack is not empty.
 	TechStackTitle string `yaml:"techstackTitle"`
 	// Optional.
@@ -35,10 +34,8 @@ type LinkCategory struct {
 
 type ProjectMarkdown struct {
 	ProjectBase `yaml:",inline"`
-
 	// Optional.
 	TechStack []TechStackItemMarkdown `yaml:"techStack,flow"`
-
 	// Optional if project page only needs Title, Path and TemplateName (these are set
 	// automatically). Other fields can be set here, e.g. if project page should host a Go package.
 	Page Page `yaml:"page"`
@@ -52,7 +49,7 @@ type ProjectTemplate struct {
 
 type TechStackItemMarkdown struct {
 	Tech string
-	// Optional, but required if UsedWith is set.
+	// Optional.
 	UsedFor string `yaml:"usedFor"`
 	// Optional.
 	UsedWith []string `yaml:"usedWith,flow"`

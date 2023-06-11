@@ -20,13 +20,23 @@
     {{- end -}}
   {{- else if eq $usedWithLength 1 -}}
     {{- $usedWith := index .UsedWith 0 -}}
-    ({{ .UsedFor }}, with
+    (
+    {{- if .UsedFor -}}
+      {{- .UsedFor -}},
+      {{- " " -}}
+    {{- end -}}
+    with
     <div class="row no-gap">
       {{- template "linkItem" $usedWith -}}
       )
     </div>
   {{- else -}}
-    ({{ .UsedFor }}, with
+    (
+    {{- if .UsedFor -}}
+      {{- .UsedFor -}},
+      {{- " " -}}
+    {{- end -}}
+    with
     {{- range $index, $usedWith := .UsedWith -}}
       {{- $indexPlus1 := plus1 $index -}}
       {{- if eq $usedWithLength $indexPlus1 -}}
