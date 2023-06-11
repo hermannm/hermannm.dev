@@ -137,36 +137,37 @@ func ageFromBirthday(birthday time.Time) int {
 }
 
 func parseProjectCategories(categories []ProjectCategoryMarkdown) ParsedProjectCategories {
-	parsedCategories := make(map[string]ParsedProjectCategory, len(categories))
+	parsedCategories := make([]ParsedProjectCategory, len(categories))
 	targetNumberOfProjects := 0
 
-	for _, category := range categories {
+	for i, category := range categories {
 		projectsLength := len(category.ProjectSlugs)
 
 		projectIndicesBySlug := make(map[string]int, projectsLength)
-		for i, slug := range category.ProjectSlugs {
-			projectIndicesBySlug[slug] = i
+		for j, slug := range category.ProjectSlugs {
+			projectIndicesBySlug[slug] = j
 			targetNumberOfProjects++
 		}
 
-		parsedCategories[category.ContentDir] = ParsedProjectCategory{
+		parsedCategories[i] = ParsedProjectCategory{
 			ProjectCategoryTemplate: ProjectCategoryTemplate{
 				Title:    category.Title,
 				Projects: make([]ProjectProfile, projectsLength),
 			},
 			projectIndicesBySlug: projectIndicesBySlug,
+			contentDir:           category.ContentDir,
 		}
 	}
 
 	return ParsedProjectCategories{
-		categoriesByContentDir: parsedCategories,
+		list:                   parsedCategories,
 		numberOfProjects:       0,
 		targetNumberOfProjects: targetNumberOfProjects,
 	}
 }
 
 type ParsedProjectCategories struct {
-	categoriesByContentDir map[string]ParsedProjectCategory
+	list                   []ParsedProjectCategory
 	numberOfProjects       int
 	targetNumberOfProjects int
 }
@@ -174,10 +175,19 @@ type ParsedProjectCategories struct {
 type ParsedProjectCategory struct {
 	ProjectCategoryTemplate
 	projectIndicesBySlug map[string]int
+	contentDir           string
 }
 
 func (categories *ParsedProjectCategories) AddIfIncluded(project ProjectWithContentDir) error {
-	category, isIncluded := categories.categoriesByContentDir[project.ContentDir]
+	var category ParsedProjectCategory
+	isIncluded := false
+	for _, candidate := range categories.list {
+		if candidate.contentDir == project.ContentDir {
+			category = candidate
+			isIncluded = true
+			break
+		}
+	}
 	if !isIncluded {
 		return nil
 	}
@@ -202,9 +212,9 @@ func (categories *ParsedProjectCategories) IsFull() bool {
 }
 
 func (categories *ParsedProjectCategories) ToSlice() []ProjectCategoryTemplate {
-	slice := make([]ProjectCategoryTemplate, 0, len(categories.categoriesByContentDir))
+	slice := make([]ProjectCategoryTemplate, 0, len(categories.list))
 
-	for _, category := range categories.categoriesByContentDir {
+	for _, category := range categories.list {
 		slice = append(slice, category.ProjectCategoryTemplate)
 	}
 
