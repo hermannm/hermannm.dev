@@ -9,6 +9,7 @@ import (
 	"io/fs"
 	"os"
 	"os/exec"
+	"sort"
 	"strings"
 	"time"
 
@@ -48,35 +49,84 @@ func RenderPages(
 	techResources TechResourceMap,
 	birthday time.Time,
 ) error {
-	templates, err := parseTemplates()
+	projectFiles, err := readProjectContentDirs(contentPaths.ProjectDirs)
+	if err != nil {
+		return err
+	}
+
+	renderer, err := NewPageRenderer(metadata, len(projectFiles), len(contentPaths.BasicPages))
 	if err != nil {
 		return err
 	}
 
 	var goroutines errgroup.Group
-	parsedProjects := make(chan ProjectWithContentDir)
-	ctx, cancelCtx := context.WithCancel(context.Background())
+
+	for _, projectFile := range projectFiles {
+		projectFile := projectFile // Copy mutating loop variable to use in goroutine
+		goroutines.Go(func() error {
+			return renderer.RenderProjectPage(projectFile, techResources)
+		})
+	}
 
 	goroutines.Go(func() error {
-		return RenderProjectPages(
-			parsedProjects, ctx, contentPaths.ProjectDirs, metadata, techResources, templates,
-		)
-	})
-
-	goroutines.Go(func() error {
-		return RenderIndexPage(
-			parsedProjects, cancelCtx, contentPaths.IndexPage, metadata, birthday, templates,
-		)
+		return renderer.RenderIndexPage(contentPaths.IndexPage, birthday)
 	})
 
 	for _, basicPage := range contentPaths.BasicPages {
 		basicPage := basicPage // Copy mutating loop variable to use in goroutine
 		goroutines.Go(func() error {
-			return RenderBasicPage(basicPage, metadata, templates)
+			return renderer.RenderBasicPage(basicPage)
 		})
 	}
 
+	goroutines.Go(func() error {
+		return renderer.BuildSitemap()
+	})
+
 	return goroutines.Wait()
+}
+
+type PageRenderer struct {
+	metadata  CommonMetadata
+	templates *template.Template
+
+	parsedProjects chan ProjectWithContentDir
+	projectCount   int
+
+	pagePaths chan string
+	pageCount int
+
+	channelContext context.Context
+	cancelChannels func()
+}
+
+const nonProjectOrBasicPageCount = 1
+
+func NewPageRenderer(
+	metadata CommonMetadata, projectCount int, basicPageCount int,
+) (PageRenderer, error) {
+	templates, err := parseTemplates()
+	if err != nil {
+		return PageRenderer{}, err
+	}
+
+	parsedProjects := make(chan ProjectWithContentDir, projectCount)
+
+	pageCount := basicPageCount + projectCount + nonProjectOrBasicPageCount
+	pagePaths := make(chan string, pageCount)
+
+	channelContext, cancelChannels := context.WithCancel(context.Background())
+
+	return PageRenderer{
+		metadata:       metadata,
+		templates:      templates,
+		parsedProjects: parsedProjects,
+		projectCount:   projectCount,
+		pagePaths:      pagePaths,
+		pageCount:      pageCount,
+		channelContext: channelContext,
+		cancelChannels: cancelChannels,
+	}, nil
 }
 
 func FormatRenderedPages() error {
@@ -122,7 +172,40 @@ func parseTemplates() (*template.Template, error) {
 	return templates, nil
 }
 
-func renderPage(meta TemplateMetadata, data any, templates *template.Template) error {
+const sitemapFileName = "sitemap.txt"
+
+func (renderer *PageRenderer) BuildSitemap() error {
+	pageURLs := make([]string, renderer.pageCount)
+	for i := 0; i < renderer.pageCount; i++ {
+		select {
+		case pagePath := <-renderer.pagePaths:
+			pageURLs[i] = fmt.Sprintf("%s%s", renderer.metadata.BaseURL, pagePath)
+		case <-renderer.channelContext.Done():
+			return nil
+		}
+	}
+
+	sort.Strings(pageURLs)
+
+	sitemap := strings.Join(pageURLs, "\n")
+
+	sitemapFile, err := os.Create(fmt.Sprintf("%s/%s", BaseOutputDir, sitemapFileName))
+	if err != nil {
+		return fmt.Errorf("failed to create sitemap file: %w", err)
+	}
+
+	if _, err := fmt.Fprintln(sitemapFile, sitemap); err != nil {
+		return closeFileOnErr(sitemapFile, err, "failed to write to sitemap file")
+	}
+
+	if err := sitemapFile.Close(); err != nil {
+		return fmt.Errorf("failed to close sitemap file: %w", err)
+	}
+
+	return nil
+}
+
+func (renderer *PageRenderer) renderPage(meta TemplateMetadata, data any) error {
 	outputPath, err := getRenderOutputPath(meta.Page.Path)
 	if err != nil {
 		return err
@@ -133,9 +216,11 @@ func renderPage(meta TemplateMetadata, data any, templates *template.Template) e
 		return fmt.Errorf("failed to create template output file '%s': %w", outputPath, err)
 	}
 
-	if err := templates.ExecuteTemplate(outputFile, meta.Page.TemplateName, data); err != nil {
+	if err := renderer.templates.ExecuteTemplate(
+		outputFile, meta.Page.TemplateName, data,
+	); err != nil {
 		errMessage := fmt.Sprintf("failed to execute template '%s'", meta.Page.TemplateName)
-		return closeOnErr(outputFile, err, errMessage)
+		return closeFileOnErr(outputFile, err, errMessage)
 	}
 
 	if err := outputFile.Close(); err != nil {
@@ -187,7 +272,7 @@ func readMarkdownWithFrontmatter(
 	restOfFile, err := frontmatter.MustParse(markdownFile, frontmatterDest)
 	if err != nil {
 		errMessage := fmt.Sprintf("failed to parse markdown frontmatter of '%s'", markdownFilePath)
-		return closeOnErr(markdownFile, err, errMessage)
+		return closeFileOnErr(markdownFile, err, errMessage)
 	}
 
 	if err := markdownFile.Close(); err != nil {

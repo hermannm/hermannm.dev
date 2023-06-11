@@ -2,7 +2,6 @@ package sitebuilder
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"html/template"
 	"strconv"
@@ -48,43 +47,47 @@ type Image struct {
 	Height int    `yaml:"height"`
 }
 
-func RenderIndexPage(
-	parsedProjects <-chan ProjectWithContentDir,
-	stopReceivingParsedProjects context.CancelFunc,
-	contentPath string,
-	metadata CommonMetadata,
-	birthday time.Time,
-	templates *template.Template,
-) error {
-	content, aboutMeText, err := parseIndexPageContent(contentPath, metadata, birthday)
+func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.Time) (err error) {
+	defer func() {
+		if err != nil {
+			renderer.cancelChannels()
+		}
+	}()
+
+	content, aboutMeText, err := parseIndexPageContent(contentPath, renderer.metadata, birthday)
 	if err != nil {
-		stopReceivingParsedProjects()
 		return fmt.Errorf("failed to parse index page data: %w", err)
 	}
 
-	categories := parseProjectCategories(content.ProjectCategories)
-	for project := range parsedProjects {
-		if err := categories.AddIfIncluded(project); err != nil {
-			stopReceivingParsedProjects()
-			return fmt.Errorf("failed to add project '%s' to categories: %w", project.Slug, err)
-		}
+	renderer.pagePaths <- content.Page.Path
 
-		if categories.IsFull() {
-			stopReceivingParsedProjects()
-			break
+	categories := parseProjectCategories(content.ProjectCategories)
+
+ProjectLoop:
+	for i := 0; i < renderer.projectCount; i++ {
+		select {
+		case project := <-renderer.parsedProjects:
+			if err = categories.AddIfIncluded(project); err != nil {
+				return fmt.Errorf("failed to add project '%s' to categories: %w", project.Slug, err)
+			}
+			if categories.IsFull() {
+				break ProjectLoop
+			}
+		case <-renderer.channelContext.Done():
+			return nil
 		}
 	}
 
 	pageTemplate := IndexPageTemplate{
 		IndexPageBase: content.IndexPageBase,
 		Meta: TemplateMetadata{
-			Common: metadata,
+			Common: renderer.metadata,
 			Page:   content.Page,
 		},
 		AboutMe:           aboutMeText,
 		ProjectCategories: categories.ToSlice(),
 	}
-	if err := renderPage(pageTemplate.Meta, pageTemplate, templates); err != nil {
+	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
 		return fmt.Errorf("failed to render index page: %w", err)
 	}
 

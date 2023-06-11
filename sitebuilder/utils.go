@@ -14,7 +14,7 @@ func removeParagraphTagsAroundHTML(html string) template.HTML {
 	return template.HTML(html)
 }
 
-func closeOnErr(file *os.File, err error, wrappingErrMessage string) error {
+func closeFileOnErr(file *os.File, err error, wrappingErrMessage string) error {
 	if err == nil {
 		return nil
 	}
