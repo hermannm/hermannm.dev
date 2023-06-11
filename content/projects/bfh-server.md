@@ -15,6 +15,11 @@ linkCategories:
     links:
       - text: hermannm/bfh-server
         link: https://github.com/hermannm/bfh-server
+  - title: Docs
+    links:
+      - text: pkg.go.dev/hermannm.dev/bfh-server
+        link: https://pkg.go.dev/hermannm.dev/bfh-server
+        iconPath: /img/icons/go.svg
 ---
 
 Online multiplayer board game server written in Go, using WebSockets.
