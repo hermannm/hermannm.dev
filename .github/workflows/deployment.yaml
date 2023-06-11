@@ -7,6 +7,14 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: Production
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -30,3 +38,13 @@ jobs:
           github-comment: false
           vercel-args: "--prod"
           working-directory: static
+
+      - name: Update Deployment Status
+        uses: bobheadxi/deployments@v1
+        if: always()
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          env: ${{ steps.deployment.output.env }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
