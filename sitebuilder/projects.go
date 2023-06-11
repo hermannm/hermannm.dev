@@ -20,7 +20,7 @@ type ProjectProfile struct {
 type ProjectBase struct {
 	ProjectProfile `yaml:",inline"`
 	// Optional, defaults to DefaultTechStackTitle when TechStack is not empty.
-	TechStackTitle string `yaml:"techstackTitle"`
+	TechStackTitle string `yaml:"techStackTitle"`
 	// Optional.
 	LinkCategories []LinkCategory `yaml:"linkCategories,flow"`
 	//Optional.

@@ -3,6 +3,7 @@ name: Ignite Procurement
 slug: ignite
 iconPath: /img/companies/ignite.webp
 iconAlt: "Ignite Procurement company logo"
+techStackTitle: Technologies I worked with
 techStack:
   - tech: TypeScript
     usedFor: frontend
