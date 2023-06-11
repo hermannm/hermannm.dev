@@ -2,7 +2,7 @@
 page:
   goPackage:
     fullName: hermannm.dev/personal-website
-    githubURL: https://github.com/hermannm/personal-website
+    githubURL: https://github.com/hermannm/hermannm.dev
 name: personal-website
 slug: personal-website
 techStack:
