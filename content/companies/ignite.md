@@ -20,15 +20,12 @@ linkCategories:
         link: https://www.igniteprocurement.com/
 ---
 
-The story of this project starts in the fall of 2020, when my dad gave me one of the coolest
-birthday gifts I've ever received. He made me my very own board game: _The Battle for Hermannia_!
-The game involves strategy, diplomacy and intrigue, and I've played it a lot with friends in
-Trondheim. A couple friends of mine were particular fans of the game, and so in November 2021, we
-started developing a digital edition of it as a hobby project.
+My work at Ignite began in January 2022, when I started working part-time one day a week from
+Trondheim. In the summer of that year, I went to their Oslo office for 9 weeks to work full-time as
+a summer intern. After my internship, I continued working part-time from Trondheim through the fall
+semester.
 
-We decided to build the digital edition as a proper multiplayer online game. I wrote the server in
-Go, finding its native concurrency support suitable for the parallel nature of the game. My friends
-and I collaborated on the client, where we used C# with the Unity game engine. During this time, one
-of my friends also founded [Immerse NTNU](https://immersentnu.no/), a student organization for game
-development. He made this game client their first project, and so we also got invaluable help from
-new members there.
+The work involved full-stack development of the Ignite Procurement platform, using the technologies
+listed above. The scale of the project was much larger than anything I had worked on previously. I
+got to work a lot with Ignite's microservice architecture, which was quite challenging, but also a
+lot of fun. Towards the end of my internship, I even got to deploy my own Go microservice!
