@@ -79,7 +79,7 @@ var (
 		},
 		"Next.js": {
 			Link:     "https://nextjs.org/",
-			IconFile: "nextjs.svg",
+			IconFile: "next-js.svg",
 		},
 		"Django": {
 			Link:     "https://www.djangoproject.com/",
@@ -92,6 +92,10 @@ var (
 		"libGDX": {
 			Link:     "https://libgdx.com/",
 			IconFile: "libgdx.svg",
+		},
+		"gRPC": {
+			Link:     "https://grpc.io/",
+			IconFile: "grpc.svg",
 		},
 		"GraphQL": {
 			Link:     "https://graphql.org/",

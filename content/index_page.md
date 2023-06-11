@@ -30,6 +30,26 @@ projectCategories:
     projectSlugs:
       - indok-web
       - bfh
+      - coffeetalk
+      - corona-defense
+      - rov-sim
+      - export-control
+      - gadd
+      - advent-of-rust
+      - minesweeper
+      - gruvboxplain
+  - title: Companies I've worked for
+    contentDir: companies
+    projectSlugs:
+      - ignite
+      - ntnu-work
+      - fresh
+      - norlandia
+  - title: Schools I've studied at
+    contentDir: schools
+    projectSlugs:
+      - ntnu
+      - foss
 ---
 
 Hello there! I'm Hermann Mørkrid, a Computer Science student at NTNU Trondheim. I mostly do web
