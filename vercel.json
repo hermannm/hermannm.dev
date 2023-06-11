@@ -1,4 +1,4 @@
 {
   "trailingSlash": false,
-  "outputDirectory": "static"
+  "builds": [{ "src": "static", "use": "@vercel/static" }]
 }
