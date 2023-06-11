@@ -39,12 +39,12 @@ jobs:
           vercel-args: "--prod"
           working-directory: static
 
-      - name: Update Deployment Status
+      - name: Update deployment status
         uses: bobheadxi/deployments@v1
         if: always()
         with:
           step: finish
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
-          env: ${{ steps.deployment.output.env }}
+          env: Production
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
