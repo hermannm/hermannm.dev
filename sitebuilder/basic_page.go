@@ -31,9 +31,10 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 		return fmt.Errorf("failed to read markdown for page: %w", err)
 	}
 
-	renderer.pagePaths <- frontmatter.Page.Path
-
+	frontmatter.Page.Path = fmt.Sprintf("/%s", frontmatter.Page.Path)
 	frontmatter.Page.TemplateName = BasicPageTemplateName
+
+	renderer.pagePaths <- frontmatter.Page.Path
 
 	pageTemplate := BasicPageTemplate{
 		Meta: TemplateMetadata{
