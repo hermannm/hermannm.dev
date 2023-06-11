@@ -10,8 +10,9 @@ import (
 )
 
 type ProjectProfile struct {
-	Name     string `yaml:"name"`
-	Slug     string `yaml:"slug"`
+	Name string `yaml:"name"`
+	Slug string `yaml:"slug"`
+	// Optional if not included in index page.
 	IconPath string `yaml:"iconPath"`
 	IconAlt  string `yaml:"iconAlt"`
 }
@@ -181,7 +182,7 @@ func parseProject(
 				"failed to parse footnote for project '%s' as markdown: %w", project.Slug, err,
 			)
 		}
-		project.Footnote = template.HTML(builder.String())
+		project.Footnote = removeParagraphTagsAroundHTML(builder.String())
 	}
 
 	return ParsedProject{
