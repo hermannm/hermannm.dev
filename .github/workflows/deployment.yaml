@@ -6,19 +6,14 @@ on:
 jobs:
   Deploy:
     runs-on: ubuntu-latest
-
-    permissions:
-      deployments: write
-
     steps:
-      - name: Create GitHub deployment
-        uses: chrnorm/deployment-action@v2
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
         id: deployment
         with:
-          token: ${{ github.token }}
-          environment-url: https://hermannm.dev
-          environment: Production
-          production-environment: false
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: Production
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -44,20 +39,12 @@ jobs:
           vercel-args: "--prod"
           working-directory: static
 
-      - name: Update deployment status (success)
-        if: success()
-        uses: chrnorm/deployment-status@v2
+      - name: Update deployment status
+        uses: bobheadxi/deployments@v1
+        if: always()
         with:
-          token: ${{ github.token }}
-          environment-url: ${{ steps.deployment.outputs.environment_url }}
-          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
-          state: success
-
-      - name: Update deployment status (failure)
-        if: failure()
-        uses: chrnorm/deployment-status@v2
-        with:
-          token: ${{ github.token }}
-          environment-url: ${{ steps.deployment.outputs.environment_url }}
-          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
-          state: failure
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          env: Production
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
