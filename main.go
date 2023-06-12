@@ -109,5 +109,9 @@ var (
 			Link:     "https://mqtt.org/",
 			IconFile: "mqtt.svg",
 		},
+		"AWS CDK": {
+			Link:     "https://aws.amazon.com/cdk/",
+			IconFile: "aws.svg",
+		},
 	}
 )

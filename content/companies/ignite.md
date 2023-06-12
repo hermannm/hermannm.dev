@@ -14,7 +14,7 @@ techStack:
   - tech: gRPC
   - tech: GraphQL
 linkCategories:
-  - title: To read more about Ignite
+  - title: More about Ignite
     links:
       - text: igniteprocurement.com
         link: https://www.igniteprocurement.com/

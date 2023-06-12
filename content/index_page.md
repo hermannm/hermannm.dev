@@ -41,6 +41,7 @@ projectCategories:
   - title: Companies I've worked for
     contentDir: companies
     projectSlugs:
+      - capra
       - ignite
       - ntnu-work
       - fresh
