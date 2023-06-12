@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Start deployment
-        uses: bobheadxi/deployments@v1
+        uses: bobheadxi/deployments@v1.4.0
         id: deployment
         with:
           step: start
@@ -40,7 +40,7 @@ jobs:
           working-directory: static
 
       - name: Update deployment status
-        uses: bobheadxi/deployments@v1
+        uses: bobheadxi/deployments@v1.4.0
         if: always()
         with:
           step: finish
