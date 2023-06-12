@@ -13,7 +13,7 @@ techStack:
     usedFor: backend
   - tech: AWS CDK
     usedFor: infrastructure-as-code
-linkCategories:
+linkGroups:
   - title: More about Capra
     links:
       - text: capraconsulting.no

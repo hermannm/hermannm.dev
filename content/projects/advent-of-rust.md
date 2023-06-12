@@ -5,7 +5,7 @@ iconPath: /img/projects/ferris-the-christmas-crab.webp
 iconAlt: "Ferris the Crab, mascot of the Rust programming language, with a Christmas hat"
 techStack:
   - tech: Rust
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/advent-of-rust

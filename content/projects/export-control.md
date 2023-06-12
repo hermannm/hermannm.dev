@@ -7,7 +7,7 @@ techStack:
   - tech: Python
     usedWith:
       - Django
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: cdp-group4/export-control

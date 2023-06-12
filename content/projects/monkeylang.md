@@ -3,7 +3,7 @@ name: monkeylang
 slug: monkeylang
 techStack:
   - tech: Kotlin
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/monkeylang

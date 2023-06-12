@@ -7,7 +7,7 @@ name: set
 slug: set
 techStack:
   - tech: Go
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/set

@@ -53,11 +53,11 @@
       </div>
     </div>
 
-    {{ range $projectCategory := .ProjectCategories }}
-      <h2 class="text-center no-margin">{{ $projectCategory.Title }}</h2>
+    {{ range $projectGroup := .ProjectGroups }}
+      <h2 class="text-center no-margin">{{ $projectGroup.Title }}</h2>
 
       <ul class="project-list row wrap large-gap justify-center no-margin">
-        {{- range $project := $projectCategory.Projects }}
+        {{- range $project := $projectGroup.Projects }}
           <li>
             <a class="project-banner" href="/{{ $project.Slug }}">
               <img

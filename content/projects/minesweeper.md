@@ -5,7 +5,7 @@ iconPath: /img/projects/minesweeper.webp
 iconAlt: "Screenshot of a Minesweeper game round"
 techStack:
   - tech: Java
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/minesweeper

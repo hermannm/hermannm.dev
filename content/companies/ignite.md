@@ -13,7 +13,7 @@ techStack:
     usedFor: backend microservices
   - tech: gRPC
   - tech: GraphQL
-linkCategories:
+linkGroups:
   - title: More about Ignite
     links:
       - text: igniteprocurement.com

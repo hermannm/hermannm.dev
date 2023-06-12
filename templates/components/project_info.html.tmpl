@@ -77,23 +77,23 @@
 
   {{- .Description -}}
 
-  {{- range $linkCategory := .LinkCategories }}
-    {{- $linkCategoryLength := len $linkCategory.Links -}}
-    {{- if ge $linkCategoryLength 2 -}}
+  {{- range $linkGroup := .LinkGroups }}
+    {{- $linkGroupLength := len $linkGroup.Links -}}
+    {{- if ge $linkGroupLength 2 -}}
       <div class="column small-gap">
-        <strong>{{ $linkCategory.Title }}:</strong>
+        <strong>{{ $linkGroup.Title }}:</strong>
         <ul class="column small-gap icon-list">
-          {{- range $linkItem := $linkCategory.Links }}
+          {{- range $linkItem := $linkGroup.Links }}
             <li class="row">
               {{- template "linkItem" $linkItem -}}
             </li>
           {{- end }}
         </ul>
       </div>
-    {{- else if eq $linkCategoryLength 1 }}
-      {{ $linkItem := index $linkCategory.Links 0 }}
+    {{- else if eq $linkGroupLength 1 }}
+      {{ $linkItem := index $linkGroup.Links 0 }}
       <div class="row medium-gap wrap">
-        <strong>{{ $linkCategory.Title }}:</strong>
+        <strong>{{ $linkGroup.Title }}:</strong>
         {{- template "linkItem" $linkItem -}}
       </div>
     {{- end }}

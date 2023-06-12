@@ -7,7 +7,7 @@ techStack:
   - tech: C#
     usedWith:
       - Unity
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: eit-nemo-group3/rov-sim

@@ -10,7 +10,7 @@ techStack:
     usedFor: backend
   - tech: WebRTC
   - tech: MQTT
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: dcs-team4/coffeetalk

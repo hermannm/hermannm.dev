@@ -10,7 +10,7 @@ techStack:
       - libGDX
   - tech: C#
     usedFor: server-side
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: swa-group1/corona-defense-client

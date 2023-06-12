@@ -22,12 +22,12 @@ type ProjectBase struct {
 	// Optional, defaults to DefaultTechStackTitle when TechStack is not empty.
 	TechStackTitle string `yaml:"techStackTitle"`
 	// Optional.
-	LinkCategories []LinkCategory `yaml:"linkCategories,flow"`
+	LinkGroups []LinkGroup `yaml:"linkGroups,flow"`
 	//Optional.
 	Footnote template.HTML `yaml:"footnote"`
 }
 
-type LinkCategory struct {
+type LinkGroup struct {
 	Title string `yaml:"title"`
 	// May omit IconPath field.
 	Links []LinkItem `yaml:"links,flow"`
@@ -166,7 +166,7 @@ func parseProject(
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
 	}
-	setGitHubLinkIcons(project.LinkCategories, metadata.GitHubIconPath)
+	setGitHubLinkIcons(project.LinkGroups, metadata.GitHubIconPath)
 
 	techStack, err := parseTechStack(project.TechStack, techResources)
 	if err != nil {
@@ -239,12 +239,12 @@ func techLinkItemFromResource(techName string, techResources TechResourceMap) (L
 
 const githubBaseURL = "https://github.com"
 
-func setGitHubLinkIcons(linkCategories []LinkCategory, githubIconPath string) {
-	for _, category := range linkCategories {
-		for i, link := range category.Links {
+func setGitHubLinkIcons(linkGroups []LinkGroup, githubIconPath string) {
+	for _, group := range linkGroups {
+		for i, link := range group.Links {
 			if link.IconPath == "" && strings.HasPrefix(link.Link, githubBaseURL) {
 				link.IconPath = githubIconPath
-				category.Links[i] = link
+				group.Links[i] = link
 			}
 		}
 	}

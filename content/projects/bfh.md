@@ -10,7 +10,7 @@ techStack:
       - Unity
   - tech: Go
     usedFor: server-side
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: immerse-ntnu/bfh-client

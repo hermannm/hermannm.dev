@@ -10,7 +10,7 @@ iconPath: /img/projects/immerse.webp
 iconAlt: "Immerse NTNU student organization logo"
 techStack:
   - tech: Go
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/bfh-server

@@ -7,7 +7,7 @@ name: ipfinder
 slug: ipfinder
 techStack:
   - tech: Go
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/ipfinder

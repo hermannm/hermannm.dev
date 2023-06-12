@@ -7,7 +7,7 @@ name: personal-website
 slug: personal-website
 techStack:
   - tech: Go
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/hermannm.dev

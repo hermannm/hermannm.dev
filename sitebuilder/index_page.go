@@ -17,25 +17,25 @@ type IndexPageBase struct {
 }
 
 type IndexPageMarkdown struct {
-	IndexPageBase     `yaml:",inline"`
-	Page              Page                      `yaml:"page"`
-	ProjectCategories []ProjectCategoryMarkdown `yaml:"projectCategories,flow"`
+	IndexPageBase `yaml:",inline"`
+	Page          Page                   `yaml:"page"`
+	ProjectGroups []ProjectGroupMarkdown `yaml:"projectGroups,flow"`
 }
 
 type IndexPageTemplate struct {
 	IndexPageBase
-	Meta              TemplateMetadata
-	AboutMe           template.HTML
-	ProjectCategories []ProjectCategoryTemplate
+	Meta          TemplateMetadata
+	AboutMe       template.HTML
+	ProjectGroups []ProjectGroupTemplate
 }
 
-type ProjectCategoryMarkdown struct {
+type ProjectGroupMarkdown struct {
 	Title        string   `yaml:"title"`
 	ProjectSlugs []string `yaml:"projectSlugs,flow"`
 	ContentDir   string   `yaml:"contentDir"`
 }
 
-type ProjectCategoryTemplate struct {
+type ProjectGroupTemplate struct {
 	Title    string
 	Projects []ProjectProfile
 }
@@ -61,16 +61,16 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.
 
 	renderer.pagePaths <- content.Page.Path
 
-	categories := parseProjectCategories(content.ProjectCategories)
+	groups := parseProjectGroups(content.ProjectGroups)
 
 ProjectLoop:
 	for i := 0; i < renderer.projectCount; i++ {
 		select {
 		case project := <-renderer.parsedProjects:
-			if err = categories.AddIfIncluded(project); err != nil {
-				return fmt.Errorf("failed to add project '%s' to categories: %w", project.Slug, err)
+			if err = groups.AddIfIncluded(project); err != nil {
+				return fmt.Errorf("failed to add project '%s' to groups: %w", project.Slug, err)
 			}
-			if categories.IsFull() {
+			if groups.IsFull() {
 				break ProjectLoop
 			}
 		case <-renderer.channelContext.Done():
@@ -84,8 +84,8 @@ ProjectLoop:
 			Common: renderer.metadata,
 			Page:   content.Page,
 		},
-		AboutMe:           aboutMeText,
-		ProjectCategories: categories.ToSlice(),
+		AboutMe:       aboutMeText,
+		ProjectGroups: groups.ToSlice(),
 	}
 	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
 		return fmt.Errorf("failed to render index page: %w", err)
@@ -136,54 +136,54 @@ func ageFromBirthday(birthday time.Time) int {
 	return age
 }
 
-func parseProjectCategories(categories []ProjectCategoryMarkdown) ParsedProjectCategories {
-	parsedCategories := make([]ParsedProjectCategory, len(categories))
+func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
+	parsedGroups := make([]ParsedProjectGroup, len(groups))
 	targetNumberOfProjects := 0
 
-	for i, category := range categories {
-		projectsLength := len(category.ProjectSlugs)
+	for i, group := range groups {
+		projectsLength := len(group.ProjectSlugs)
 
 		projectIndicesBySlug := make(map[string]int, projectsLength)
-		for j, slug := range category.ProjectSlugs {
+		for j, slug := range group.ProjectSlugs {
 			projectIndicesBySlug[slug] = j
 			targetNumberOfProjects++
 		}
 
-		parsedCategories[i] = ParsedProjectCategory{
-			ProjectCategoryTemplate: ProjectCategoryTemplate{
-				Title:    category.Title,
+		parsedGroups[i] = ParsedProjectGroup{
+			ProjectGroupTemplate: ProjectGroupTemplate{
+				Title:    group.Title,
 				Projects: make([]ProjectProfile, projectsLength),
 			},
 			projectIndicesBySlug: projectIndicesBySlug,
-			contentDir:           category.ContentDir,
+			contentDir:           group.ContentDir,
 		}
 	}
 
-	return ParsedProjectCategories{
-		list:                   parsedCategories,
+	return ParsedProjectGroups{
+		list:                   parsedGroups,
 		numberOfProjects:       0,
 		targetNumberOfProjects: targetNumberOfProjects,
 	}
 }
 
-type ParsedProjectCategories struct {
-	list                   []ParsedProjectCategory
+type ParsedProjectGroups struct {
+	list                   []ParsedProjectGroup
 	numberOfProjects       int
 	targetNumberOfProjects int
 }
 
-type ParsedProjectCategory struct {
-	ProjectCategoryTemplate
+type ParsedProjectGroup struct {
+	ProjectGroupTemplate
 	projectIndicesBySlug map[string]int
 	contentDir           string
 }
 
-func (categories *ParsedProjectCategories) AddIfIncluded(project ProjectWithContentDir) error {
-	var category ParsedProjectCategory
+func (groups *ParsedProjectGroups) AddIfIncluded(project ProjectWithContentDir) error {
+	var group ParsedProjectGroup
 	isIncluded := false
-	for _, candidate := range categories.list {
+	for _, candidate := range groups.list {
 		if candidate.contentDir == project.ContentDir {
-			category = candidate
+			group = candidate
 			isIncluded = true
 			break
 		}
@@ -192,30 +192,30 @@ func (categories *ParsedProjectCategories) AddIfIncluded(project ProjectWithCont
 		return nil
 	}
 
-	index, isIncluded := category.projectIndicesBySlug[project.Slug]
+	index, isIncluded := group.projectIndicesBySlug[project.Slug]
 	if !isIncluded {
 		return nil
 	}
 
-	projects := category.Projects
+	projects := group.Projects
 	if index >= len(projects) {
-		return fmt.Errorf("project index in category '%s' is out-of-bounds", category.Title)
+		return fmt.Errorf("project index in group '%s' is out-of-bounds", group.Title)
 	}
 
-	category.Projects[index] = project.ProjectProfile
-	categories.numberOfProjects++
+	group.Projects[index] = project.ProjectProfile
+	groups.numberOfProjects++
 	return nil
 }
 
-func (categories *ParsedProjectCategories) IsFull() bool {
-	return categories.numberOfProjects == categories.targetNumberOfProjects
+func (groups *ParsedProjectGroups) IsFull() bool {
+	return groups.numberOfProjects == groups.targetNumberOfProjects
 }
 
-func (categories *ParsedProjectCategories) ToSlice() []ProjectCategoryTemplate {
-	slice := make([]ProjectCategoryTemplate, 0, len(categories.list))
+func (groups *ParsedProjectGroups) ToSlice() []ProjectGroupTemplate {
+	slice := make([]ProjectGroupTemplate, 0, len(groups.list))
 
-	for _, category := range categories.list {
-		slice = append(slice, category.ProjectCategoryTemplate)
+	for _, group := range groups.list {
+		slice = append(slice, group.ProjectGroupTemplate)
 	}
 
 	return slice

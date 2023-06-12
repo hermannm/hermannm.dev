@@ -14,7 +14,7 @@ techStack:
     usedWith:
       - Django
   - tech: GraphQL
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: rubberdok/indok-web

@@ -24,7 +24,7 @@ profilePictureDesktop:
   alt: "Hermann's profile picture"
   width: 240
   height: 240
-projectCategories:
+projectGroups:
   - title: Projects I've contributed to
     contentDir: projects
     projectSlugs:

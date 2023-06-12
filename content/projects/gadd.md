@@ -5,7 +5,7 @@ iconPath: /img/projects/ferris-the-git-crab.webp
 iconAlt: Ferris the Crab, mascot of the Rust programming language, with the Git logo on its forehead
 techStack:
   - tech: Rust
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/gadd

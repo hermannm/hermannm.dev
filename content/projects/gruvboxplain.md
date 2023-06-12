@@ -3,7 +3,7 @@ name: gruvbox-plain
 slug: gruvboxplain
 iconPath: /img/projects/gruvbox-plain.webp
 iconAlt: "Diagonal stripes with the gruvbox-plain color scheme"
-linkCategories:
+linkGroups:
   - title: Code
     links:
       - text: hermannm/gruvbox-plain
