@@ -48,3 +48,5 @@ jobs:
           status: ${{ job.status }}
           env: Production
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          override: false
+          auto_inactive: true
