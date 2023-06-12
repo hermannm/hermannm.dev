@@ -54,7 +54,7 @@ func RenderPages(
 		return err
 	}
 
-	renderer, err := NewPageRenderer(metadata, len(projectFiles), len(contentPaths.BasicPages))
+	renderer, err := NewPageRenderer(metadata, len(projectFiles), len(contentPaths.BasicPages), 1)
 	if err != nil {
 		return err
 	}
@@ -100,10 +100,8 @@ type PageRenderer struct {
 	cancelChannels func()
 }
 
-const nonProjectOrBasicPageCount = 1
-
 func NewPageRenderer(
-	metadata CommonMetadata, projectCount int, basicPageCount int,
+	metadata CommonMetadata, projectCount int, basicPageCount int, otherPagesCount int,
 ) (PageRenderer, error) {
 	templates, err := parseTemplates()
 	if err != nil {
@@ -112,7 +110,7 @@ func NewPageRenderer(
 
 	parsedProjects := make(chan ProjectWithContentDir, projectCount)
 
-	pageCount := basicPageCount + projectCount + nonProjectOrBasicPageCount
+	pageCount := basicPageCount + projectCount + otherPagesCount
 	pagePaths := make(chan string, pageCount)
 
 	channelContext, cancelChannels := context.WithCancel(context.Background())
