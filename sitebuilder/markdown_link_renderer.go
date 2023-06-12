@@ -29,13 +29,13 @@ func NewMarkdownLinkRenderer(opts ...html.Option) renderer.NodeRenderer {
 func (linkRenderer MarkdownLinkRenderer) RegisterFuncs(
 	registerer renderer.NodeRendererFuncRegisterer,
 ) {
-	registerer.Register(ast.KindLink, linkRenderer.RenderMarkdownLink)
+	registerer.Register(ast.KindLink, linkRenderer.RenderLink)
 }
 
 // Copied from goldmark HTML renderer, but now adds target="_blank" to all external links.
 //
 // https://github.com/yuin/goldmark/blob/b2df67847ed38c31cf4f9e32483377a8e907a6ae/renderer/html/html.go#L552
-func (linkRenderer MarkdownLinkRenderer) RenderMarkdownLink(
+func (linkRenderer MarkdownLinkRenderer) RenderLink(
 	writer util.BufWriter, source []byte, node ast.Node, entering bool,
 ) (ast.WalkStatus, error) {
 	linkNode := node.(*ast.Link)
