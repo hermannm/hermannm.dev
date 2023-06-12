@@ -18,7 +18,7 @@ jobs:
           token: ${{ github.token }}
           environment-url: https://hermannm.dev
           environment: Production
-          # Set to false to automatically mark old deployments as inactive
+          # False, to let GitHub automatically mark old deployments as inactive
           # See https://docs.github.com/en/rest/deployments/deployments?apiVersion=2022-11-28#inactive-deployments
           production-environment: false
 
