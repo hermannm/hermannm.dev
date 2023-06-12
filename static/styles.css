@@ -157,15 +157,6 @@ a.project-banner:hover {
   margin-left: calc(var(--medium-gap-size) - var(--small-gap-size));
 }
 
-.main-content-text {
-  padding-left: var(--small-gap-size);
-  padding-right: var(--small-gap-size);
-}
-.main-content-text > * {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
 @media screen and (max-width: 480px) {
   .header-container {
     flex-direction: column;
@@ -255,6 +246,11 @@ a.project-banner:hover {
   max-width: var(--content-width);
 }
 
+.main-content-text {
+  padding-left: var(--small-gap-size);
+  padding-right: var(--small-gap-size);
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -315,6 +311,11 @@ a.project-banner:hover {
 
 .no-margin {
   margin: 0;
+}
+
+.no-child-margins > * {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .large-font {
