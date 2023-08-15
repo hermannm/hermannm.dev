@@ -9,7 +9,7 @@ import (
 	"io/fs"
 	"os"
 	"os/exec"
-	"sort"
+	"slices"
 	"strings"
 	"time"
 
@@ -183,7 +183,7 @@ func (renderer *PageRenderer) BuildSitemap() error {
 		}
 	}
 
-	sort.Strings(pageURLs)
+	slices.Sort(pageURLs)
 
 	sitemap := strings.Join(pageURLs, "\n")
 
