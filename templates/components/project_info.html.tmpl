@@ -61,7 +61,7 @@
       <strong>{{ .TechStackTitle }}:</strong>
       <ul class="column small-gap icon-list">
         {{- range $technology := .TechStack }}
-          <li class="row medium-gap wrap">
+          <li class="row medium-gap small-row-gap wrap">
             {{- template "techStackItem" $technology }}
           </li>
         {{- end }}

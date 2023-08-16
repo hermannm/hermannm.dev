@@ -305,6 +305,10 @@ a.project-banner:hover {
   gap: var(--small-gap-size);
 }
 
+.small-row-gap {
+  row-gap: var(--small-gap-size);
+}
+
 .no-gap {
   gap: 0;
 }
