@@ -26,8 +26,9 @@ but I found its interface clunky. I looked around for alternatives, but those I 
 much or had other problems. Thus, I decided to create _gadd_: a small command-line utility for
 staging files to Git.
 
-I wanted to program more in Rust after [using it for Advent of Code](/advent-of-rust), and found it
-suitable for a terminal application like this. To interact with Git, I used Rust bindings for
+I wanted to program more in Rust after
+[using it for Advent of Code](https://github.com/hermannm/advent-of-rust), and found it suitable for
+a terminal application like this. To interact with Git, I used Rust bindings for
 [libgit2](https://libgit2.org/). This taught me a lot about how Git works under the hood ⁠— as is
 often the case, it is more complex than it looks on the surface!
 

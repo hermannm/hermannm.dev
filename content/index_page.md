@@ -35,7 +35,6 @@ projectGroups:
       - rov-sim
       - export-control
       - gadd
-      - advent-of-rust
       - minesweeper
       - gruvboxplain
   - title: Companies I've worked for
