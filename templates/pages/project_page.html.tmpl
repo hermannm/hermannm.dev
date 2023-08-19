@@ -1,15 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-US">
   {{- template "head.html.tmpl" .Meta -}}
-  <body class="content-width-body column large-gap">
-    <h1 class="row justify-center no-margin"><a href="/">hermannm.dev</a></h1>
+  <body
+    class="mb-4 ml-[var(--content-margin)] mr-[var(--content-margin)] mt-4 flex min-h-[var(--page-height)] max-w-[var(--content-width)] flex-col gap-4 bg-gruvbox-bg0 font-main text-[15px] leading-[normal] text-gruvbox-fg"
+  >
+    <h1 class="flex justify-center text-3xl font-bold"><a href="/">hermannm.dev</a></h1>
 
-    <div class="column large-gap-minus-border">
+    <div class="flex flex-col gap-3">
       <div class="project-banner">
         {{- if .Project.IconPath -}}
           <img width="50" height="50" src="{{ .Project.IconPath }}" alt="{{ .Project.IconAlt }}" />
         {{- end -}}
-        <h2>{{ .Project.Name }}</h2>
+        <h2 class="text-lg [&:first-child]:ml-1">{{ .Project.Name }}</h2>
       </div>
 
       {{- template "project_info.html.tmpl" .Project -}}

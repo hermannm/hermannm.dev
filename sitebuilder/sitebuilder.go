@@ -129,24 +129,43 @@ func NewPageRenderer(
 
 func FormatRenderedPages() error {
 	patternToFormat := fmt.Sprintf("%s/**/*.html", BaseOutputDir)
-	command := exec.Command("npx", "prettier", "--write", patternToFormat)
+	return execCommand("prettier", "npx", "prettier", "--write", patternToFormat)
+}
+
+func GenerateTailwindCSS(cssFileName string) error {
+	outputPath := fmt.Sprintf("%s/%s", BaseOutputDir, cssFileName)
+	return execCommand(
+		"tailwind", "npx", "tailwindcss", "-i", cssFileName, "-o", outputPath, "--minify",
+	)
+}
+
+func execCommand(displayName string, commandName string, args ...string) error {
+	command := exec.Command(commandName, args...)
 
 	stderr, err := command.StderrPipe()
 	if err != nil {
-		return fmt.Errorf("failed to get pipe to prettier's error output: %w", err)
+		return fmt.Errorf("failed to get pipe to %s's error output: %w", displayName, err)
 	}
 
 	if err := command.Start(); err != nil {
-		return fmt.Errorf("failed to start prettier command: %w", err)
+		return fmt.Errorf("failed to start %s command: %w", displayName, err)
 	}
 
 	errScanner := bufio.NewScanner(stderr)
+	var commandErrs strings.Builder
 	for errScanner.Scan() {
-		fmt.Printf("error from prettier: %s\n", errScanner.Text())
+		if commandErrs.Len() == 0 {
+			fmt.Fprintf(&commandErrs, "errors from %s:", displayName)
+		}
+		fmt.Fprintf(&commandErrs, "\n%s", errScanner.Text())
 	}
 
 	if err := command.Wait(); err != nil {
-		return fmt.Errorf("failed to complete prettier command: %w", err)
+		if commandErrs.Len() == 0 {
+			return fmt.Errorf("%s failed: %w", displayName, err)
+		} else {
+			return fmt.Errorf("%s failed: %w\n%s", displayName, err, commandErrs.String())
+		}
 	}
 
 	return nil

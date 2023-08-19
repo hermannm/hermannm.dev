@@ -4,8 +4,8 @@ page:
   path: 404.html
 ---
 
-<figure class="column align-center no-margin">
-  <pre class="no-margin" role="img" aria-label="404 in ASCII character art">
+<figure class="flex flex-col items-center m-0">
+  <pre class="m-0" role="img" aria-label="404 in ASCII character art">
  _  _    ___  _  _   
 | || |  / _ \| || |  
 | || |_| | | | || |_ 
@@ -13,5 +13,5 @@ page:
    | | | |_| |  | |  
    |_|  \___/   |_|  
   </pre>
-  <figcaption class="large-font text-center">Not Found</figcaption>
+  <figcaption class="text-lg">Not Found</figcaption>
 </figure>

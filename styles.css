@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --page-width: 55rem;
+  --content-width: 40rem;
+
+  --page-margin: max(0.5rem, calc(50vw - var(--page-width) / 2));
+  --content-margin: max(0.5rem, calc(50vw - var(--content-width) / 2));
+
+  --profile-pic-size: calc(var(--page-width) - var(--content-width));
+  --project-image-size: 50px;
+
+  --sm-breakpoint: 624px;
+  --xs-header-text-width: calc(var(--sm-breakpoint) - var(--profile-pic-size) - 3rem);
+
+  --background-color: #282828;
+  --scrollbar-thumb-color: #928374;
+
+  /* Fallback for browsers without dvh support */
+  --page-height: calc(100vh - 2 * 1rem);
+  --page-height: calc(100dvh - 2 * 1rem);
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("/fonts/roboto-mono.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("/fonts/roboto-mono-bold.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("/fonts/roboto-mono-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+* {
+  /*
+  Includes padding + border in an element's width/height values,
+  see https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing to read more
+  */
+  box-sizing: border-box;
+}
+
+body {
+  /* Scrollbar customization in Firefox - Chrome/Safari use -webkit-scrollbar below */
+  scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
+  scrollbar-width: 0.5rem;
+}
+body::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+}
+body::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+a {
+  text-decoration: underline;
+}
+
+.project-banner {
+  @apply flex h-[calc(2*4px+var(--project-image-size))] items-center gap-2 rounded-lg border-4 border-solid border-gruvbox-bg2 bg-gruvbox-bg2 font-bold;
+}
+
+.project-banner > img {
+  @apply max-w-[var(--project-image-size)] rounded-lg;
+}

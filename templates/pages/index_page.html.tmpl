@@ -1,28 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-US">
   {{- template "head.html.tmpl" .Meta -}}
-  <body class="full-width-body column large-gap">
-    <div class="header-container">
-      <div class="column large-gap header-text no-child-margins">
-        <h1 class="row justify-center no-margin">{{ .Meta.Page.Title }}</h1>
-        <p class="content-width main-content-text">
+  <body
+    class="mb-4 ml-[var(--page-margin)] mr-[var(--page-margin)] mt-4 flex min-h-[var(--page-height)] max-w-[var(--page-width)] flex-col gap-4 bg-gruvbox-bg0 font-main text-[15px] leading-[normal] text-gruvbox-fg"
+  >
+    <div class="xs:flex-row flex flex-col items-center gap-4">
+      <div
+        class="xs:min-w-[var(--xs-header-text-width)] xs:max-w-[var(--xs-header-text-width)] flex flex-col gap-4 sm:min-w-0 sm:max-w-none"
+      >
+        <h1 class="m-0 flex flex-row justify-center text-3xl font-bold">{{ .Meta.Page.Title }}</h1>
+        <p class="mb-0 mt-0 max-w-[var(--content-width)] pl-1 pr-1">
           {{ .AboutMe }}
         </p>
-        <ul class="responsive-4-column-grid icon-list">
+        <ul class="mb-0 mt-0 grid grid-cols-2 place-items-center gap-4 md:grid-cols-4">
           {{- range $infoField := .PersonalInfo }}
             {{- if $infoField.Link }}
               <li>
-                <a class="row align-center medium-gap" href="{{ $infoField.Link }}" target="_blank">
-                  <img class="icon" width="16" height="16" src="{{ $infoField.IconPath }}" alt />
-                  <div class="shrink-text text-center">
+                <a class="flex items-center gap-2" href="{{ $infoField.Link }}" target="_blank">
+                  <img
+                    class="h-[16px] w-[16px]"
+                    width="16"
+                    height="16"
+                    src="{{ $infoField.IconPath }}"
+                    alt
+                  />
+                  <div class="w-min text-center">
                     {{ personalInfoTextWrapping $infoField.Text }}
                   </div>
                 </a>
               </li>
             {{- else }}
-              <li class="row align-center medium-gap">
-                <img class="icon" width="16" height="16" src="{{ $infoField.IconPath }}" alt />
-                <div class="shrink-text text-center">
+              <li class="flex items-center gap-2">
+                <img
+                  class="h-[16px] w-[16px]"
+                  width="16"
+                  height="16"
+                  src="{{ $infoField.IconPath }}"
+                  alt
+                />
+                <div class="w-min text-center">
                   {{ personalInfoTextWrapping $infoField.Text }}
                 </div>
               </li>
@@ -45,7 +61,7 @@
             srcset="{{ .ProfilePictureDesktop.Path }}"
           />
           <img
-            class="profile-picture"
+            class="xs:max-w-full xs:object-cover xs:h-[var(--profile-pic-size)] h-full w-full rounded-lg border-4 border-solid border-gruvbox-bg2 sm:w-[var(--profile-pic-size)] sm:max-w-none"
             src="{{ .ProfilePictureDesktop.Path }}"
             alt="{{ .ProfilePictureDesktop.Alt }}"
           />
@@ -54,12 +70,15 @@
     </div>
 
     {{ range $projectGroup := .ProjectGroups }}
-      <h2 class="text-center no-margin">{{ $projectGroup.Title }}</h2>
+      <h2 class="text-center text-lg font-bold">{{ $projectGroup.Title }}</h2>
 
-      <ul class="project-list row wrap large-gap justify-center no-margin">
+      <ul class="m-0 flex flex-wrap justify-center gap-4">
         {{- range $project := $projectGroup.Projects }}
-          <li>
-            <a class="project-banner" href="/{{ $project.Slug }}">
+          <li class="xs:basis-[calc(50%-0.5rem)] basis-full md:basis-[calc(100%/3-1rem*2/3)]">
+            <a
+              class="project-banner no-underline hover:border-gruvbox-bg3 hover:bg-gruvbox-bg3"
+              href="/{{ $project.Slug }}"
+            >
               <img
                 width="50"
                 height="50"

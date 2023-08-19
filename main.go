@@ -9,15 +9,16 @@ import (
 )
 
 func main() {
-	if err := sitebuilder.RenderPages(
-		contentPaths, metadata, techResources, birthday,
-	); err != nil {
+	if err := sitebuilder.RenderPages(contentPaths, metadata, techResources, birthday); err != nil {
 		log.Fatalln(err)
 	}
 
 	if err := sitebuilder.FormatRenderedPages(); err != nil {
-		err = fmt.Errorf("failed to format rendered templates: %w", err)
-		log.Fatalf("%v\n\n%s\n", err, "Do you have Prettier installed?")
+		log.Fatalf("failed to format rendered html: %v\n", err)
+	}
+
+	if err := sitebuilder.GenerateTailwindCSS("styles.css"); err != nil {
+		log.Fatalf("failed to generate tailwind css: %v\n", err)
 	}
 
 	fmt.Printf("Website built successfully! Output in ./%s\n", sitebuilder.BaseOutputDir)

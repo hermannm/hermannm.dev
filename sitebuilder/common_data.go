@@ -41,8 +41,6 @@ type GoPackage struct {
 	GitHubURL string `yaml:"githubURL"`
 }
 
-const noTextWrapCSSClass = "no-text-wrap"
-
 var TemplateFunctions = template.FuncMap{
 	"plus1": func(x int) int {
 		return x + 1
@@ -56,9 +54,7 @@ var TemplateFunctions = template.FuncMap{
 
 		var builder strings.Builder
 
-		builder.WriteString(`<span class="`)
-		builder.WriteString(noTextWrapCSSClass)
-		builder.WriteString(`">`)
+		builder.WriteString(`<span class="whitespace-nowrap">`)
 
 		cutoff := (wordCount - 1) / 2
 		for i, word := range words {
