@@ -75,6 +75,21 @@ a {
   text-decoration: underline;
 }
 
+ul {
+  @apply list-disc pl-6;
+}
+ol {
+  @apply list-decimal pl-6;
+}
+ul ul,
+ol ul {
+  @apply list-[circle] pl-8;
+}
+ol ol,
+ul ol {
+  @apply list-[lower-latin] pl-8;
+}
+
 .project-banner {
   @apply flex h-[calc(2*4px+var(--project-image-size))] items-center gap-2 rounded-lg border-4 border-solid border-gruvbox-bg2 bg-gruvbox-bg2 font-bold;
 }

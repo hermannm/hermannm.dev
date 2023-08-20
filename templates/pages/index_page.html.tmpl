@@ -4,15 +4,17 @@
   <body
     class="mb-4 ml-[var(--page-margin)] mr-[var(--page-margin)] mt-4 flex min-h-[var(--page-height)] max-w-[var(--page-width)] flex-col gap-4 bg-gruvbox-bg0 font-main text-[15px] leading-[normal] text-gruvbox-fg"
   >
-    <div class="xs:flex-row flex flex-col items-center gap-4">
+    <div class="flex flex-col items-center gap-4 xs:flex-row">
       <div
-        class="xs:min-w-[var(--xs-header-text-width)] xs:max-w-[var(--xs-header-text-width)] flex flex-col gap-4 sm:min-w-0 sm:max-w-none"
+        class="flex flex-col gap-4 xs:min-w-[var(--xs-header-text-width)] xs:max-w-[var(--xs-header-text-width)] sm:min-w-0 sm:max-w-none"
       >
         <h1 class="m-0 flex flex-row justify-center text-3xl font-bold">{{ .Meta.Page.Title }}</h1>
         <p class="mb-0 mt-0 max-w-[var(--content-width)] pl-1 pr-1">
           {{ .AboutMe }}
         </p>
-        <ul class="mb-0 mt-0 grid grid-cols-2 place-items-center gap-4 md:grid-cols-4">
+        <ul
+          class="mb-0 mt-0 grid list-none grid-cols-2 place-items-center gap-4 pl-0 md:grid-cols-4"
+        >
           {{- range $infoField := .PersonalInfo }}
             {{- if $infoField.Link }}
               <li>
@@ -61,7 +63,7 @@
             srcset="{{ .ProfilePictureDesktop.Path }}"
           />
           <img
-            class="xs:max-w-full xs:object-cover xs:h-[var(--profile-pic-size)] h-full w-full rounded-lg border-4 border-solid border-gruvbox-bg2 sm:w-[var(--profile-pic-size)] sm:max-w-none"
+            class="h-full w-full rounded-lg border-4 border-solid border-gruvbox-bg2 xs:h-[var(--profile-pic-size)] xs:max-w-full xs:object-cover sm:w-[var(--profile-pic-size)] sm:max-w-none"
             src="{{ .ProfilePictureDesktop.Path }}"
             alt="{{ .ProfilePictureDesktop.Alt }}"
           />
@@ -72,9 +74,9 @@
     {{ range $projectGroup := .ProjectGroups }}
       <h2 class="text-center text-lg font-bold">{{ $projectGroup.Title }}</h2>
 
-      <ul class="m-0 flex flex-wrap justify-center gap-4">
+      <ul class="m-0 flex list-none flex-wrap justify-center gap-4 pl-0">
         {{- range $project := $projectGroup.Projects }}
-          <li class="xs:basis-[calc(50%-0.5rem)] basis-full md:basis-[calc(100%/3-1rem*2/3)]">
+          <li class="basis-full xs:basis-[calc(50%-0.5rem)] md:basis-[calc(100%/3-1rem*2/3)]">
             <a
               class="project-banner no-underline hover:border-gruvbox-bg3 hover:bg-gruvbox-bg3"
               href="/{{ $project.Slug }}"
