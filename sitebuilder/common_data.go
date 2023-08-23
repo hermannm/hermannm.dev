@@ -6,9 +6,9 @@ import (
 )
 
 type LinkItem struct {
-	Text     string `yaml:"text"`
-	Link     string `yaml:"link"`
-	IconPath string `yaml:"iconPath"`
+	Text     string `yaml:"text" validate:"required"`
+	Link     string `yaml:"link" validate:"omitempty,url"`
+	IconPath string `yaml:"iconPath" validate:"omitempty,filepath"`
 }
 
 type TemplateMetadata struct {
@@ -17,28 +17,26 @@ type TemplateMetadata struct {
 }
 
 type CommonMetadata struct {
-	SiteName         string
-	SiteDescription  string
-	BaseURL          string
-	GitHubIconPath   string
-	GitHubIssuesLink string
+	SiteName         string `validate:"required"`
+	SiteDescription  string `validate:"required"`
+	BaseURL          string `validate:"required,url"`
+	GitHubIconPath   string `validate:"required,filepath"`
+	GitHubIssuesLink string `validate:"required,url"`
 }
 
 type Page struct {
-	Title        string `yaml:"title"`
+	Title        string `yaml:"title" validate:"required"`
 	Path         string `yaml:"path"`
-	TemplateName string `yaml:"templateName"`
-
-	// Optional.
-	RedirectURL string `yaml:"redirectURL"`
+	TemplateName string `yaml:"templateName" validate:"required,filepath"`
+	RedirectURL  string `yaml:"redirectURL"` // Optional.
 
 	// Nil if page does not host a Go package.
-	GoPackage *GoPackage `yaml:"goPackage"`
+	GoPackage *GoPackage `yaml:"goPackage" validate:"omitempty"`
 }
 
 type GoPackage struct {
-	FullName  string `yaml:"fullName"`
-	GitHubURL string `yaml:"githubURL"`
+	FullName  string `yaml:"fullName" validate:"required"`
+	GitHubURL string `yaml:"githubURL" validate:"required,url"`
 }
 
 var TemplateFunctions = template.FuncMap{

@@ -34,6 +34,10 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 	frontmatter.Page.Path = fmt.Sprintf("/%s", frontmatter.Page.Path)
 	frontmatter.Page.TemplateName = BasicPageTemplateName
 
+	if err = validate.Struct(frontmatter); err != nil {
+		return fmt.Errorf("invalid metadata for page '%s': %w", contentPath, err)
+	}
+
 	renderer.pagePaths <- frontmatter.Page.Path
 
 	pageTemplate := BasicPageTemplate{

@@ -10,21 +10,19 @@ import (
 )
 
 type ProjectProfile struct {
-	Name string `yaml:"name"`
-	Slug string `yaml:"slug"`
+	Name string `yaml:"name" validate:"required"`
+	Slug string `yaml:"slug" validate:"required"`
 	// Optional if not included in index page.
-	IconPath string `yaml:"iconPath"`
+	IconPath string `yaml:"iconPath" validate:"omitempty,filepath"`
 	IconAlt  string `yaml:"iconAlt"`
 }
 
 type ProjectBase struct {
 	ProjectProfile `yaml:",inline"`
 	// Optional, defaults to DefaultTechStackTitle when TechStack is not empty.
-	TechStackTitle string `yaml:"techStackTitle"`
-	// Optional.
-	LinkGroups []LinkGroup `yaml:"linkGroups,flow"`
-	//Optional.
-	Footnote template.HTML `yaml:"footnote"`
+	TechStackTitle string        `yaml:"techStackTitle"`
+	LinkGroups     []LinkGroup   `yaml:"linkGroups,flow"` // Optional.
+	Footnote       template.HTML `yaml:"footnote"`        // Optional.
 }
 
 type LinkGroup struct {
@@ -35,8 +33,7 @@ type LinkGroup struct {
 
 type ProjectMarkdown struct {
 	ProjectBase `yaml:",inline"`
-	// Optional.
-	TechStack []TechStackItemMarkdown `yaml:"techStack,flow"`
+	TechStack   []TechStackItemMarkdown `yaml:"techStack,flow"` // Optional.
 	// Optional if project page only needs Title, Path and TemplateName (these are set
 	// automatically). Other fields can be set here, e.g. if project page should host a Go package.
 	Page Page `yaml:"page"`
@@ -49,11 +46,9 @@ type ProjectTemplate struct {
 }
 
 type TechStackItemMarkdown struct {
-	Tech string
-	// Optional.
-	UsedFor string `yaml:"usedFor"`
-	// Optional.
-	UsedWith []string `yaml:"usedWith,flow"`
+	Tech     string   `yaml:"tech" validate:"required"`
+	UsedFor  string   `yaml:"usedFor"`       // Optional.
+	UsedWith []string `yaml:"usedWith,flow"` // Optional.
 }
 
 type TechStackItemTemplate struct {
@@ -95,10 +90,8 @@ func (renderer *PageRenderer) RenderProjectPage(
 		"%s/%s/%s", BaseContentDir, projectFile.directory, projectFile.name,
 	)
 	var project ParsedProject
-	if project, err = parseProject(
-		markdownFilePath, techResources, renderer.metadata,
-	); err != nil {
-		return fmt.Errorf("failed to parse project: %w", err)
+	if project, err = parseProject(markdownFilePath, techResources, renderer.metadata); err != nil {
+		return fmt.Errorf("failed to parse project '%s': %w", projectFile.name, err)
 	}
 
 	renderer.pagePaths <- project.Page.Path
@@ -167,6 +160,10 @@ func parseProject(
 		project.TechStackTitle = DefaultTechStackTitle
 	}
 	setGitHubLinkIcons(project.LinkGroups, metadata.GitHubIconPath)
+
+	if err := validate.Struct(project); err != nil {
+		return ParsedProject{}, fmt.Errorf("invalid project metadata: %w", err)
+	}
 
 	techStack, err := parseTechStack(project.TechStack, techResources)
 	if err != nil {

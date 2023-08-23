@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/adrg/frontmatter"
+	"github.com/go-playground/validator/v10"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
@@ -32,6 +33,8 @@ const (
 	TechIconDir = "img/tech"
 )
 
+var validate *validator.Validate = validator.New()
+
 type ContentPaths struct {
 	IndexPage   string
 	ProjectDirs []string
@@ -39,8 +42,8 @@ type ContentPaths struct {
 }
 
 type TechResourceMap map[string]struct {
-	Link     string
-	IconFile string
+	Link     string `validate:"required,url"`
+	IconFile string `validate:"required,filepath"`
 }
 
 func RenderPages(
@@ -49,6 +52,15 @@ func RenderPages(
 	techResources TechResourceMap,
 	birthday time.Time,
 ) error {
+	if err := validate.Struct(metadata); err != nil {
+		return fmt.Errorf("invalid common page metadata: %w", err)
+	}
+	for tech, resource := range techResources {
+		if err := validate.Struct(resource); err != nil {
+			return fmt.Errorf("invalid tech resource '%s': %w", tech, err)
+		}
+	}
+
 	projectFiles, err := readProjectContentDirs(contentPaths.ProjectDirs)
 	if err != nil {
 		return err

@@ -10,8 +10,7 @@ import (
 )
 
 type IndexPageBase struct {
-	// May omit Link field.
-	PersonalInfo          []LinkItem `yaml:"personalInfo,flow"`
+	PersonalInfo          []LinkItem `yaml:"personalInfo,flow"` // May omit Link field.
 	ProfilePictureMobile  Image      `yaml:"profilePictureMobile"`
 	ProfilePictureDesktop Image      `yaml:"profilePictureDesktop"`
 }
@@ -19,7 +18,7 @@ type IndexPageBase struct {
 type IndexPageMarkdown struct {
 	IndexPageBase `yaml:",inline"`
 	Page          Page                   `yaml:"page"`
-	ProjectGroups []ProjectGroupMarkdown `yaml:"projectGroups,flow"`
+	ProjectGroups []ProjectGroupMarkdown `yaml:"projectGroups,flow" validate:"required,dive"`
 }
 
 type IndexPageTemplate struct {
@@ -30,9 +29,9 @@ type IndexPageTemplate struct {
 }
 
 type ProjectGroupMarkdown struct {
-	Title        string   `yaml:"title"`
-	ProjectSlugs []string `yaml:"projectSlugs,flow"`
-	ContentDir   string   `yaml:"contentDir"`
+	Title        string   `yaml:"title" validate:"required"`
+	ProjectSlugs []string `yaml:"projectSlugs,flow" validate:"required,dive"`
+	ContentDir   string   `yaml:"contentDir" validate:"required"`
 }
 
 type ProjectGroupTemplate struct {
@@ -41,10 +40,10 @@ type ProjectGroupTemplate struct {
 }
 
 type Image struct {
-	Path   string `yaml:"path"`
-	Alt    string `yaml:"alt"`
-	Width  int    `yaml:"width"`
-	Height int    `yaml:"height"`
+	Path   string `yaml:"path" validate:"required,filepath"`
+	Alt    string `yaml:"alt" validate:"required"`
+	Width  int    `yaml:"width" validate:"required"`
+	Height int    `yaml:"height" validate:"required"`
 }
 
 func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.Time) (err error) {
@@ -103,6 +102,10 @@ func parseIndexPageContent(
 		return IndexPageMarkdown{}, "", fmt.Errorf(
 			"failed to read markdown for index page: %w", err,
 		)
+	}
+
+	if err := validate.Struct(content); err != nil {
+		return IndexPageMarkdown{}, "", fmt.Errorf("invalid index page metadata: %w", err)
 	}
 
 	aboutMeText = removeParagraphTagsAroundHTML(aboutMeBuffer.String())
