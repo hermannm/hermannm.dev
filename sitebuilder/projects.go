@@ -7,6 +7,8 @@ import (
 	"io/fs"
 	"os"
 	"strings"
+
+	"hermannm.dev/wrap"
 )
 
 type ProjectProfile struct {
@@ -91,7 +93,7 @@ func (renderer *PageRenderer) RenderProjectPage(
 	)
 	var project ParsedProject
 	if project, err = parseProject(markdownFilePath, techResources, renderer.metadata); err != nil {
-		return fmt.Errorf("failed to parse project '%s': %w", projectFile.name, err)
+		return wrap.Errorf(err, "failed to parse project '%s'", projectFile.name)
 	}
 
 	renderer.pagePaths <- project.Page.Path
@@ -110,7 +112,7 @@ func (renderer *PageRenderer) RenderProjectPage(
 	}
 
 	if err = renderer.renderPage(projectPage.Meta, projectPage); err != nil {
-		return fmt.Errorf("failed to render page for project '%s': %w", project.Slug, err)
+		return wrap.Errorf(err, "failed to render page for project '%s'", project.Slug)
 	}
 
 	return nil
@@ -123,9 +125,7 @@ func readProjectContentDirs(contentDirNames []string) ([]ProjectContentFile, err
 	for _, dirName := range contentDirNames {
 		entries, err := fs.ReadDir(baseContentDir, dirName)
 		if err != nil {
-			return nil, fmt.Errorf(
-				"failed to read project content directory '%s': %w", dirName, err,
-			)
+			return nil, wrap.Errorf(err, "failed to read project content directory '%s'", dirName)
 		}
 
 		for _, dirEntry := range entries {
@@ -150,7 +150,7 @@ func parseProject(
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
 	if err := readMarkdownWithFrontmatter(markdownFilePath, descriptionBuffer, &project); err != nil {
-		return ParsedProject{}, fmt.Errorf("failed to read markdown for project: %w", err)
+		return ParsedProject{}, wrap.Error(err, "failed to read markdown for project")
 	}
 
 	project.Page.Title = fmt.Sprintf("%s/%s", metadata.SiteName, project.Slug)
@@ -162,21 +162,21 @@ func parseProject(
 	setGitHubLinkIcons(project.LinkGroups, metadata.GitHubIconPath)
 
 	if err := validate.Struct(project); err != nil {
-		return ParsedProject{}, fmt.Errorf("invalid project metadata: %w", err)
+		return ParsedProject{}, wrap.Error(err, "invalid project metadata")
 	}
 
 	techStack, err := parseTechStack(project.TechStack, techResources)
 	if err != nil {
-		return ParsedProject{}, fmt.Errorf(
-			"failed to parse tech stack for project %s: %w", project.Name, err,
+		return ParsedProject{}, wrap.Errorf(
+			err, "failed to parse tech stack for project '%s'", project.Name,
 		)
 	}
 
 	if project.Footnote != "" {
 		var builder strings.Builder
 		if err := newMarkdownParser().Convert([]byte(project.Footnote), &builder); err != nil {
-			return ParsedProject{}, fmt.Errorf(
-				"failed to parse footnote for project '%s' as markdown: %w", project.Slug, err,
+			return ParsedProject{}, wrap.Errorf(
+				err, "failed to parse footnote for project '%s' as markdown", project.Slug,
 			)
 		}
 		project.Footnote = removeParagraphTagsAroundHTML(builder.String())

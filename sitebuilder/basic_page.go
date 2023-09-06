@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+
+	"hermannm.dev/wrap"
 )
 
 const BasicPageTemplateName = "basic_page.html.tmpl"
@@ -28,14 +30,14 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 	body := new(bytes.Buffer)
 	var frontmatter BasicPageMarkdown
 	if err = readMarkdownWithFrontmatter(path, body, &frontmatter); err != nil {
-		return fmt.Errorf("failed to read markdown for page: %w", err)
+		return wrap.Error(err, "failed to read markdown for page")
 	}
 
 	frontmatter.Page.Path = fmt.Sprintf("/%s", frontmatter.Page.Path)
 	frontmatter.Page.TemplateName = BasicPageTemplateName
 
 	if err = validate.Struct(frontmatter); err != nil {
-		return fmt.Errorf("invalid metadata for page '%s': %w", contentPath, err)
+		return wrap.Errorf(err, "invalid metadata for page '%s'", contentPath)
 	}
 
 	renderer.pagePaths <- frontmatter.Page.Path
@@ -48,7 +50,7 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 		Content: template.HTML(body.String()),
 	}
 	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
-		return fmt.Errorf("failed to render page: %w", err)
+		return wrap.Error(err, "failed to render page")
 	}
 
 	return nil

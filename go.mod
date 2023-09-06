@@ -1,12 +1,13 @@
 module hermannm.dev/personal-website
 
-go 1.21
+go 1.21.0
 
 require (
 	github.com/adrg/frontmatter v0.2.0
 	github.com/go-playground/validator/v10 v10.15.1
 	github.com/yuin/goldmark v1.5.4
 	golang.org/x/sync v0.2.0
+	hermannm.dev/wrap v0.1.0
 )
 
 require (

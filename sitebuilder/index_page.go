@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"hermannm.dev/wrap"
 )
 
 type IndexPageBase struct {
@@ -55,7 +57,7 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.
 
 	content, aboutMeText, err := parseIndexPageContent(contentPath, renderer.metadata, birthday)
 	if err != nil {
-		return fmt.Errorf("failed to parse index page data: %w", err)
+		return wrap.Error(err, "failed to parse index page data")
 	}
 
 	renderer.pagePaths <- content.Page.Path
@@ -67,7 +69,7 @@ ProjectLoop:
 		select {
 		case project := <-renderer.parsedProjects:
 			if err = groups.AddIfIncluded(project); err != nil {
-				return fmt.Errorf("failed to add project '%s' to groups: %w", project.Slug, err)
+				return wrap.Errorf(err, "failed to add project '%s' to groups", project.Slug)
 			}
 			if groups.IsFull() {
 				break ProjectLoop
@@ -87,7 +89,7 @@ ProjectLoop:
 		ProjectGroups: groups.ToSlice(),
 	}
 	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
-		return fmt.Errorf("failed to render index page: %w", err)
+		return wrap.Error(err, "failed to render index page")
 	}
 
 	return nil
@@ -99,13 +101,13 @@ func parseIndexPageContent(
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)
 	if err := readMarkdownWithFrontmatter(path, aboutMeBuffer, &content); err != nil {
-		return IndexPageMarkdown{}, "", fmt.Errorf(
-			"failed to read markdown for index page: %w", err,
+		return IndexPageMarkdown{}, "", wrap.Error(
+			err, "failed to read markdown for index page",
 		)
 	}
 
 	if err := validate.Struct(content); err != nil {
-		return IndexPageMarkdown{}, "", fmt.Errorf("invalid index page metadata: %w", err)
+		return IndexPageMarkdown{}, "", wrap.Error(err, "invalid index page metadata")
 	}
 
 	aboutMeText = removeParagraphTagsAroundHTML(aboutMeBuffer.String())

@@ -20,6 +20,7 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
 	"golang.org/x/sync/errgroup"
+	"hermannm.dev/wrap"
 )
 
 const (
@@ -53,11 +54,11 @@ func RenderPages(
 	birthday time.Time,
 ) error {
 	if err := validate.Struct(metadata); err != nil {
-		return fmt.Errorf("invalid common page metadata: %w", err)
+		return wrap.Errorf(err, "invalid common page metadata")
 	}
 	for tech, resource := range techResources {
 		if err := validate.Struct(resource); err != nil {
-			return fmt.Errorf("invalid tech resource '%s': %w", tech, err)
+			return wrap.Errorf(err, "invalid tech resource '%s'", tech)
 		}
 	}
 
@@ -156,11 +157,11 @@ func execCommand(displayName string, commandName string, args ...string) error {
 
 	stderr, err := command.StderrPipe()
 	if err != nil {
-		return fmt.Errorf("failed to get pipe to %s's error output: %w", displayName, err)
+		return wrap.Errorf(err, "failed to get pipe to %s's error output", displayName)
 	}
 
 	if err := command.Start(); err != nil {
-		return fmt.Errorf("failed to start %s command: %w", displayName, err)
+		return wrap.Errorf(err, "failed to start %s command", displayName)
 	}
 
 	errScanner := bufio.NewScanner(stderr)
@@ -189,13 +190,13 @@ func parseTemplates() (*template.Template, error) {
 	pageTemplates := fmt.Sprintf("%s/%s/*.tmpl", BaseTemplatesDir, PageTemplatesDir)
 	templates, err := templates.ParseGlob(pageTemplates)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse page templates: %w", err)
+		return nil, wrap.Error(err, "failed to parse page templates")
 	}
 
 	componentTemplates := fmt.Sprintf("%s/%s/*.tmpl", BaseTemplatesDir, ComponentTemplatesDir)
 	templates, err = templates.ParseGlob(componentTemplates)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse component templates: %w", err)
+		return nil, wrap.Error(err, "failed to parse component templates")
 	}
 
 	return templates, nil
@@ -220,15 +221,12 @@ func (renderer *PageRenderer) BuildSitemap() error {
 
 	sitemapFile, err := os.Create(fmt.Sprintf("%s/%s", BaseOutputDir, sitemapFileName))
 	if err != nil {
-		return fmt.Errorf("failed to create sitemap file: %w", err)
+		return wrap.Error(err, "failed to create sitemap file")
 	}
+	defer sitemapFile.Close()
 
 	if _, err := fmt.Fprintln(sitemapFile, sitemap); err != nil {
-		return closeFileOnErr(sitemapFile, err, "failed to write to sitemap file")
-	}
-
-	if err := sitemapFile.Close(); err != nil {
-		return fmt.Errorf("failed to close sitemap file: %w", err)
+		return wrap.Error(err, "failed to write to sitemap file")
 	}
 
 	return nil
@@ -242,18 +240,14 @@ func (renderer *PageRenderer) renderPage(meta TemplateMetadata, data any) error 
 
 	outputFile, err := os.Create(outputPath)
 	if err != nil {
-		return fmt.Errorf("failed to create template output file '%s': %w", outputPath, err)
+		return wrap.Errorf(err, "failed to create template output file '%s'", outputPath)
 	}
+	defer outputFile.Close()
 
 	if err := renderer.templates.ExecuteTemplate(
 		outputFile, meta.Page.TemplateName, data,
 	); err != nil {
-		errMessage := fmt.Sprintf("failed to execute template '%s'", meta.Page.TemplateName)
-		return closeFileOnErr(outputFile, err, errMessage)
-	}
-
-	if err := outputFile.Close(); err != nil {
-		return fmt.Errorf("failed to close file '%s': %w", outputPath, err)
+		return wrap.Errorf(err, "failed to execute template '%s'", meta.Page.TemplateName)
 	}
 
 	return nil
@@ -284,7 +278,7 @@ func getRenderOutputPath(basePath string) (string, error) {
 
 	permissions := fs.FileMode(0755)
 	if err := os.MkdirAll(dir, permissions); err != nil {
-		return "", fmt.Errorf("failed to create template output directory '%s': %w", dir, err)
+		return "", wrap.Errorf(err, "failed to create template output directory '%s'", dir)
 	}
 
 	return fmt.Sprintf("%s/%s", dir, file), nil
@@ -295,21 +289,17 @@ func readMarkdownWithFrontmatter(
 ) error {
 	markdownFile, err := os.Open(markdownFilePath)
 	if err != nil {
-		return fmt.Errorf("failed to open file '%s': %w", markdownFilePath, err)
+		return wrap.Errorf(err, "failed to open file '%s'", markdownFilePath)
 	}
+	defer markdownFile.Close()
 
 	restOfFile, err := frontmatter.MustParse(markdownFile, frontmatterDest)
 	if err != nil {
-		errMessage := fmt.Sprintf("failed to parse markdown frontmatter of '%s'", markdownFilePath)
-		return closeFileOnErr(markdownFile, err, errMessage)
-	}
-
-	if err := markdownFile.Close(); err != nil {
-		return fmt.Errorf("failed to close file '%s': %w", markdownFilePath, err)
+		return wrap.Errorf(err, "failed to parse markdown frontmatter of '%s'", markdownFilePath)
 	}
 
 	if err := newMarkdownParser().Convert(restOfFile, bodyDest); err != nil {
-		return fmt.Errorf("failed to parse body of markdown file '%s': %w", markdownFilePath, err)
+		return wrap.Errorf(err, "failed to parse body of markdown file '%s'", markdownFilePath)
 	}
 
 	return nil
