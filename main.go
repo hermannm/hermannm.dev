@@ -2,23 +2,27 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"os"
 	"time"
 
 	"hermannm.dev/personal-website/sitebuilder"
+	"hermannm.dev/wrap"
 )
 
 func main() {
 	if err := sitebuilder.RenderPages(contentPaths, metadata, techResources, birthday); err != nil {
-		log.Fatalln(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	if err := sitebuilder.FormatRenderedPages(); err != nil {
-		log.Fatalf("failed to format rendered html: %v\n", err)
+		fmt.Println(wrap.Error(err, "failed to format rendered html"))
+		os.Exit(1)
 	}
 
 	if err := sitebuilder.GenerateTailwindCSS("styles.css"); err != nil {
-		log.Fatalf("failed to generate tailwind css: %v\n", err)
+		fmt.Println(wrap.Error(err, "failed to generate tailwind css"))
+		os.Exit(1)
 	}
 
 	fmt.Printf("Website built successfully! Output in ./%s\n", sitebuilder.BaseOutputDir)

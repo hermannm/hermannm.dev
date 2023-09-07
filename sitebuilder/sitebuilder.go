@@ -3,6 +3,7 @@ package sitebuilder
 import (
 	"bufio"
 	"context"
+	"errors"
 	"fmt"
 	"html/template"
 	"io"
@@ -157,7 +158,7 @@ func execCommand(displayName string, commandName string, args ...string) error {
 
 	stderr, err := command.StderrPipe()
 	if err != nil {
-		return wrap.Errorf(err, "failed to get pipe to %s's error output", displayName)
+		return wrap.Errorf(err, "failed to get pipe to %s command's error output", displayName)
 	}
 
 	if err := command.Start(); err != nil {
@@ -167,17 +168,18 @@ func execCommand(displayName string, commandName string, args ...string) error {
 	errScanner := bufio.NewScanner(stderr)
 	var commandErrs strings.Builder
 	for errScanner.Scan() {
-		if commandErrs.Len() == 0 {
-			fmt.Fprintf(&commandErrs, "errors from %s:", displayName)
+		if commandErrs.Len() != 0 {
+			commandErrs.WriteRune('\n')
 		}
-		fmt.Fprintf(&commandErrs, "\n%s", errScanner.Text())
+		commandErrs.WriteString(errScanner.Text())
 	}
 
 	if err := command.Wait(); err != nil {
+		err = fmt.Errorf("%s command failed: %w", displayName, err)
 		if commandErrs.Len() == 0 {
-			return fmt.Errorf("%s failed: %w", displayName, err)
+			return err
 		} else {
-			return fmt.Errorf("%s failed: %w\n%s", displayName, err, commandErrs.String())
+			return wrap.Error(errors.New(commandErrs.String()), err.Error())
 		}
 	}
 
