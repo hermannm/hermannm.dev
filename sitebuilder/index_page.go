@@ -132,25 +132,25 @@ func (personalInfo PersonalInfoMarkdown) toTemplateFields() ([]LinkItem, error) 
 	if err != nil {
 		return nil, wrap.Errorf(err, "failed to parse birthday field '%s'", personalInfo.Birthday)
 	}
-	birthdayText := LinkItem{
+	birthdayField := LinkItem{
 		Text:     fmt.Sprintf("%d years old", ageFromBirthday(birthday)),
 		IconPath: "/img/icons/person.svg",
 	}
-	locationText := LinkItem{
+	locationField := LinkItem{
 		Text:     personalInfo.Location,
 		IconPath: "/img/icons/map-marker.svg",
 	}
-	githubLink := LinkItem{
+	githubField := LinkItem{
 		Text:     "GitHub",
 		Link:     personalInfo.GitHubURL,
 		IconPath: "/img/icons/github.svg",
 	}
-	linkedinLink := LinkItem{
+	linkedinField := LinkItem{
 		Text:     "LinkedIn",
 		Link:     personalInfo.LinkedInURL,
 		IconPath: "/img/icons/linkedin.svg",
 	}
-	return []LinkItem{birthdayText, locationText, githubLink, linkedinLink}, nil
+	return []LinkItem{birthdayField, locationField, githubField, linkedinField}, nil
 }
 
 func ageFromBirthday(birthday time.Time) int {
