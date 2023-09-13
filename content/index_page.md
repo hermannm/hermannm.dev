@@ -4,7 +4,7 @@ page:
   path: ""
   templateName: index_page.html.tmpl
 personalInfo:
-  birthday: dfajølfds
+  birthday: "1999-09-12"
   location: Trondheim, Norway
   githubURL: https://github.com/hermannm
   linkedinURL: https://www.linkedin.com/in/hermannmorkrid
