@@ -4,29 +4,35 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"strconv"
-	"strings"
 	"time"
 
 	"hermannm.dev/wrap"
 )
 
 type IndexPageBase struct {
-	PersonalInfo          []LinkItem `yaml:"personalInfo,flow"` // May omit Link field.
-	ProfilePictureMobile  Image      `yaml:"profilePictureMobile"`
-	ProfilePictureDesktop Image      `yaml:"profilePictureDesktop"`
+	ProfilePictureMobile  Image `yaml:"profilePictureMobile"`
+	ProfilePictureDesktop Image `yaml:"profilePictureDesktop"`
 }
 
 type IndexPageMarkdown struct {
 	IndexPageBase `yaml:",inline"`
 	Page          Page                   `yaml:"page"`
+	PersonalInfo  PersonalInfoMarkdown   `yaml:"personalInfo"`
 	ProjectGroups []ProjectGroupMarkdown `yaml:"projectGroups,flow" validate:"required,dive"`
+}
+
+type PersonalInfoMarkdown struct {
+	Birthday    string `yaml:"birthday" validate:"required"`
+	Location    string `yaml:"location" validate:"required"`
+	GitHubURL   string `yaml:"githubURL" validate:"required,url"`
+	LinkedInURL string `yaml:"linkedinURL" validate:"required,url"`
 }
 
 type IndexPageTemplate struct {
 	IndexPageBase
 	Meta          TemplateMetadata
 	AboutMe       template.HTML
+	PersonalInfo  []LinkItem // May omit Link field.
 	ProjectGroups []ProjectGroupTemplate
 }
 
@@ -60,6 +66,11 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.
 		return wrap.Error(err, "failed to parse index page data")
 	}
 
+	personalInfo, err := content.PersonalInfo.toTemplateFields()
+	if err != nil {
+		return wrap.Error(err, "failed to parse personal info from index page content")
+	}
+
 	renderer.pagePaths <- content.Page.Path
 
 	groups := parseProjectGroups(content.ProjectGroups)
@@ -86,6 +97,7 @@ ProjectLoop:
 			Page:   content.Page,
 		},
 		AboutMe:       aboutMeText,
+		PersonalInfo:  personalInfo,
 		ProjectGroups: groups.ToSlice(),
 	}
 	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
@@ -111,22 +123,34 @@ func parseIndexPageContent(
 	}
 
 	aboutMeText = removeParagraphTagsAroundHTML(aboutMeBuffer.String())
-	setAge(content.PersonalInfo, birthday)
 
 	return content, aboutMeText, nil
 }
 
-const ageReplacementPattern = "${age}"
-
-func setAge(personalInfo []LinkItem, birthday time.Time) {
-	ageText := strconv.Itoa(ageFromBirthday(birthday))
-
-	for i, personalInfoField := range personalInfo {
-		personalInfoField.Text = strings.Replace(
-			personalInfoField.Text, ageReplacementPattern, ageText, 1,
-		)
-		personalInfo[i] = personalInfoField
+func (personalInfo PersonalInfoMarkdown) toTemplateFields() ([]LinkItem, error) {
+	birthday, err := time.Parse(time.DateOnly, personalInfo.Birthday)
+	if err != nil {
+		return nil, wrap.Errorf(err, "failed to parse birthday field '%s'", personalInfo.Birthday)
 	}
+	birthdayText := LinkItem{
+		Text:     fmt.Sprintf("%d years old", ageFromBirthday(birthday)),
+		IconPath: "/img/icons/person.svg",
+	}
+	locationText := LinkItem{
+		Text:     personalInfo.Location,
+		IconPath: "/img/icons/map-marker.svg",
+	}
+	githubLink := LinkItem{
+		Text:     "GitHub",
+		Link:     personalInfo.GitHubURL,
+		IconPath: "/img/icons/github.svg",
+	}
+	linkedinLink := LinkItem{
+		Text:     "LinkedIn",
+		Link:     personalInfo.LinkedInURL,
+		IconPath: "/img/icons/linkedin.svg",
+	}
+	return []LinkItem{birthdayText, locationText, githubLink, linkedinLink}, nil
 }
 
 func ageFromBirthday(birthday time.Time) int {
