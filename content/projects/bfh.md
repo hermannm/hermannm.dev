@@ -4,10 +4,10 @@ slug: bfh
 iconPath: /img/projects/immerse.webp
 iconAlt: "Immerse NTNU student organization logo"
 techStack:
-  - tech: C#
+  - tech: Godot
     usedFor: client-side
     usedWith:
-      - Unity
+      - C#
   - tech: Go
     usedFor: server-side
 linkGroups:
@@ -27,7 +27,14 @@ started developing a digital edition of it as a hobby project.
 
 We decided to build the digital edition as a proper multiplayer online game. I wrote the server in
 Go, finding its native concurrency support suitable for the parallel nature of the game. My friends
-and I collaborated on the client, where we used C# with the Unity game engine. During this time, one
-of my friends also founded [Immerse NTNU](https://immersentnu.no/), a student organization for game
-development. He made this game client their first project, and so we also got invaluable help from
-new members there.
+and I collaborated on the client, where we initially used the Unity game engine. During this time,
+one of my friends also founded [Immerse NTNU](https://immersentnu.no/), a student organization for
+game development. He made this game client their first project, and so we also got invaluable help
+from new members there.
+
+In the fall of 2023, the company behind Unity decided to
+[upend the terms for developers using their game engine](https://blog.unity.com/news/plan-pricing-and-packaging-updates).
+Although this change likely would not affect our project, I found Unity's practices here quite
+abhorrent, and it gave me a distaste for using the engine further. Since we were developing this
+game as an open-source project, it felt more appropriate to also use open-source tools for it. Thus,
+we decided to make the switch over to Godot, an open-source game engine.

@@ -4,9 +4,9 @@ slug: rov-sim
 iconPath: /img/projects/rov-sim.webp
 iconAlt: "ROV-SIM project logo"
 techStack:
-  - tech: C#
+  - tech: Unity
     usedWith:
-      - Unity
+      - C#
 linkGroups:
   - title: Code
     links:

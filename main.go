@@ -63,7 +63,7 @@ var (
 			IconFile: "javascript.svg",
 		},
 		"C#": {
-			Link:     "https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/",
+			Link:     "https://dotnet.microsoft.com/en-us/languages/csharp",
 			IconFile: "csharp.svg",
 		},
 		"Java": {
@@ -89,6 +89,10 @@ var (
 		"Django": {
 			Link:     "https://www.djangoproject.com/",
 			IconFile: "django.svg",
+		},
+		"Godot": {
+			Link:     "https://godotengine.org/",
+			IconFile: "godot.svg",
 		},
 		"Unity": {
 			Link:     "https://unity.com/",
