@@ -12,8 +12,8 @@ import (
 )
 
 type ProjectProfile struct {
-	Name string `yaml:"name" validate:"required"`
-	Slug string `yaml:"slug" validate:"required"`
+	Name string `yaml:"name"     validate:"required"`
+	Slug string `yaml:"slug"     validate:"required"`
 	// Optional if not included in index page.
 	IconPath string `yaml:"iconPath" validate:"omitempty,filepath"`
 	IconAlt  string `yaml:"iconAlt"`
@@ -34,7 +34,7 @@ type LinkGroup struct {
 }
 
 type ProjectMarkdown struct {
-	ProjectBase `yaml:",inline"`
+	ProjectBase `                        yaml:",inline"`
 	TechStack   []TechStackItemMarkdown `yaml:"techStack,flow"` // Optional.
 	// Optional if project page only needs Title, Path and TemplateName (these are set
 	// automatically). Other fields can be set here, e.g. if project page should host a Go package.
@@ -48,7 +48,7 @@ type ProjectTemplate struct {
 }
 
 type TechStackItemMarkdown struct {
-	Tech     string   `yaml:"tech" validate:"required"`
+	Tech     string   `yaml:"tech"          validate:"required"`
 	UsedFor  string   `yaml:"usedFor"`       // Optional.
 	UsedWith []string `yaml:"usedWith,flow"` // Optional.
 }
@@ -80,7 +80,8 @@ type ProjectContentFile struct {
 }
 
 func (renderer *PageRenderer) RenderProjectPage(
-	projectFile ProjectContentFile, techResources TechResourceMap,
+	projectFile ProjectContentFile,
+	techResources TechResourceMap,
 ) (err error) {
 	defer func() {
 		if err != nil {
@@ -145,7 +146,9 @@ const (
 )
 
 func parseProject(
-	markdownFilePath string, techResources TechResourceMap, metadata CommonMetadata,
+	markdownFilePath string,
+	techResources TechResourceMap,
+	metadata CommonMetadata,
 ) (ParsedProject, error) {
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
@@ -168,7 +171,9 @@ func parseProject(
 	techStack, err := parseTechStack(project.TechStack, techResources)
 	if err != nil {
 		return ParsedProject{}, wrap.Errorf(
-			err, "failed to parse tech stack for project '%s'", project.Name,
+			err,
+			"failed to parse tech stack for project '%s'",
+			project.Name,
 		)
 	}
 
@@ -176,7 +181,9 @@ func parseProject(
 		var builder strings.Builder
 		if err := newMarkdownParser().Convert([]byte(project.Footnote), &builder); err != nil {
 			return ParsedProject{}, wrap.Errorf(
-				err, "failed to parse footnote for project '%s' as markdown", project.Slug,
+				err,
+				"failed to parse footnote for project '%s' as markdown",
+				project.Slug,
 			)
 		}
 		project.Footnote = removeParagraphTagsAroundHTML(builder.String())
@@ -193,7 +200,8 @@ func parseProject(
 }
 
 func parseTechStack(
-	techStack []TechStackItemMarkdown, techResources TechResourceMap,
+	techStack []TechStackItemMarkdown,
+	techResources TechResourceMap,
 ) ([]TechStackItemTemplate, error) {
 	parsed := make([]TechStackItemTemplate, len(techStack))
 	for i, tech := range techStack {
@@ -226,7 +234,8 @@ func techLinkItemFromResource(techName string, techResources TechResourceMap) (L
 	techResource, ok := techResources[techName]
 	if !ok {
 		return LinkItem{}, fmt.Errorf(
-			"failed to find technology '%s' in tech resource map", techName,
+			"failed to find technology '%s' in tech resource map",
+			techName,
 		)
 	}
 

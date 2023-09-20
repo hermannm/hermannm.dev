@@ -15,16 +15,16 @@ type IndexPageBase struct {
 }
 
 type IndexPageMarkdown struct {
-	IndexPageBase `yaml:",inline"`
+	IndexPageBase `                       yaml:",inline"`
 	Page          Page                   `yaml:"page"`
 	PersonalInfo  PersonalInfoMarkdown   `yaml:"personalInfo"`
 	ProjectGroups []ProjectGroupMarkdown `yaml:"projectGroups,flow" validate:"required,dive"`
 }
 
 type PersonalInfoMarkdown struct {
-	Birthday    string `yaml:"birthday" validate:"required"`
-	Location    string `yaml:"location" validate:"required"`
-	GitHubURL   string `yaml:"githubURL" validate:"required,url"`
+	Birthday    string `yaml:"birthday"    validate:"required"`
+	Location    string `yaml:"location"    validate:"required"`
+	GitHubURL   string `yaml:"githubURL"   validate:"required,url"`
 	LinkedInURL string `yaml:"linkedinURL" validate:"required,url"`
 }
 
@@ -37,9 +37,9 @@ type IndexPageTemplate struct {
 }
 
 type ProjectGroupMarkdown struct {
-	Title        string   `yaml:"title" validate:"required"`
+	Title        string   `yaml:"title"             validate:"required"`
 	ProjectSlugs []string `yaml:"projectSlugs,flow" validate:"required,dive"`
-	ContentDir   string   `yaml:"contentDir" validate:"required"`
+	ContentDir   string   `yaml:"contentDir"        validate:"required"`
 }
 
 type ProjectGroupTemplate struct {
@@ -48,9 +48,9 @@ type ProjectGroupTemplate struct {
 }
 
 type Image struct {
-	Path   string `yaml:"path" validate:"required,filepath"`
-	Alt    string `yaml:"alt" validate:"required"`
-	Width  int    `yaml:"width" validate:"required"`
+	Path   string `yaml:"path"   validate:"required,filepath"`
+	Alt    string `yaml:"alt"    validate:"required"`
+	Width  int    `yaml:"width"  validate:"required"`
 	Height int    `yaml:"height" validate:"required"`
 }
 
@@ -108,14 +108,14 @@ ProjectLoop:
 }
 
 func parseIndexPageContent(
-	contentPath string, metadata CommonMetadata, birthday time.Time,
+	contentPath string,
+	metadata CommonMetadata,
+	birthday time.Time,
 ) (content IndexPageMarkdown, aboutMeText template.HTML, err error) {
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)
 	if err := readMarkdownWithFrontmatter(path, aboutMeBuffer, &content); err != nil {
-		return IndexPageMarkdown{}, "", wrap.Error(
-			err, "failed to read markdown for index page",
-		)
+		return IndexPageMarkdown{}, "", wrap.Error(err, "failed to read markdown for index page")
 	}
 
 	if err := validate.Struct(content); err != nil {

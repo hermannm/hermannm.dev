@@ -36,7 +36,10 @@ func (linkRenderer MarkdownLinkRenderer) RegisterFuncs(
 //
 // https://github.com/yuin/goldmark/blob/b2df67847ed38c31cf4f9e32483377a8e907a6ae/renderer/html/html.go#L552
 func (linkRenderer MarkdownLinkRenderer) RenderLink(
-	writer util.BufWriter, source []byte, node ast.Node, entering bool,
+	writer util.BufWriter,
+	source []byte,
+	node ast.Node,
+	entering bool,
 ) (ast.WalkStatus, error) {
 	linkNode := node.(*ast.Link)
 

@@ -115,7 +115,10 @@ type PageRenderer struct {
 }
 
 func NewPageRenderer(
-	metadata CommonMetadata, projectCount int, basicPageCount int, otherPagesCount int,
+	metadata CommonMetadata,
+	projectCount int,
+	basicPageCount int,
+	otherPagesCount int,
 ) (PageRenderer, error) {
 	templates, err := parseTemplates()
 	if err != nil {
@@ -149,7 +152,14 @@ func FormatRenderedPages() error {
 func GenerateTailwindCSS(cssFileName string) error {
 	outputPath := fmt.Sprintf("%s/%s", BaseOutputDir, cssFileName)
 	return execCommand(
-		"tailwind", "npx", "tailwindcss", "-i", cssFileName, "-o", outputPath, "--minify",
+		"tailwind",
+		"npx",
+		"tailwindcss",
+		"-i",
+		cssFileName,
+		"-o",
+		outputPath,
+		"--minify",
 	)
 }
 
@@ -287,7 +297,9 @@ func getRenderOutputPath(basePath string) (string, error) {
 }
 
 func readMarkdownWithFrontmatter(
-	markdownFilePath string, bodyDest io.Writer, frontmatterDest any,
+	markdownFilePath string,
+	bodyDest io.Writer,
+	frontmatterDest any,
 ) error {
 	markdownFile, err := os.Open(markdownFilePath)
 	if err != nil {
