@@ -44,7 +44,7 @@ type ProjectGroupMarkdown struct {
 
 type ProjectGroupTemplate struct {
 	Title    string
-	Projects []ProjectProfile
+	Projects []ProjectTemplate
 }
 
 type Image struct {
@@ -54,7 +54,10 @@ type Image struct {
 	Height int    `yaml:"height" validate:"required"`
 }
 
-func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.Time) (err error) {
+func (renderer *PageRenderer) RenderIndexPage(
+	contentPath string,
+	birthday time.Time,
+) (err error) {
 	defer func() {
 		if err != nil {
 			renderer.cancelChannels()
@@ -181,7 +184,7 @@ func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
 		parsedGroups[i] = ParsedProjectGroup{
 			ProjectGroupTemplate: ProjectGroupTemplate{
 				Title:    group.Title,
-				Projects: make([]ProjectProfile, projectsLength),
+				Projects: make([]ProjectTemplate, projectsLength),
 			},
 			projectIndicesBySlug: projectIndicesBySlug,
 			contentDir:           group.ContentDir,
@@ -207,7 +210,7 @@ type ParsedProjectGroup struct {
 	contentDir           string
 }
 
-func (groups *ParsedProjectGroups) AddIfIncluded(project ProjectWithContentDir) error {
+func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
 	var group ParsedProjectGroup
 	isIncluded := false
 	for _, candidate := range groups.list {
@@ -231,7 +234,15 @@ func (groups *ParsedProjectGroups) AddIfIncluded(project ProjectWithContentDir) 
 		return fmt.Errorf("project index in group '%s' is out-of-bounds", group.Title)
 	}
 
-	group.Projects[index] = project.ProjectProfile
+	if project.IconPath == "" {
+		if project.IndexPageFallbackIconPath != "" {
+			project.IconPath = project.IndexPageFallbackIconPath
+		} else {
+			return fmt.Errorf("no icon found for project '%s'", project.Slug)
+		}
+	}
+
+	group.Projects[index] = project.ProjectTemplate
 	groups.numberOfProjects++
 	return nil
 }

@@ -64,14 +64,11 @@ type ProjectPageTemplate struct {
 	Project ProjectTemplate
 }
 
-type ProjectWithContentDir struct {
-	ProjectProfile
-	ContentDir string
-}
-
 type ParsedProject struct {
 	ProjectTemplate
-	Page Page
+	Page                      Page
+	ContentDir                string
+	IndexPageFallbackIconPath string
 }
 
 type ProjectContentFile struct {
@@ -89,20 +86,13 @@ func (renderer *PageRenderer) RenderProjectPage(
 		}
 	}()
 
-	markdownFilePath := fmt.Sprintf(
-		"%s/%s/%s", BaseContentDir, projectFile.directory, projectFile.name,
-	)
 	var project ParsedProject
-	if project, err = parseProject(markdownFilePath, techResources, renderer.metadata); err != nil {
+	if project, err = parseProject(projectFile, techResources, renderer.metadata); err != nil {
 		return wrap.Errorf(err, "failed to parse project '%s'", projectFile.name)
 	}
 
 	renderer.pagePaths <- project.Page.Path
-
-	renderer.parsedProjects <- ProjectWithContentDir{
-		ProjectProfile: project.ProjectProfile,
-		ContentDir:     projectFile.directory,
-	}
+	renderer.parsedProjects <- project
 
 	projectPage := ProjectPageTemplate{
 		Meta: TemplateMetadata{
@@ -146,10 +136,14 @@ const (
 )
 
 func parseProject(
-	markdownFilePath string,
+	projectFile ProjectContentFile,
 	techResources TechResourceMap,
 	metadata CommonMetadata,
 ) (ParsedProject, error) {
+	markdownFilePath := fmt.Sprintf(
+		"%s/%s/%s", BaseContentDir, projectFile.directory, projectFile.name,
+	)
+
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
 	if err := readMarkdownWithFrontmatter(markdownFilePath, descriptionBuffer, &project); err != nil {
@@ -168,7 +162,7 @@ func parseProject(
 		return ParsedProject{}, wrap.Error(err, "invalid project metadata")
 	}
 
-	techStack, err := parseTechStack(project.TechStack, techResources)
+	techStack, indexPageIcon, err := parseTechStack(project.TechStack, techResources)
 	if err != nil {
 		return ParsedProject{}, wrap.Errorf(
 			err,
@@ -195,26 +189,33 @@ func parseProject(
 			Description: template.HTML(descriptionBuffer.String()),
 			TechStack:   techStack,
 		},
-		Page: project.Page,
+		Page:                      project.Page,
+		ContentDir:                projectFile.directory,
+		IndexPageFallbackIconPath: getTechIconPath(indexPageIcon),
 	}, nil
 }
 
 func parseTechStack(
 	techStack []TechStackItemMarkdown,
 	techResources TechResourceMap,
-) ([]TechStackItemTemplate, error) {
-	parsed := make([]TechStackItemTemplate, len(techStack))
+) (parsed []TechStackItemTemplate, indexPageIcon string, err error) {
+	parsed = make([]TechStackItemTemplate, len(techStack))
+	var mainIndexPageIcon string
+
 	for i, tech := range techStack {
-		linkItem, err := techLinkItemFromResource(tech.Tech, techResources)
+		linkItem, indexPageIcon, err := getTechIcon(tech.Tech, techResources)
 		if err != nil {
-			return nil, err
+			return nil, "", err
+		}
+		if mainIndexPageIcon == "" && indexPageIcon != "" {
+			mainIndexPageIcon = indexPageIcon
 		}
 
 		usedWith := make([]LinkItem, len(tech.UsedWith))
 		for i, tech2 := range tech.UsedWith {
-			linkItem2, err := techLinkItemFromResource(tech2, techResources)
+			linkItem2, _, err := getTechIcon(tech2, techResources)
 			if err != nil {
-				return nil, err
+				return nil, "", err
 			}
 
 			usedWith[i] = linkItem2
@@ -227,20 +228,30 @@ func parseTechStack(
 		}
 	}
 
-	return parsed, nil
+	return parsed, mainIndexPageIcon, nil
 }
 
-func techLinkItemFromResource(techName string, techResources TechResourceMap) (LinkItem, error) {
+func getTechIcon(
+	techName string,
+	techResources TechResourceMap,
+) (linkItem LinkItem, indexPageIcon string, err error) {
 	techResource, ok := techResources[techName]
 	if !ok {
-		return LinkItem{}, fmt.Errorf(
+		return LinkItem{}, "", fmt.Errorf(
 			"failed to find technology '%s' in tech resource map",
 			techName,
 		)
 	}
 
-	iconPath := fmt.Sprintf("/%s/%s", TechIconDir, techResource.IconFile)
-	return LinkItem{Text: techName, Link: techResource.Link, IconPath: iconPath}, nil
+	return LinkItem{
+		Text:     techName,
+		Link:     techResource.Link,
+		IconPath: getTechIconPath(techResource.Icon),
+	}, techResource.IndexPageFallbackIcon, nil
+}
+
+func getTechIconPath(iconFileName string) string {
+	return fmt.Sprintf("/%s/%s", TechIconDir, iconFileName)
 }
 
 const githubBaseURL = "https://github.com"

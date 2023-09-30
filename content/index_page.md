@@ -39,6 +39,14 @@ projectGroups:
       - ntnu-work
       - fresh
       - norlandia
+  - title: Utility libraries I've built
+    contentDir: libraries
+    projectSlugs:
+      - condqueue
+      - enumnames
+      - wrap
+      - set
+      - ipfinder
   - title: Schools I've studied at
     contentDir: schools
     projectSlugs:

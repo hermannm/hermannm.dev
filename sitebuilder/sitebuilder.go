@@ -44,8 +44,9 @@ type ContentPaths struct {
 }
 
 type TechResourceMap map[string]struct {
-	Link     string `validate:"required,url"`
-	IconFile string `validate:"required,filepath"`
+	Link                  string `validate:"required,url"`
+	Icon                  string `validate:"required,filepath"`
+	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
 }
 
 func RenderPages(
@@ -104,7 +105,7 @@ type PageRenderer struct {
 	metadata  CommonMetadata
 	templates *template.Template
 
-	parsedProjects chan ProjectWithContentDir
+	parsedProjects chan ParsedProject
 	projectCount   int
 
 	pagePaths chan string
@@ -125,7 +126,7 @@ func NewPageRenderer(
 		return PageRenderer{}, err
 	}
 
-	parsedProjects := make(chan ProjectWithContentDir, projectCount)
+	parsedProjects := make(chan ParsedProject, projectCount)
 
 	pageCount := basicPageCount + projectCount + otherPagesCount
 	pagePaths := make(chan string, pageCount)

@@ -39,7 +39,7 @@ var (
 
 	contentPaths = sitebuilder.ContentPaths{
 		IndexPage:   "index_page.md",
-		ProjectDirs: []string{"projects", "companies", "schools"},
+		ProjectDirs: []string{"projects", "libraries", "companies", "schools"},
 		BasicPages:  []string{"404_page.md"},
 	}
 
@@ -47,80 +47,81 @@ var (
 
 	techResources = sitebuilder.TechResourceMap{
 		"Go": {
-			Link:     "https://go.dev/",
-			IconFile: "go.svg",
+			Link:                  "https://go.dev/",
+			Icon:                  "go.svg",
+			IndexPageFallbackIcon: "go-gruvbox.svg",
 		},
 		"TypeScript": {
-			Link:     "https://www.typescriptlang.org/",
-			IconFile: "typescript.svg",
+			Link: "https://www.typescriptlang.org/",
+			Icon: "typescript.svg",
 		},
 		"Rust": {
-			Link:     "https://www.rust-lang.org/",
-			IconFile: "rust.svg",
+			Link: "https://www.rust-lang.org/",
+			Icon: "rust.svg",
 		},
 		"JavaScript": {
-			Link:     "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-			IconFile: "javascript.svg",
+			Link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+			Icon: "javascript.svg",
 		},
 		"C#": {
-			Link:     "https://dotnet.microsoft.com/en-us/languages/csharp",
-			IconFile: "csharp.svg",
+			Link: "https://dotnet.microsoft.com/en-us/languages/csharp",
+			Icon: "csharp.svg",
 		},
 		"Java": {
-			Link:     "https://www.java.com/en/download/help/whatis_java.html",
-			IconFile: "java.svg",
+			Link: "https://www.java.com/en/download/help/whatis_java.html",
+			Icon: "java.svg",
 		},
 		"Kotlin": {
-			Link:     "https://kotlinlang.org/",
-			IconFile: "kotlin.svg",
+			Link: "https://kotlinlang.org/",
+			Icon: "kotlin.svg",
 		},
 		"Python": {
-			Link:     "https://www.python.org/",
-			IconFile: "python.svg",
+			Link: "https://www.python.org/",
+			Icon: "python.svg",
 		},
 		"React": {
-			Link:     "https://reactjs.org/",
-			IconFile: "react.svg",
+			Link: "https://reactjs.org/",
+			Icon: "react.svg",
 		},
 		"Next.js": {
-			Link:     "https://nextjs.org/",
-			IconFile: "next-js.svg",
+			Link: "https://nextjs.org/",
+			Icon: "next-js.svg",
 		},
 		"Django": {
-			Link:     "https://www.djangoproject.com/",
-			IconFile: "django.svg",
+			Link: "https://www.djangoproject.com/",
+			Icon: "django.svg",
 		},
 		"Godot": {
-			Link:     "https://godotengine.org/",
-			IconFile: "godot.svg",
+			Link: "https://godotengine.org/",
+			Icon: "godot.svg",
 		},
 		"Unity": {
-			Link:     "https://unity.com/",
-			IconFile: "unity.svg",
+			Link: "https://unity.com/",
+			Icon: "unity.svg",
 		},
 		"libGDX": {
-			Link:     "https://libgdx.com/",
-			IconFile: "libgdx.svg",
+			Link: "https://libgdx.com/",
+			Icon: "libgdx.svg",
 		},
 		"gRPC": {
-			Link:     "https://grpc.io/",
-			IconFile: "grpc.svg",
+			Link: "https://grpc.io/",
+			Icon: "grpc.svg",
 		},
 		"GraphQL": {
-			Link:     "https://graphql.org/",
-			IconFile: "graphql.svg",
+			Link: "https://graphql.org/",
+			Icon: "graphql.svg",
 		},
 		"WebRTC": {
-			Link:     "https://webrtc.org/",
-			IconFile: "webrtc.svg",
+			Link: "https://webrtc.org/",
+			Icon: "webrtc.svg",
 		},
 		"MQTT": {
-			Link:     "https://mqtt.org/",
-			IconFile: "mqtt.svg",
+			Link: "https://mqtt.org/",
+			Icon: "mqtt.svg",
 		},
 		"AWS CDK": {
-			Link:     "https://aws.amazon.com/cdk/",
-			IconFile: "aws.svg",
+			Link: "https://aws.amazon.com/cdk/",
+			Icon: "aws.svg",
 		},
 	}
 )
