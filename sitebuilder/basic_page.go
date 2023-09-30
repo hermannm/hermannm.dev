@@ -22,7 +22,7 @@ type BasicPageTemplate struct {
 func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 	defer func() {
 		if err != nil {
-			renderer.cancelChannels()
+			renderer.cancelCtx()
 		}
 	}()
 

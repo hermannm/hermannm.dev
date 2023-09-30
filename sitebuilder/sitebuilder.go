@@ -111,8 +111,8 @@ type PageRenderer struct {
 	pagePaths chan string
 	pageCount int
 
-	channelContext context.Context
-	cancelChannels func()
+	ctx       context.Context
+	cancelCtx func()
 }
 
 func NewPageRenderer(
@@ -131,7 +131,7 @@ func NewPageRenderer(
 	pageCount := basicPageCount + projectCount + otherPagesCount
 	pagePaths := make(chan string, pageCount)
 
-	channelContext, cancelChannels := context.WithCancel(context.Background())
+	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	return PageRenderer{
 		metadata:       metadata,
@@ -140,8 +140,8 @@ func NewPageRenderer(
 		projectCount:   projectCount,
 		pagePaths:      pagePaths,
 		pageCount:      pageCount,
-		channelContext: channelContext,
-		cancelChannels: cancelChannels,
+		ctx:            ctx,
+		cancelCtx:      cancelCtx,
 	}, nil
 }
 
@@ -223,7 +223,7 @@ func (renderer *PageRenderer) BuildSitemap() error {
 		select {
 		case pagePath := <-renderer.pagePaths:
 			pageURLs[i] = fmt.Sprintf("%s%s", renderer.metadata.BaseURL, pagePath)
-		case <-renderer.channelContext.Done():
+		case <-renderer.ctx.Done():
 			return nil
 		}
 	}

@@ -82,7 +82,7 @@ func (renderer *PageRenderer) RenderProjectPage(
 ) (err error) {
 	defer func() {
 		if err != nil {
-			renderer.cancelChannels()
+			renderer.cancelCtx()
 		}
 	}()
 

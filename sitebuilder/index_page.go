@@ -60,7 +60,7 @@ func (renderer *PageRenderer) RenderIndexPage(
 ) (err error) {
 	defer func() {
 		if err != nil {
-			renderer.cancelChannels()
+			renderer.cancelCtx()
 		}
 	}()
 
@@ -88,7 +88,7 @@ ProjectLoop:
 			if groups.IsFull() {
 				break ProjectLoop
 			}
-		case <-renderer.channelContext.Done():
+		case <-renderer.ctx.Done():
 			return nil
 		}
 	}
