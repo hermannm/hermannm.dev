@@ -44,7 +44,7 @@ type ProjectGroupMarkdown struct {
 
 type ProjectGroupTemplate struct {
 	Title    string
-	Projects []ProjectTemplate
+	Projects []ProjectProfile
 }
 
 type Image struct {
@@ -184,7 +184,7 @@ func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
 		parsedGroups[i] = ParsedProjectGroup{
 			ProjectGroupTemplate: ProjectGroupTemplate{
 				Title:    group.Title,
-				Projects: make([]ProjectTemplate, projectsLength),
+				Projects: make([]ProjectProfile, projectsLength),
 			},
 			projectIndicesBySlug: projectIndicesBySlug,
 			contentDir:           group.ContentDir,
@@ -242,7 +242,7 @@ func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
 		}
 	}
 
-	group.Projects[index] = project.ProjectTemplate
+	group.Projects[index] = project.ProjectProfile
 	groups.numberOfProjects++
 	return nil
 }
