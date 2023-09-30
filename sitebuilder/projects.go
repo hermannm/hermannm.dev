@@ -78,7 +78,7 @@ type ProjectContentFile struct {
 
 func (renderer *PageRenderer) RenderProjectPage(
 	projectFile ProjectContentFile,
-	techResources TechResourceMap,
+	techIcons TechIconMap,
 ) (err error) {
 	defer func() {
 		if err != nil {
@@ -87,7 +87,7 @@ func (renderer *PageRenderer) RenderProjectPage(
 	}()
 
 	var project ParsedProject
-	if project, err = parseProject(projectFile, techResources, renderer.metadata); err != nil {
+	if project, err = parseProject(projectFile, techIcons, renderer.metadata); err != nil {
 		return wrap.Errorf(err, "failed to parse project '%s'", projectFile.name)
 	}
 
@@ -137,7 +137,7 @@ const (
 
 func parseProject(
 	projectFile ProjectContentFile,
-	techResources TechResourceMap,
+	techIcons TechIconMap,
 	metadata CommonMetadata,
 ) (ParsedProject, error) {
 	markdownFilePath := fmt.Sprintf(
@@ -162,7 +162,7 @@ func parseProject(
 		return ParsedProject{}, wrap.Error(err, "invalid project metadata")
 	}
 
-	techStack, indexPageIcon, err := parseTechStack(project.TechStack, techResources)
+	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, techIcons)
 	if err != nil {
 		return ParsedProject{}, wrap.Errorf(
 			err,
@@ -191,29 +191,29 @@ func parseProject(
 		},
 		Page:                      project.Page,
 		ContentDir:                projectFile.directory,
-		IndexPageFallbackIconPath: getTechIconPath(indexPageIcon),
+		IndexPageFallbackIconPath: getTechIconPath(indexPageFallbackIcon),
 	}, nil
 }
 
 func parseTechStack(
 	techStack []TechStackItemMarkdown,
-	techResources TechResourceMap,
-) (parsed []TechStackItemTemplate, indexPageIcon string, err error) {
+	techIcons TechIconMap,
+) (parsed []TechStackItemTemplate, indexPageFallbackIcon string, err error) {
 	parsed = make([]TechStackItemTemplate, len(techStack))
-	var mainIndexPageIcon string
+	var firstIndexPageFallbackIcon string
 
 	for i, tech := range techStack {
-		linkItem, indexPageIcon, err := getTechIcon(tech.Tech, techResources)
+		linkItem, indexPageFallbackIcon, err := getTechIcon(tech.Tech, techIcons)
 		if err != nil {
 			return nil, "", err
 		}
-		if mainIndexPageIcon == "" && indexPageIcon != "" {
-			mainIndexPageIcon = indexPageIcon
+		if firstIndexPageFallbackIcon == "" && indexPageFallbackIcon != "" {
+			firstIndexPageFallbackIcon = indexPageFallbackIcon
 		}
 
 		usedWith := make([]LinkItem, len(tech.UsedWith))
 		for i, tech2 := range tech.UsedWith {
-			linkItem2, _, err := getTechIcon(tech2, techResources)
+			linkItem2, _, err := getTechIcon(tech2, techIcons)
 			if err != nil {
 				return nil, "", err
 			}
@@ -228,26 +228,26 @@ func parseTechStack(
 		}
 	}
 
-	return parsed, mainIndexPageIcon, nil
+	return parsed, firstIndexPageFallbackIcon, nil
 }
 
 func getTechIcon(
 	techName string,
-	techResources TechResourceMap,
-) (linkItem LinkItem, indexPageIcon string, err error) {
-	techResource, ok := techResources[techName]
+	techIcons TechIconMap,
+) (linkItem LinkItem, indexPageFallbackIcon string, err error) {
+	techIcon, ok := techIcons[techName]
 	if !ok {
 		return LinkItem{}, "", fmt.Errorf(
-			"failed to find technology '%s' in tech resource map",
+			"failed to find technology '%s' in tech icon map",
 			techName,
 		)
 	}
 
 	return LinkItem{
 		Text:     techName,
-		Link:     techResource.Link,
-		IconPath: getTechIconPath(techResource.Icon),
-	}, techResource.IndexPageFallbackIcon, nil
+		Link:     techIcon.Link,
+		IconPath: getTechIconPath(techIcon.Icon),
+	}, techIcon.IndexPageFallbackIcon, nil
 }
 
 func getTechIconPath(iconFileName string) string {
