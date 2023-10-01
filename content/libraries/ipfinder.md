@@ -19,4 +19,4 @@ linkGroups:
         iconPath: /img/icons/go.svg
 ---
 
-Go utility package for finding your public IP and local IPs.
+Go utility package for finding your local and public IP addresses.
