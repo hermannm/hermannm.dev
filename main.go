@@ -49,7 +49,7 @@ var (
 		"Go": {
 			Link:                  "https://go.dev/",
 			Icon:                  "go.svg",
-			IndexPageFallbackIcon: "go-gruvbox.svg",
+			IndexPageFallbackIcon: "go-alt.svg",
 		},
 		"TypeScript": {
 			Link: "https://www.typescriptlang.org/",
