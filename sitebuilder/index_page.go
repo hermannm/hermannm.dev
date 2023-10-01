@@ -54,10 +54,7 @@ type Image struct {
 	Height int    `yaml:"height" validate:"required"`
 }
 
-func (renderer *PageRenderer) RenderIndexPage(
-	contentPath string,
-	birthday time.Time,
-) (err error) {
+func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.Time) (err error) {
 	defer func() {
 		if err != nil {
 			renderer.cancelCtx()
