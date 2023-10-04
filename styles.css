@@ -71,10 +71,12 @@ body::-webkit-scrollbar-track {
   background: var(--background-color);
 }
 
-/* Disables mobile font scaling, see https://developer.mozilla.org/en-US/docs/Web/CSS/text-size-adjust */
 p {
-  -webkit-text-size-adjust: none;
-  text-size-adjust: none;
+  /*
+  Disables Font Boosting in Chrome for Android, for consistent font sizes.
+  Suggested workaround from WebKit ticket: https://bugs.webkit.org/show_bug.cgi?id=84186#c17
+  */
+  max-height: 1000000px;
 }
 
 a {
