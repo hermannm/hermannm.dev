@@ -21,7 +21,7 @@ linkGroups:
 ---
 
 In June 2023, I started a summer internship as a software developer at Capra, an IT consulting firm.
-I worked in the Liflig department, which takes more of an in-house approach to their projects, with
+I worked in the Liflig division, which takes more of an in-house approach to their projects, with
 greater control of the tech stack and deployment. Our project this summer was to build a backend
 system and admin platform for [IDTAG](https://www.idtagtech.com/), an exciting startup!
 
