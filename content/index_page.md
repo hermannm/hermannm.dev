@@ -34,7 +34,7 @@ projectGroups:
   - title: Companies I've worked for
     contentDir: companies
     projectSlugs:
-      - capra
+      - liflig-by-capra
       - ignite
       - ntnu-work
       - fresh
