@@ -42,6 +42,7 @@ projectGroups:
   - title: Utility libraries I've built
     contentDir: libraries
     projectSlugs:
+      - devlog
       - condqueue
       - enumnames
       - wrap
