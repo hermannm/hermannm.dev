@@ -218,11 +218,16 @@ func parseTemplates() (*template.Template, error) {
 const sitemapFileName = "sitemap.txt"
 
 func (renderer *PageRenderer) BuildSitemap() error {
-	pageURLs := make([]string, renderer.pageCount)
+	pageURLs := make([]string, 0, renderer.pageCount)
 	for i := 0; i < renderer.pageCount; i++ {
 		select {
 		case pagePath := <-renderer.pagePaths:
-			pageURLs[i] = fmt.Sprintf("%s%s", renderer.metadata.BaseURL, pagePath)
+			if pagePath != "/404.html" {
+				pageURLs = append(
+					pageURLs,
+					fmt.Sprintf("%s%s", renderer.metadata.BaseURL, pagePath),
+				)
+			}
 		case <-renderer.ctx.Done():
 			return nil
 		}
