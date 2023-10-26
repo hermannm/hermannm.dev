@@ -222,12 +222,14 @@ func (renderer *PageRenderer) BuildSitemap() error {
 	for i := 0; i < renderer.pageCount; i++ {
 		select {
 		case pagePath := <-renderer.pagePaths:
-			if pagePath != "/404.html" {
-				pageURLs = append(
-					pageURLs,
-					fmt.Sprintf("%s%s", renderer.metadata.BaseURL, pagePath),
-				)
+			if pagePath == "/404.html" {
+				continue
 			}
+
+			// vercel.json's cleanUrls option removes file extensions
+			pagePath, _ = strings.CutSuffix(pagePath, ".html")
+
+			pageURLs = append(pageURLs, fmt.Sprintf("%s%s", renderer.metadata.BaseURL, pagePath))
 		case <-renderer.ctx.Done():
 			return nil
 		}
