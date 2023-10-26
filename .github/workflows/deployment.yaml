@@ -39,14 +39,16 @@ jobs:
       - name: Build website
         run: go run .
 
-      - name: Move build to location expected by Vercel
-        run: mv static/* .vercel/output
-
-      - name: Pull Vercel environment information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
       - name: Deploy to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          github-comment: false
+          vercel-args: "--prod --local-config ./vercel.json"
+          vercel-args: "--prod --local-config ../vercel.json"
+          working-directory: static
 
       - name: "Update GitHub deployment: Success"
         if: success()
