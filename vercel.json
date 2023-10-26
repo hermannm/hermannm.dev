@@ -1,6 +1,5 @@
 {
   "trailingSlash": false,
-  "cleanUrls": true,
   "github": {
     "enabled": false
   }
