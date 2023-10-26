@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 jobs:
   Deploy:
     runs-on: ubuntu-latest
@@ -30,23 +33,24 @@ jobs:
         with:
           go-version: "1.21.x"
 
-      - name: Install formatter
-        run: npm install
+      - name: Install NPM dependencies
+        run: npm ci
 
       - name: Build website
         run: go run .
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
-          github-comment: false
-          vercel-args: "--prod --local-config ../vercel.json"
-          working-directory: static
+      - name: Move build to location expected by Vercel
+        run: |
+          mkdir -p .vercel
+          mv static .vercel/output
 
-      - name: Update deployment status (success)
+      - name: Pull Vercel environment information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: "Update GitHub deployment: Success"
         if: success()
         uses: chrnorm/deployment-status@v2
         with:
@@ -55,7 +59,7 @@ jobs:
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
           state: success
 
-      - name: Update deployment status (failure)
+      - name: "Update GitHub deployment: Failure"
         if: failure()
         uses: chrnorm/deployment-status@v2
         with:
