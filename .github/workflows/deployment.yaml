@@ -40,7 +40,7 @@ jobs:
         run: go run .
 
       - name: Move build to location expected by Vercel
-        run: mv static .vercel/output
+        run: mv static/* .vercel/output
 
       - name: Pull Vercel environment information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
