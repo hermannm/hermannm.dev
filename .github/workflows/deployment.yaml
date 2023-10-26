@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - main
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 jobs:
   Deploy:
     runs-on: ubuntu-latest
@@ -46,7 +43,6 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
           github-comment: false
-          vercel-args: "--prod --local-config ./vercel.json"
           vercel-args: "--prod --local-config ../vercel.json"
           working-directory: static
 
