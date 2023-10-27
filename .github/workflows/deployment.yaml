@@ -39,12 +39,13 @@ jobs:
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25.1.1
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
-          github-comment: false
-          vercel-args: "--prod --local-config ../vercel.json"
           working-directory: static
+          vercel-args: "--prod --local-config ../vercel.json"
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-project-name: ${{ secrets.VERCEL_PROJECT_NAME }}
+          github-comment: false
 
       - name: "Update GitHub deployment: Success"
         if: success()
