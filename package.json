@@ -4,6 +4,6 @@
     "prettier-plugin-go-template": "^0.0.15",
     "prettier-plugin-tailwindcss": "^0.5.6",
     "tailwindcss": "^3.3.5",
-    "vercel": "25.1.0"
+    "vercel": "32.5.0"
   }
 }

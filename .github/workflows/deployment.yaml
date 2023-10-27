@@ -37,10 +37,11 @@ jobs:
         run: go run .
 
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25.1.1
+        uses: amondnet/vercel-action@v25
         with:
           working-directory: static
           vercel-args: "--prod --local-config ../vercel.json"
+          vercel-version: 32.5.0
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
