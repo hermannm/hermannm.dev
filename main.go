@@ -1,31 +1,40 @@
 package main
 
 import (
-	"fmt"
+	"log/slog"
 	"os"
 	"time"
 
+	"hermannm.dev/devlog"
+	"hermannm.dev/devlog/log"
 	"hermannm.dev/personal-website/sitebuilder"
-	"hermannm.dev/wrap"
 )
 
 func main() {
+	logger := slog.New(devlog.NewHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug}))
+	slog.SetDefault(logger)
+
+	log.Info("building website...")
+
 	if err := sitebuilder.RenderPages(contentPaths, metadata, techIcons, birthday); err != nil {
-		fmt.Println(err)
+		log.Error(err, "")
 		os.Exit(1)
 	}
 
 	if err := sitebuilder.FormatRenderedPages(); err != nil {
-		fmt.Println(wrap.Error(err, "failed to format rendered html"))
+		log.Error(err, "failed to format rendered html")
 		os.Exit(1)
 	}
 
 	if err := sitebuilder.GenerateTailwindCSS("styles.css"); err != nil {
-		fmt.Println(wrap.Error(err, "failed to generate tailwind css"))
+		log.Error(err, "failed to generate tailwind css")
 		os.Exit(1)
 	}
 
-	fmt.Printf("Website built successfully! Output in ./%s\n", sitebuilder.BaseOutputDir)
+	log.Info(
+		"website built successfully!",
+		slog.String("outputDirectory", "./"+sitebuilder.BaseOutputDir),
+	)
 }
 
 var (
