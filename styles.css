@@ -99,6 +99,4 @@ p {
   Suggested workaround from WebKit ticket: https://bugs.webkit.org/show_bug.cgi?id=84186#c17
   */
   max-height: 1000000px;
-
-  @apply text-base;
 }

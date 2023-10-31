@@ -57,7 +57,7 @@
 <div class="flex flex-col gap-4 pl-1 pr-1">
   {{- $techStackLength := len .TechStack -}}
   {{- if ge $techStackLength 2 -}}
-    <div class="flex flex-col gap-1">
+    <div class="flex flex-col gap-1 leading-[normal]">
       <strong>{{ .TechStackTitle }}:</strong>
       <ul class="flex list-none flex-col gap-1 pl-0">
         {{- range $technology := .TechStack }}
@@ -80,7 +80,7 @@
   {{- range $linkGroup := .LinkGroups }}
     {{- $linkGroupLength := len $linkGroup.Links -}}
     {{- if ge $linkGroupLength 2 -}}
-      <div class="flex flex-col gap-1">
+      <div class="flex flex-col gap-1 leading-[normal]">
         <strong>{{ $linkGroup.Title }}:</strong>
         <ul class="flex list-none flex-col gap-1 pl-0">
           {{- range $linkItem := $linkGroup.Links }}
