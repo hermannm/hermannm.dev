@@ -31,14 +31,6 @@ projectGroups:
       - gadd
       - minesweeper
       - gruvboxplain
-  - title: Companies I've worked for
-    contentDir: companies
-    projectSlugs:
-      - liflig-by-capra
-      - ignite
-      - ntnu-work
-      - fresh
-      - norlandia
   - title: Utility libraries I've built
     contentDir: libraries
     projectSlugs:
@@ -48,11 +40,6 @@ projectGroups:
       - wrap
       - set
       - ipfinder
-  - title: Schools I've studied at
-    contentDir: schools
-    projectSlugs:
-      - ntnu
-      - foss
 ---
 
 Hello there! I'm Hermann Mørkrid, a Computer Science student at NTNU Trondheim. I mostly do web
