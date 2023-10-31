@@ -2,24 +2,24 @@
 <html lang="en-US">
   {{- template "head.html.tmpl" .Meta -}}
   <body
-    class="mb-4 ml-[var(--content-margin)] mr-[var(--content-margin)] mt-4 flex min-h-[var(--page-height)] max-w-[var(--content-width)] flex-col gap-4 bg-gruvbox-bg0 font-main leading-[normal] text-gruvbox-fg"
+    class="mx-auto mb-4 mt-4 flex min-h-[var(--page-height)] max-w-2xl flex-col gap-4 bg-gruvbox-bg0 px-2 font-main leading-[normal] text-gruvbox-fg"
   >
     <h1 class="flex justify-center text-2xl font-bold"><a href="/">hermannm.dev</a></h1>
 
     <div class="flex flex-col gap-3">
       <div
-        class="flex h-[calc(2*4px+var(--project-image-size))] items-center gap-2 rounded-lg border-4 border-solid border-gruvbox-bg2 bg-gruvbox-bg2 font-bold"
+        class="flex h-[calc(2*4px+60px)] items-center gap-3 rounded-lg border-4 border-solid border-gruvbox-bg2 bg-gruvbox-bg2 font-bold"
       >
         {{- if .Project.IconPath -}}
           <img
-            class="max-w-[var(--project-image-size)] rounded-lg"
+            class="max-w-[60px] rounded-lg"
             width="60"
             height="60"
             src="{{ .Project.IconPath }}"
             alt="{{ .Project.IconAlt }}"
           />
         {{- end -}}
-        <h2 class="text-lg [&:first-child]:ml-1">{{ .Project.Name }}</h2>
+        <h2 class="text-xl [&:first-child]:ml-1">{{ .Project.Name }}</h2>
       </div>
 
       {{- template "project_info.html.tmpl" .Project -}}

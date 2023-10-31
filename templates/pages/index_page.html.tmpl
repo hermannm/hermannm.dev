@@ -2,14 +2,14 @@
 <html lang="en-US">
   {{- template "head.html.tmpl" .Meta -}}
   <body
-    class="mb-4 ml-[var(--page-margin)] mr-[var(--page-margin)] mt-4 flex min-h-[var(--page-height)] max-w-[var(--page-width)] flex-col gap-4 bg-gruvbox-bg0 font-main leading-[normal] text-gruvbox-fg"
+    class="mb-4 mx-auto px-2 mt-4 flex min-h-[var(--page-height)] max-w-[var(--index-page-width)] flex-col gap-4 bg-gruvbox-bg0 font-main leading-[normal] text-gruvbox-fg"
   >
     <div class="flex flex-col items-center gap-4 xs:flex-row">
       <div
-        class="flex flex-col gap-4 xs:min-w-[var(--xs-header-text-width)] xs:max-w-[var(--xs-header-text-width)] sm:min-w-0 sm:max-w-none"
+        class="flex flex-col gap-4 xs:min-w-[var(--xs-to-sm-about-me-width)] xs:max-w-[var(--xs-to-sm-about-me-width)] sm:min-w-0 sm:max-w-none"
       >
         <h1 class="m-0 flex flex-row justify-center text-3xl font-bold">{{ .Meta.Page.Title }}</h1>
-        <p class="mb-0 mt-0 max-w-[var(--content-width)] pl-1 pr-1">
+        <p class="mb-0 mt-0 pl-1 pr-1">
           {{ .AboutMe }}
         </p>
         <ul
@@ -84,7 +84,7 @@
                 <a class="flex h-full flex-col items-center no-underline" href="/{{ $project.Slug }}">
                   <div class="half-border-background w-full pb-1 pt-1">
                     <img
-                      class="mx-auto max-w-[var(--project-image-size)] rounded-lg"
+                      class="mx-auto max-w-[60px] rounded-lg"
                       width="60"
                       height="60"
                       src="{{ $project.IconPath }}"

@@ -3,17 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --page-width: 64rem;
-  --content-width: 48rem;
-
-  --page-margin: max(0.5rem, calc(50vw - var(--page-width) / 2));
-  --content-margin: max(0.5rem, calc(50vw - var(--content-width) / 2));
-
-  --profile-pic-size: calc(var(--page-width) - var(--content-width));
-  --project-image-size: 60px;
-
+  --index-page-width: 64rem;
+  --about-me-width: 48rem;
+  --profile-pic-size: calc(var(--index-page-width) - var(--about-me-width));
   --sm-breakpoint: 624px;
-  --xs-header-text-width: calc(var(--sm-breakpoint) - var(--profile-pic-size) - 3rem);
+  --xs-to-sm-about-me-width: calc(var(--sm-breakpoint) - var(--profile-pic-size) - 3rem);
 
   --background-color: #282828;
   --border-color: #504945;
