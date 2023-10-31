@@ -71,28 +71,39 @@
       </div>
     </div>
 
-    {{ range $projectGroup := .ProjectGroups }}
-      <h2 class="text-center text-lg font-bold">{{ $projectGroup.Title }}</h2>
+    <div class="flex flex-col gap-8">
+      {{ range $projectGroup := .ProjectGroups }}
+        <div class="flex flex-col gap-4">
+          <h2 class="text-center text-xl font-bold">{{ $projectGroup.Title }}</h2>
 
-      <ul class="m-0 flex list-none flex-wrap justify-center gap-4 pl-0">
-        {{- range $project := $projectGroup.Projects }}
-          <li class="basis-full xs:basis-[calc(50%-0.5rem)] md:basis-[calc(100%/3-1rem*2/3)]">
-            <a
-              class="project-banner no-underline hover:border-gruvbox-bg3 hover:bg-gruvbox-bg3"
-              href="/{{ $project.Slug }}"
-            >
-              <img
-                width="50"
-                height="50"
-                src="{{ $project.IconPath }}"
-                alt="{{ $project.IconAlt }}"
-              />
-              <div class="grow">{{ $project.Name }}</div>
-            </a>
-          </li>
-        {{- end }}
-      </ul>
-    {{ end }}
+          <ul class="m-0 flex list-none flex-wrap justify-center gap-6 pl-0">
+            {{- range $project := $projectGroup.Projects }}
+              <li
+                class="mdlg:basis-[calc(100%/3-1rem)] basis-full rounded-lg border-2 border-solid border-gruvbox-bg2 duration-100 lift-on-hover sm:basis-[calc(50%-0.75rem)]"
+              >
+                <a class="flex h-full flex-col items-center no-underline" href="/{{ $project.Slug }}">
+                  <div class="half-border-background w-full pb-1 pt-1">
+                    <img
+                      class="mx-auto max-w-[var(--project-image-size)] rounded-lg"
+                      width="60"
+                      height="60"
+                      src="{{ $project.IconPath }}"
+                      alt="{{ $project.IconAlt }}"
+                    />
+                  </div>
+                  <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
+                    <h3 class="text-lg font-bold">{{ $project.Name }}</h3>
+                    <p class="flex min-h-[3rem] grow items-center no-underline">
+                      {{ $project.TagLine }}
+                    </p>
+                  </div>
+                </a>
+              </li>
+            {{- end }}
+          </ul>
+        </div>
+      {{ end }}
+    <div>
 
     {{ template "footer.html.tmpl" .Meta.Common }}
   </body>

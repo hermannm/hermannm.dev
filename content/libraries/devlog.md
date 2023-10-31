@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/devlog
 name: devlog
 slug: devlog
+tagLine: A structured logging output handler.
 techStack:
   - tech: Go
 linkGroups:

@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/hermannm.dev
 name: personal-website
 slug: personal-website
+tagLine: hermannm's personal website and Go package host.
 techStack:
   - tech: Go
 linkGroups:

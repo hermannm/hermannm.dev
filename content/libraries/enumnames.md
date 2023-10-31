@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/enumnames
 name: enumnames
 slug: enumnames
+tagLine: Efficient string representation for enum values.
 techStack:
   - tech: Go
 linkGroups:

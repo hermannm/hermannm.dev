@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/wrap
 name: wrap
 slug: wrap
+tagLine: Utility for wrapping error messages with extra context.
 techStack:
   - tech: Go
 linkGroups:

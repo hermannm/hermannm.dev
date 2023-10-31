@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/set
 name: set
 slug: set
+tagLine: Generic Set data structures.
 techStack:
   - tech: Go
 linkGroups:

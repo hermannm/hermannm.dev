@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/condqueue
 name: condqueue
 slug: condqueue
+tagLine: A concurrent queue.
 techStack:
   - tech: Go
 linkGroups:

@@ -12,8 +12,9 @@ import (
 )
 
 type ProjectProfile struct {
-	Name string `yaml:"name"     validate:"required"`
-	Slug string `yaml:"slug"     validate:"required"`
+	Name    string `yaml:"name"     validate:"required"`
+	Slug    string `yaml:"slug"     validate:"required"`
+	TagLine string `yaml:"tagLine"`
 	// Optional if not included in index page.
 	IconPath string `yaml:"iconPath" validate:"omitempty,filepath"`
 	IconAlt  string `yaml:"iconAlt"`

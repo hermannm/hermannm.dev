@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/cv
 name: cv
 slug: cv
+tagLine: Dynamic CV and job application builder.
 techStack:
   - tech: Go
 linkGroups:

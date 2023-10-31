@@ -1,6 +1,7 @@
 ---
 name: rov-sim
 slug: rov-sim
+tagLine: Underwater drone simulator.
 iconPath: /img/projects/rov-sim.webp
 iconAlt: "ROV-SIM project logo"
 techStack:

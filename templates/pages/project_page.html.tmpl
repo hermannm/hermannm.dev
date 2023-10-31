@@ -4,12 +4,20 @@
   <body
     class="mb-4 ml-[var(--content-margin)] mr-[var(--content-margin)] mt-4 flex min-h-[var(--page-height)] max-w-[var(--content-width)] flex-col gap-4 bg-gruvbox-bg0 font-main leading-[normal] text-gruvbox-fg"
   >
-    <h1 class="flex justify-center text-3xl font-bold"><a href="/">hermannm.dev</a></h1>
+    <h1 class="flex justify-center text-2xl font-bold"><a href="/">hermannm.dev</a></h1>
 
     <div class="flex flex-col gap-3">
-      <div class="project-banner">
+      <div
+        class="flex h-[calc(2*4px+var(--project-image-size))] items-center gap-2 rounded-lg border-4 border-solid border-gruvbox-bg2 bg-gruvbox-bg2 font-bold"
+      >
         {{- if .Project.IconPath -}}
-          <img width="50" height="50" src="{{ .Project.IconPath }}" alt="{{ .Project.IconAlt }}" />
+          <img
+            class="max-w-[var(--project-image-size)] rounded-lg"
+            width="60"
+            height="60"
+            src="{{ .Project.IconPath }}"
+            alt="{{ .Project.IconAlt }}"
+          />
         {{- end -}}
         <h2 class="text-lg [&:first-child]:ml-1">{{ .Project.Name }}</h2>
       </div>

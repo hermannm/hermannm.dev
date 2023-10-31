@@ -5,6 +5,7 @@ page:
     githubURL: https://github.com/hermannm/ipfinder
 name: ipfinder
 slug: ipfinder
+tagLine: Utility for finding your local and public and IP addresses.
 techStack:
   - tech: Go
 linkGroups:
