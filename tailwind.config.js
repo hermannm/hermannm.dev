@@ -19,7 +19,7 @@ export default {
       xs: "480px",
       sm: "624px",
       md: "768px",
-      mdlg: "896px",
+      "md-lg": "896px",
       lg: "1024px",
       xl: "1280px",
     },
