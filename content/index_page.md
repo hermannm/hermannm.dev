@@ -31,6 +31,11 @@ projectGroups:
       - gadd
       - minesweeper
       - gruvboxplain
+  - title: IT companies I've worked for
+    contentDir: companies
+    projectSlugs:
+      - liflig-by-capra
+      - ignite
   - title: Utility libraries I've built
     contentDir: libraries
     projectSlugs:

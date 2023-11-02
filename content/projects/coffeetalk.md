@@ -3,7 +3,7 @@ name: coffeetalk
 slug: coffeetalk
 tagLine: Peer-to-peer video chat application.
 iconPath: /img/projects/coffeetalk.webp
-iconAlt: "CoffeeTalk project logo"
+iconAlt: CoffeeTalk project logo
 techStack:
   - tech: JavaScript
     usedFor: frontend

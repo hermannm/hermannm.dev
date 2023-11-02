@@ -8,7 +8,7 @@ name: bfh-server
 slug: bfh-server
 tagLine: Multiplayer online board game.
 iconPath: /img/projects/immerse.webp
-iconAlt: "Immerse NTNU student organization logo"
+iconAlt: Immerse NTNU student organization logo
 techStack:
   - tech: Go
 linkGroups:

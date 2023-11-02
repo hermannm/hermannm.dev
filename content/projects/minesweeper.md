@@ -3,7 +3,7 @@ name: minesweeper
 slug: minesweeper
 tagLine: Java implementation of the classic Minesweeper game.
 iconPath: /img/projects/minesweeper.webp
-iconAlt: "Screenshot of a Minesweeper game round"
+iconAlt: Screenshot of a Minesweeper game round
 techStack:
   - tech: Java
 linkGroups:
