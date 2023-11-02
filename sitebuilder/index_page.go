@@ -89,6 +89,12 @@ ProjectLoop:
 			return nil
 		}
 	}
+	if !groups.IsFull() {
+		return fmt.Errorf(
+			"index page did not receive all projects specified in 'projectGroups' in %s",
+			contentPath,
+		)
+	}
 
 	pageTemplate := IndexPageTemplate{
 		IndexPageBase: content.IndexPageBase,
