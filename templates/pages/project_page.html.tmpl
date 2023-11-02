@@ -22,9 +22,112 @@
         <h2 class="text-xl [&:first-child]:ml-1">{{ .Project.Name }}</h2>
       </div>
 
-      {{- template "project_info.html.tmpl" .Project -}}
+      <div class="flex flex-col gap-4 pl-1 pr-1">
+        {{- $techStackLength := len .Project.TechStack -}}
+        {{- if ge $techStackLength 2 -}}
+          <div class="flex flex-col gap-1 leading-[normal]">
+            <strong>{{ .Project.TechStackTitle }}:</strong>
+            <ul class="flex list-none flex-col gap-1 pl-0">
+              {{- range $technology := .Project.TechStack }}
+                <li class="flex flex-wrap gap-x-2 gap-y-1">
+                  {{- template "techStackItem" $technology }}
+                </li>
+              {{- end }}
+            </ul>
+          </div>
+        {{- else if eq $techStackLength 1 }}
+          {{- $technology := index .Project.TechStack 0 -}}
+          <div class="flex flex-wrap gap-2">
+            <strong>{{ .Project.TechStackTitle }}:</strong>
+            {{- template "techStackItem" $technology -}}
+          </div>
+        {{- end }}
+
+        {{- .Project.Description -}}
+
+        {{- range $linkGroup := .Project.LinkGroups }}
+          {{- $linkGroupLength := len $linkGroup.Links -}}
+          {{- if ge $linkGroupLength 2 -}}
+            <div class="flex flex-col gap-1 leading-[normal]">
+              <strong>{{ $linkGroup.Title }}:</strong>
+              <ul class="flex list-none flex-col gap-1 pl-0">
+                {{- range $linkItem := $linkGroup.Links }}
+                  <li class="flex">
+                    {{- template "linkItem" $linkItem -}}
+                  </li>
+                {{- end }}
+              </ul>
+            </div>
+          {{- else if eq $linkGroupLength 1 }}
+            {{ $linkItem := index $linkGroup.Links 0 }}
+            <div class="flex flex-wrap gap-x-2 gap-y-0">
+              <strong>{{ $linkGroup.Title }}:</strong>
+              {{- template "linkItem" $linkItem -}}
+            </div>
+          {{- end }}
+        {{- end -}}
+
+        {{ if .Project.Footnote }}
+          <em>{{ .Project.Footnote }}</em>
+        {{ end }}
+      </div>
     </div>
 
     {{ template "footer.html.tmpl" .Meta.Common }}
   </body>
 </html>
+
+{{- define "techStackItem" }}
+  {{- template "linkItem" . -}}
+  {{- $usedWithLength := len .UsedWith -}}
+  {{- if eq $usedWithLength  0 -}}
+    {{- if .UsedFor -}}
+      ({{ .UsedFor }})
+    {{- end -}}
+  {{- else if eq $usedWithLength 1 -}}
+    {{- $usedWith := index .UsedWith 0 -}}
+    (
+    {{- if .UsedFor -}}
+      {{- .UsedFor -}},
+      {{- " " -}}
+    {{- end -}}
+    with
+    <div class="flex gap-0">
+      {{- template "linkItem" $usedWith -}}
+      )
+    </div>
+  {{- else -}}
+    (
+    {{- if .UsedFor -}}
+      {{- .UsedFor -}},
+      {{- " " -}}
+    {{- end -}}
+    with
+    {{- range $index, $usedWith := .UsedWith -}}
+      {{- $indexPlus1 := plus1 $index -}}
+      {{- if eq $usedWithLength $indexPlus1 -}}
+        and
+        <div class="flex gap-0">
+          {{- template "linkItem" $usedWith -}}
+          )
+        </div>
+      {{- else -}}
+        {{- if ne $index 0 -}},{{- end -}}
+        {{- template "linkItem" $usedWith -}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{ define "linkItem" }}
+  {{ if .IconPath -}}
+    <a class="flex items-center gap-1" href="{{ .Link }}" target="_blank">
+      <img class="h-[16px] w-[16px]" width="16" height="16" src="{{ .IconPath }}" alt />
+      {{ .Text }}
+    </a>
+  {{- else -}}
+    <a href="{{ .Link }}" target="_blank">
+      {{ .Text }}
+    </a>
+  {{- end }}
+{{ end }}
