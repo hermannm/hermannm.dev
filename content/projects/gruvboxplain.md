@@ -2,7 +2,7 @@
 name: gruvbox-plain
 slug: gruvboxplain
 tagLine: Color theme for VSCode and IntelliJ.
-iconPath: /img/projects/gruvbox-plain.webp
+iconPath: /img/projects/gruvbox-plain.png
 iconAlt: Diagonal stripes with the gruvbox-plain color scheme
 linkGroups:
   - title: Code

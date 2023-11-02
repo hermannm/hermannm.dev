@@ -9,12 +9,12 @@ personalInfo:
   githubURL: https://github.com/hermannm
   linkedinURL: https://www.linkedin.com/in/hermannmorkrid
 profilePictureMobile:
-  path: /img/profile-picture-mobile.webp
+  path: /img/profile-picture-mobile.jpg
   alt: Hermann's profile picture
   width: 440
   height: 216
 profilePictureDesktop:
-  path: /img/profile-picture-desktop.webp
+  path: /img/profile-picture-desktop.jpg
   alt: "Hermann's profile picture"
   width: 240
   height: 240

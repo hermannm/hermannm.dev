@@ -2,7 +2,7 @@
 name: corona-defense
 slug: corona-defense
 tagLine: Tower Defense mobile game.
-iconPath: /img/projects/corona-defense.webp
+iconPath: /img/projects/corona-defense.png
 iconAlt: Corona Defense project logo
 techStack:
   - tech: Kotlin

@@ -2,7 +2,7 @@
 name: indok-web
 slug: indok-web
 tagLine: Student association website.
-iconPath: /img/projects/rubberdok.webp
+iconPath: /img/projects/rubberdok.png
 iconAlt: Rubberdøk student organization logo
 techStack:
   - tech: TypeScript

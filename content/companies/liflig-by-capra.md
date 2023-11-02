@@ -2,7 +2,7 @@
 name: Liflig by Capra
 slug: liflig-by-capra
 tagLine: IT consulting firm, but with an in-house approach.
-iconPath: /img/companies/liflig.webp
+iconPath: /img/companies/liflig.png
 iconAlt: "Liflig company logo"
 techStackTitle: Technologies I worked with
 techStack:

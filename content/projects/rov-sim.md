@@ -2,7 +2,7 @@
 name: rov-sim
 slug: rov-sim
 tagLine: Underwater drone simulator.
-iconPath: /img/projects/rov-sim.webp
+iconPath: /img/projects/rov-sim.png
 iconAlt: ROV-SIM project logo
 techStack:
   - tech: Unity
