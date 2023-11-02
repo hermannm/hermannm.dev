@@ -21,12 +21,14 @@ linkGroups:
         link: https://www.ignite.no/
 ---
 
-My work at Ignite began in January 2022, when I started working part-time one day a week from
-Trondheim. In the summer of that year, I went to their Oslo office for 9 weeks to work full-time as
-a summer intern. After my internship, I continued working part-time from Trondheim through the fall
-semester.
+Ignite has built a platform where businesses can analyze their data on spend, suppliers, carbon
+emissions and so forth. The technology backing this platform is a sprawling microservice
+architecture written in multiple languages, but primarily Go. In 2022, I got the opportunity to work
+on this platform as an intern. The scale of the project was much larger than anything I had worked
+on previously. Dealing with the complexities of microservices was quite challenging, but also a lot
+of fun. Towards the end of my internship, I even got to deploy my own Go microservice!
 
-The work involved full-stack development of the Ignite platform, using the technologies listed
-above. The scale of the project was much larger than anything I had worked on previously. I got to
-work a lot with Ignite's microservice architecture, which was quite challenging, but also a lot of
-fun. Towards the end of my internship, I even got to deploy my own Go microservice!
+I worked part-time for Ignite next to my studies in the spring of 2022, then full-time for 9 weeks
+in the summer, then part-time again through the fall semester. I learned a lot through this, not
+only on the technical side, but also on the human side of working as part of a team and
+organization.
