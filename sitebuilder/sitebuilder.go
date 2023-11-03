@@ -43,7 +43,7 @@ type ContentPaths struct {
 	BasicPages  []string
 }
 
-type TechIconMap map[string]struct {
+type IconMap map[string]struct {
 	Link                  string `validate:"required,url"`
 	Icon                  string `validate:"required,filepath"`
 	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
@@ -52,15 +52,15 @@ type TechIconMap map[string]struct {
 func RenderPages(
 	contentPaths ContentPaths,
 	metadata CommonMetadata,
-	techIcons TechIconMap,
+	icons IconMap,
 	birthday time.Time,
 ) error {
 	if err := validate.Struct(metadata); err != nil {
 		return wrap.Errorf(err, "invalid common page metadata")
 	}
-	for tech, icon := range techIcons {
+	for name, icon := range icons {
 		if err := validate.Struct(icon); err != nil {
-			return wrap.Errorf(err, "invalid tech icon config for '%s'", tech)
+			return wrap.Errorf(err, "invalid icon config for '%s'", name)
 		}
 	}
 
@@ -79,7 +79,7 @@ func RenderPages(
 	for _, projectFile := range projectFiles {
 		projectFile := projectFile // Copy mutating loop variable to use in goroutine
 		goroutines.Go(func() error {
-			return renderer.RenderProjectPage(projectFile, techIcons)
+			return renderer.RenderProjectPage(projectFile, icons)
 		})
 	}
 

@@ -2,8 +2,8 @@
 name: export-control
 slug: export-control
 tagLine: Search tool for the Norwegian Export Control Law.
-iconPath: /img/projects/safetec.png
-iconAlt: Safetec company logo
+logoPath: /img/projects/safetec.png
+logoAlt: Safetec company logo
 techStack:
   - tech: Python
     usedWith:

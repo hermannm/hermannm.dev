@@ -17,7 +17,7 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/set
         link: https://pkg.go.dev/hermannm.dev/set
-        iconPath: /img/icons/go.svg
+        logoPath: /img/icons/go.svg
 ---
 
 A Go package that provides generic Set data structures (collections of unique elements). It

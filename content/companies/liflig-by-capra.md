@@ -2,8 +2,8 @@
 name: Liflig by Capra
 slug: liflig-by-capra
 tagLine: IT consulting firm, but with an in-house approach.
-iconPath: /img/companies/liflig.png
-iconAlt: "Liflig company logo"
+logoPath: /img/companies/liflig.png
+logoAlt: "Liflig company logo"
 techStackTitle: Technologies I worked with
 techStack:
   - tech: TypeScript

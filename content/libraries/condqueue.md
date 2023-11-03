@@ -17,7 +17,7 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/condqueue
         link: https://pkg.go.dev/hermannm.dev/condqueue
-        iconPath: /img/icons/go.svg
+        logoPath: /img/icons/go.svg
 ---
 
 A small Go package providing a concurrent queue, on which consumers can wait for an item satisfying

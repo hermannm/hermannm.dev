@@ -17,7 +17,7 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/wrap
         link: https://pkg.go.dev/hermannm.dev/wrap
-        iconPath: /img/icons/go.svg
+        logoPath: /img/icons/go.svg
 ---
 
 A small Go package for wrapping errors with extra context in an easy-to-read format.

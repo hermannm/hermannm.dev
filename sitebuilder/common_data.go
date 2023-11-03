@@ -6,8 +6,8 @@ import (
 )
 
 type LinkItem struct {
-	Text     string `yaml:"text" validate:"required"`
-	Link     string `yaml:"link" validate:"omitempty,url"`
+	Text     string `yaml:"text"     validate:"required"`
+	Link     string `yaml:"link"     validate:"omitempty,url"`
 	IconPath string `yaml:"iconPath" validate:"omitempty,filepath"`
 }
 
@@ -25,7 +25,7 @@ type CommonMetadata struct {
 }
 
 type Page struct {
-	Title        string `yaml:"title" validate:"required"`
+	Title        string `yaml:"title"        validate:"required"`
 	Path         string `yaml:"path"`
 	TemplateName string `yaml:"templateName" validate:"required,filepath"`
 	RedirectURL  string `yaml:"redirectURL"` // Optional.
@@ -35,7 +35,7 @@ type Page struct {
 }
 
 type GoPackage struct {
-	FullName  string `yaml:"fullName" validate:"required"`
+	FullName  string `yaml:"fullName"  validate:"required"`
 	GitHubURL string `yaml:"githubURL" validate:"required,url"`
 }
 

@@ -2,8 +2,8 @@
 name: bfh-client & bfh-server
 slug: bfh
 tagLine: Multiplayer online board game.
-iconPath: /img/projects/immerse.png
-iconAlt: Immerse NTNU student organization logo
+logoPath: /img/projects/immerse.png
+logoAlt: Immerse NTNU student organization logo
 techStack:
   - tech: Godot
     usedFor: client-side

@@ -16,7 +16,7 @@ func main() {
 
 	log.Info("building website...")
 
-	if err := sitebuilder.RenderPages(contentPaths, metadata, techIcons, birthday); err != nil {
+	if err := sitebuilder.RenderPages(contentPaths, metadata, icons, birthday); err != nil {
 		log.Error(err, "")
 		os.Exit(1)
 	}
@@ -54,7 +54,7 @@ var (
 
 	birthday = time.Date(1999, time.September, 12, 2, 0, 0, 0, time.UTC)
 
-	techIcons = sitebuilder.TechIconMap{
+	icons = sitebuilder.IconMap{
 		"Go": {
 			Link:                  "https://go.dev/",
 			Icon:                  "go.svg",

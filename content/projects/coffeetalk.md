@@ -2,8 +2,8 @@
 name: coffeetalk
 slug: coffeetalk
 tagLine: Peer-to-peer video chat application.
-iconPath: /img/projects/coffeetalk.png
-iconAlt: CoffeeTalk project logo
+logoPath: /img/projects/coffeetalk.png
+logoAlt: CoffeeTalk project logo
 techStack:
   - tech: JavaScript
     usedFor: frontend

@@ -17,7 +17,7 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/devlog
         link: https://pkg.go.dev/hermannm.dev/devlog
-        iconPath: /img/icons/go.svg
+        logoPath: /img/icons/go.svg
 ---
 
 A structured logging handler for Go, with a human-readable output format designed for development
