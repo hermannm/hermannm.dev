@@ -252,7 +252,7 @@ func getTechIcon(
 }
 
 func getTechIconPath(iconFileName string) string {
-	return fmt.Sprintf("/%s/%s", TechIconDir, iconFileName)
+	return fmt.Sprintf("/%s/%s", IconDir, iconFileName)
 }
 
 const githubBaseURL = "https://github.com"

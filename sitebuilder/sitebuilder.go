@@ -32,7 +32,7 @@ const (
 	PageTemplatesDir      = "pages"
 	ComponentTemplatesDir = "components"
 
-	TechIconDir = "img/tech"
+	IconDir = "img/icons"
 )
 
 var validate *validator.Validate = validator.New()
