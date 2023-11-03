@@ -16,7 +16,7 @@ func main() {
 
 	log.Info("building website...")
 
-	if err := sitebuilder.RenderPages(contentPaths, metadata, icons, birthday); err != nil {
+	if err := sitebuilder.RenderPages(contentPaths, commonData, birthday); err != nil {
 		log.Error(err, "")
 		os.Exit(1)
 	}
@@ -38,14 +38,6 @@ func main() {
 }
 
 var (
-	metadata = sitebuilder.CommonMetadata{
-		SiteName:         "hermannm.dev",
-		SiteDescription:  "Hermann Mørkrid's personal website.",
-		BaseURL:          "https://hermannm.dev",
-		GitHubIconPath:   "/img/icons/github.svg",
-		GitHubIssuesLink: "https://github.com/hermannm/hermannm.dev/issues",
-	}
-
 	contentPaths = sitebuilder.ContentPaths{
 		IndexPage:   "index_page.md",
 		ProjectDirs: []string{"projects", "companies", "libraries"},
@@ -54,83 +46,90 @@ var (
 
 	birthday = time.Date(1999, time.September, 12, 2, 0, 0, 0, time.UTC)
 
-	icons = sitebuilder.IconMap{
-		"Go": {
-			Link:                  "https://go.dev/",
-			Icon:                  "go.svg",
-			IndexPageFallbackIcon: "go-alt.svg",
-		},
-		"TypeScript": {
-			Link: "https://www.typescriptlang.org/",
-			Icon: "typescript.svg",
-		},
-		"Rust": {
-			Link: "https://www.rust-lang.org/",
-			Icon: "rust.svg",
-		},
-		"JavaScript": {
-			Link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-			Icon: "javascript.svg",
-		},
-		"C#": {
-			Link: "https://dotnet.microsoft.com/en-us/languages/csharp",
-			Icon: "csharp.svg",
-		},
-		"Java": {
-			Link: "https://www.java.com/en/download/help/whatis_java.html",
-			Icon: "java.svg",
-		},
-		"Kotlin": {
-			Link: "https://kotlinlang.org/",
-			Icon: "kotlin.svg",
-		},
-		"Python": {
-			Link: "https://www.python.org/",
-			Icon: "python.svg",
-		},
-		"React": {
-			Link: "https://reactjs.org/",
-			Icon: "react.svg",
-		},
-		"Next.js": {
-			Link: "https://nextjs.org/",
-			Icon: "next-js.svg",
-		},
-		"Django": {
-			Link: "https://www.djangoproject.com/",
-			Icon: "django.svg",
-		},
-		"Godot": {
-			Link: "https://godotengine.org/",
-			Icon: "godot.svg",
-		},
-		"Unity": {
-			Link: "https://unity.com/",
-			Icon: "unity.svg",
-		},
-		"libGDX": {
-			Link: "https://libgdx.com/",
-			Icon: "libgdx.svg",
-		},
-		"gRPC": {
-			Link: "https://grpc.io/",
-			Icon: "grpc.svg",
-		},
-		"GraphQL": {
-			Link: "https://graphql.org/",
-			Icon: "graphql.svg",
-		},
-		"WebRTC": {
-			Link: "https://webrtc.org/",
-			Icon: "webrtc.svg",
-		},
-		"MQTT": {
-			Link: "https://mqtt.org/",
-			Icon: "mqtt.svg",
-		},
-		"AWS CDK": {
-			Link: "https://aws.amazon.com/cdk/",
-			Icon: "aws.svg",
+	commonData = sitebuilder.CommonPageData{
+		SiteName:         "hermannm.dev",
+		SiteDescription:  "Hermann Mørkrid's personal website.",
+		BaseURL:          "https://hermannm.dev",
+		GitHubIconPath:   "/img/icons/github.svg",
+		GitHubIssuesLink: "https://github.com/hermannm/hermannm.dev/issues",
+		Icons: sitebuilder.IconMap{
+			"Go": {
+				Icon:                  "/img/icons/go.svg",
+				Link:                  "https://go.dev/",
+				IndexPageFallbackIcon: "/img/icons/go-alt.svg",
+			},
+			"TypeScript": {
+				Icon: "/img/icons/typescript.svg",
+				Link: "https://www.typescriptlang.org/",
+			},
+			"Rust": {
+				Icon: "/img/icons/rust.svg",
+				Link: "https://www.rust-lang.org/",
+			},
+			"JavaScript": {
+				Icon: "/img/icons/javascript.svg",
+				Link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+			},
+			"C#": {
+				Icon: "/img/icons/csharp.svg",
+				Link: "https://dotnet.microsoft.com/en-us/languages/csharp",
+			},
+			"Java": {
+				Icon: "/img/icons/java.svg",
+				Link: "https://www.java.com/en/download/help/whatis_java.html",
+			},
+			"Kotlin": {
+				Icon: "/img/icons/kotlin.svg",
+				Link: "https://kotlinlang.org/",
+			},
+			"Python": {
+				Icon: "/img/icons/python.svg",
+				Link: "https://www.python.org/",
+			},
+			"React": {
+				Icon: "/img/icons/react.svg",
+				Link: "https://reactjs.org/",
+			},
+			"Next.js": {
+				Icon: "/img/icons/next-js.svg",
+				Link: "https://nextjs.org/",
+			},
+			"Django": {
+				Icon: "/img/icons/django.svg",
+				Link: "https://www.djangoproject.com/",
+			},
+			"Godot": {
+				Icon: "/img/icons/godot.svg",
+				Link: "https://godotengine.org/",
+			},
+			"Unity": {
+				Icon: "/img/icons/unity.svg",
+				Link: "https://unity.com/",
+			},
+			"libGDX": {
+				Icon: "/img/icons/libgdx.svg",
+				Link: "https://libgdx.com/",
+			},
+			"gRPC": {
+				Icon: "/img/icons/grpc.svg",
+				Link: "https://grpc.io/",
+			},
+			"GraphQL": {
+				Icon: "/img/icons/graphql.svg",
+				Link: "https://graphql.org/",
+			},
+			"WebRTC": {
+				Icon: "/img/icons/webrtc.svg",
+				Link: "https://webrtc.org/",
+			},
+			"MQTT": {
+				Icon: "/img/icons/mqtt.svg",
+				Link: "https://mqtt.org/",
+			},
+			"AWS CDK": {
+				Icon: "/img/icons/aws.svg",
+				Link: "https://aws.amazon.com/cdk/",
+			},
 		},
 	}
 )

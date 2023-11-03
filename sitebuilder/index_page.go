@@ -61,7 +61,7 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.
 		}
 	}()
 
-	content, aboutMeText, err := parseIndexPageContent(contentPath, renderer.metadata, birthday)
+	content, aboutMeText, err := parseIndexPageContent(contentPath, renderer.commonData, birthday)
 	if err != nil {
 		return wrap.Error(err, "failed to parse index page data")
 	}
@@ -99,7 +99,7 @@ ProjectLoop:
 	pageTemplate := IndexPageTemplate{
 		IndexPageBase: content.IndexPageBase,
 		Meta: TemplateMetadata{
-			Common: renderer.metadata,
+			Common: renderer.commonData,
 			Page:   content.Page,
 		},
 		AboutMe:       aboutMeText,
@@ -115,7 +115,7 @@ ProjectLoop:
 
 func parseIndexPageContent(
 	contentPath string,
-	metadata CommonMetadata,
+	commonData CommonPageData,
 	birthday time.Time,
 ) (content IndexPageMarkdown, aboutMeText template.HTML, err error) {
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
@@ -238,8 +238,8 @@ func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
 	}
 
 	if project.LogoPath == "" {
-		if project.IndexPageFallbackIconPath != "" {
-			project.LogoPath = project.IndexPageFallbackIconPath
+		if project.IndexPageFallbackIcon != "" {
+			project.LogoPath = project.IndexPageFallbackIcon
 		} else {
 			return fmt.Errorf("no icon found for project '%s'", project.Slug)
 		}

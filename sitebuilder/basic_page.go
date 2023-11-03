@@ -44,7 +44,7 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 
 	pageTemplate := BasicPageTemplate{
 		Meta: TemplateMetadata{
-			Common: renderer.metadata,
+			Common: renderer.commonData,
 			Page:   frontmatter.Page,
 		},
 		Content: template.HTML(body.String()),

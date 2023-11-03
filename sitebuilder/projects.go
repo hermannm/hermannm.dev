@@ -67,9 +67,9 @@ type ProjectPageTemplate struct {
 
 type ParsedProject struct {
 	ProjectTemplate
-	Page                      Page
-	ContentDir                string
-	IndexPageFallbackIconPath string
+	Page                  Page
+	ContentDir            string
+	IndexPageFallbackIcon string
 }
 
 type ProjectContentFile struct {
@@ -77,10 +77,7 @@ type ProjectContentFile struct {
 	directory string
 }
 
-func (renderer *PageRenderer) RenderProjectPage(
-	projectFile ProjectContentFile,
-	icons IconMap,
-) (err error) {
+func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) (err error) {
 	defer func() {
 		if err != nil {
 			renderer.cancelCtx()
@@ -88,7 +85,7 @@ func (renderer *PageRenderer) RenderProjectPage(
 	}()
 
 	var project ParsedProject
-	if project, err = parseProject(projectFile, icons, renderer.metadata); err != nil {
+	if project, err = parseProject(projectFile, renderer.commonData); err != nil {
 		return wrap.Errorf(err, "failed to parse project '%s'", projectFile.name)
 	}
 
@@ -97,7 +94,7 @@ func (renderer *PageRenderer) RenderProjectPage(
 
 	projectPage := ProjectPageTemplate{
 		Meta: TemplateMetadata{
-			Common: renderer.metadata,
+			Common: renderer.commonData,
 			Page:   project.Page,
 		},
 		Project: project.ProjectTemplate,
@@ -138,8 +135,7 @@ const (
 
 func parseProject(
 	projectFile ProjectContentFile,
-	icons IconMap,
-	metadata CommonMetadata,
+	commonData CommonPageData,
 ) (ParsedProject, error) {
 	markdownFilePath := fmt.Sprintf(
 		"%s/%s/%s", BaseContentDir, projectFile.directory, projectFile.name,
@@ -151,19 +147,19 @@ func parseProject(
 		return ParsedProject{}, wrap.Error(err, "failed to read markdown for project")
 	}
 
-	project.Page.Title = fmt.Sprintf("%s/%s", metadata.SiteName, project.Slug)
+	project.Page.Title = fmt.Sprintf("%s/%s", commonData.SiteName, project.Slug)
 	project.Page.Path = fmt.Sprintf("/%s", project.Slug)
 	project.Page.TemplateName = ProjectPageTemplateName
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
 	}
-	setGitHubLinkIcons(project.LinkGroups, metadata.GitHubIconPath)
+	setGitHubLinkIcons(project.LinkGroups, commonData.GitHubIconPath)
 
 	if err := validate.Struct(project); err != nil {
 		return ParsedProject{}, wrap.Error(err, "invalid project metadata")
 	}
 
-	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, icons)
+	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, commonData.Icons)
 	if err != nil {
 		return ParsedProject{}, wrap.Errorf(
 			err,
@@ -190,9 +186,9 @@ func parseProject(
 			Description: template.HTML(descriptionBuffer.String()),
 			TechStack:   techStack,
 		},
-		Page:                      project.Page,
-		ContentDir:                projectFile.directory,
-		IndexPageFallbackIconPath: getTechIconPath(indexPageFallbackIcon),
+		Page:                  project.Page,
+		ContentDir:            projectFile.directory,
+		IndexPageFallbackIcon: indexPageFallbackIcon,
 	}, nil
 }
 
@@ -247,12 +243,8 @@ func getTechIcon(
 	return LinkItem{
 		Text:     techName,
 		Link:     techIcon.Link,
-		IconPath: getTechIconPath(techIcon.Icon),
+		IconPath: techIcon.Icon,
 	}, techIcon.IndexPageFallbackIcon, nil
-}
-
-func getTechIconPath(iconFileName string) string {
-	return fmt.Sprintf("/%s/%s", IconDir, iconFileName)
 }
 
 const githubBaseURL = "https://github.com"

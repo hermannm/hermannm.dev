@@ -12,16 +12,17 @@ type LinkItem struct {
 }
 
 type TemplateMetadata struct {
-	Common CommonMetadata
+	Common CommonPageData
 	Page   Page
 }
 
-type CommonMetadata struct {
-	SiteName         string `validate:"required"`
-	SiteDescription  string `validate:"required"`
-	BaseURL          string `validate:"required,url"`
-	GitHubIconPath   string `validate:"required,filepath"`
-	GitHubIssuesLink string `validate:"required,url"`
+type CommonPageData struct {
+	SiteName         string  `validate:"required"`
+	SiteDescription  string  `validate:"required"`
+	BaseURL          string  `validate:"required,url"`
+	GitHubIconPath   string  `validate:"required,filepath"`
+	GitHubIssuesLink string  `validate:"required,url"`
+	Icons            IconMap `validate:"required"`
 }
 
 type Page struct {

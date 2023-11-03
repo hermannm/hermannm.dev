@@ -44,24 +44,14 @@ type ContentPaths struct {
 }
 
 type IconMap map[string]struct {
-	Link                  string `validate:"required,url"`
 	Icon                  string `validate:"required,filepath"`
+	Link                  string `validate:"omitempty,url"`
 	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
 }
 
-func RenderPages(
-	contentPaths ContentPaths,
-	metadata CommonMetadata,
-	icons IconMap,
-	birthday time.Time,
-) error {
-	if err := validate.Struct(metadata); err != nil {
-		return wrap.Errorf(err, "invalid common page metadata")
-	}
-	for name, icon := range icons {
-		if err := validate.Struct(icon); err != nil {
-			return wrap.Errorf(err, "invalid icon config for '%s'", name)
-		}
+func RenderPages(contentPaths ContentPaths, commonData CommonPageData, birthday time.Time) error {
+	if err := validate.Struct(commonData); err != nil {
+		return wrap.Errorf(err, "invalid common page data")
 	}
 
 	projectFiles, err := readProjectContentDirs(contentPaths.ProjectDirs)
@@ -69,7 +59,7 @@ func RenderPages(
 		return err
 	}
 
-	renderer, err := NewPageRenderer(metadata, len(projectFiles), len(contentPaths.BasicPages), 1)
+	renderer, err := NewPageRenderer(commonData, len(projectFiles), len(contentPaths.BasicPages), 1)
 	if err != nil {
 		return err
 	}
@@ -79,7 +69,7 @@ func RenderPages(
 	for _, projectFile := range projectFiles {
 		projectFile := projectFile // Copy mutating loop variable to use in goroutine
 		goroutines.Go(func() error {
-			return renderer.RenderProjectPage(projectFile, icons)
+			return renderer.RenderProjectPage(projectFile)
 		})
 	}
 
@@ -102,8 +92,8 @@ func RenderPages(
 }
 
 type PageRenderer struct {
-	metadata  CommonMetadata
-	templates *template.Template
+	commonData CommonPageData
+	templates  *template.Template
 
 	parsedProjects chan ParsedProject
 	projectCount   int
@@ -116,7 +106,7 @@ type PageRenderer struct {
 }
 
 func NewPageRenderer(
-	metadata CommonMetadata,
+	commonData CommonPageData,
 	projectCount int,
 	basicPageCount int,
 	otherPagesCount int,
@@ -134,7 +124,7 @@ func NewPageRenderer(
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
 	return PageRenderer{
-		metadata:       metadata,
+		commonData:     commonData,
 		templates:      templates,
 		parsedProjects: parsedProjects,
 		projectCount:   projectCount,
@@ -225,7 +215,7 @@ func (renderer *PageRenderer) BuildSitemap() error {
 			if pagePath != "/404.html" {
 				pageURLs = append(
 					pageURLs,
-					fmt.Sprintf("%s%s", renderer.metadata.BaseURL, pagePath),
+					fmt.Sprintf("%s%s", renderer.commonData.BaseURL, pagePath),
 				)
 			}
 		case <-renderer.ctx.Done():
