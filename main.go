@@ -53,6 +53,18 @@ var (
 		GitHubIconPath:   "/img/icons/github.svg",
 		GitHubIssuesLink: "https://github.com/hermannm/hermannm.dev/issues",
 		Icons: sitebuilder.IconMap{
+			"person": {
+				Icon: "/img/icons/person.svg",
+			},
+			"map-marker": {
+				Icon: "/img/icons/map-marker.svg",
+			},
+			"GitHub": {
+				Icon: "/img/icons/github.svg",
+			},
+			"LinkedIn": {
+				Icon: "/img/icons/linkedin.svg",
+			},
 			"Go": {
 				Icon:                  "/img/icons/go.svg",
 				Link:                  "https://go.dev/",

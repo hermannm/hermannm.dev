@@ -66,7 +66,7 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.
 		return wrap.Error(err, "failed to parse index page data")
 	}
 
-	personalInfo, err := content.PersonalInfo.toTemplateFields()
+	personalInfo, err := content.PersonalInfo.toTemplateFields(renderer.commonData.Icons)
 	if err != nil {
 		return wrap.Error(err, "failed to parse personal info from index page content")
 	}
@@ -133,30 +133,29 @@ func parseIndexPageContent(
 	return content, aboutMeText, nil
 }
 
-func (personalInfo PersonalInfoMarkdown) toTemplateFields() ([]LinkItem, error) {
+func (personalInfo PersonalInfoMarkdown) toTemplateFields(icons IconMap) ([]LinkItem, error) {
 	birthday, err := time.Parse(time.DateOnly, personalInfo.Birthday)
 	if err != nil {
 		return nil, wrap.Errorf(err, "failed to parse birthday field '%s'", personalInfo.Birthday)
 	}
-	birthdayField := LinkItem{
-		Text:     fmt.Sprintf("%d years old", ageFromBirthday(birthday)),
-		IconPath: "/img/icons/person.svg",
+
+	fields := []LinkItem{
+		{Text: fmt.Sprintf("%d years old", ageFromBirthday(birthday))},
+		{Text: personalInfo.Location},
+		{Text: "GitHub"},
+		{Text: "LinkedIn"},
 	}
-	locationField := LinkItem{
-		Text:     personalInfo.Location,
-		IconPath: "/img/icons/map-marker.svg",
+
+	for i, iconName := range [4]string{"person", "map-marker", "GitHub", "LinkedIn"} {
+		icon, ok := icons[iconName]
+		if !ok {
+			return nil, fmt.Errorf("expected '%s' icon in icon map, but found none", iconName)
+		}
+
+		fields[i].IconPath = icon.Icon
 	}
-	githubField := LinkItem{
-		Text:     "GitHub",
-		Link:     personalInfo.GitHubURL,
-		IconPath: "/img/icons/github.svg",
-	}
-	linkedinField := LinkItem{
-		Text:     "LinkedIn",
-		Link:     personalInfo.LinkedInURL,
-		IconPath: "/img/icons/linkedin.svg",
-	}
-	return []LinkItem{birthdayField, locationField, githubField, linkedinField}, nil
+
+	return fields, nil
 }
 
 func ageFromBirthday(birthday time.Time) int {
