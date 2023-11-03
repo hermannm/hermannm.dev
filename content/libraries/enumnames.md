@@ -17,7 +17,7 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/enumnames
         link: https://pkg.go.dev/hermannm.dev/enumnames
-        logoPath: /img/icons/go.svg
+        iconPath: /img/icons/gopher.svg
 ---
 
 A small Go package for efficient mapping between integer enum values and string names.
