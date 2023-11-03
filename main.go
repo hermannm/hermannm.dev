@@ -3,7 +3,6 @@ package main
 import (
 	"log/slog"
 	"os"
-	"time"
 
 	"hermannm.dev/devlog"
 	"hermannm.dev/devlog/log"
@@ -16,7 +15,7 @@ func main() {
 
 	log.Info("building website...")
 
-	if err := sitebuilder.RenderPages(contentPaths, commonData, birthday); err != nil {
+	if err := sitebuilder.RenderPages(contentPaths, commonData); err != nil {
 		log.Error(err, "")
 		os.Exit(1)
 	}
@@ -43,8 +42,6 @@ var (
 		ProjectDirs: []string{"projects", "companies", "libraries"},
 		BasicPages:  []string{"404_page.md"},
 	}
-
-	birthday = time.Date(1999, time.September, 12, 2, 0, 0, 0, time.UTC)
 
 	commonData = sitebuilder.CommonPageData{
 		SiteName:         "hermannm.dev",

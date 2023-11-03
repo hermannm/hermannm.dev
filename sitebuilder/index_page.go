@@ -54,14 +54,14 @@ type Image struct {
 	Height int    `yaml:"height" validate:"required"`
 }
 
-func (renderer *PageRenderer) RenderIndexPage(contentPath string, birthday time.Time) (err error) {
+func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
 	defer func() {
 		if err != nil {
 			renderer.cancelCtx()
 		}
 	}()
 
-	content, aboutMeText, err := parseIndexPageContent(contentPath, renderer.commonData, birthday)
+	content, aboutMeText, err := parseIndexPageContent(contentPath, renderer.commonData)
 	if err != nil {
 		return wrap.Error(err, "failed to parse index page data")
 	}
@@ -116,7 +116,6 @@ ProjectLoop:
 func parseIndexPageContent(
 	contentPath string,
 	commonData CommonPageData,
-	birthday time.Time,
 ) (content IndexPageMarkdown, aboutMeText template.HTML, err error) {
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)

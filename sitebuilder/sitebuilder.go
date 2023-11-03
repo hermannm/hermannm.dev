@@ -12,7 +12,6 @@ import (
 	"os/exec"
 	"slices"
 	"strings"
-	"time"
 
 	"github.com/adrg/frontmatter"
 	"github.com/go-playground/validator/v10"
@@ -49,7 +48,7 @@ type IconMap map[string]struct {
 	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
 }
 
-func RenderPages(contentPaths ContentPaths, commonData CommonPageData, birthday time.Time) error {
+func RenderPages(contentPaths ContentPaths, commonData CommonPageData) error {
 	if err := validate.Struct(commonData); err != nil {
 		return wrap.Errorf(err, "invalid common page data")
 	}
@@ -74,7 +73,7 @@ func RenderPages(contentPaths ContentPaths, commonData CommonPageData, birthday 
 	}
 
 	goroutines.Go(func() error {
-		return renderer.RenderIndexPage(contentPaths.IndexPage, birthday)
+		return renderer.RenderIndexPage(contentPaths.IndexPage)
 	})
 
 	for _, basicPage := range contentPaths.BasicPages {
