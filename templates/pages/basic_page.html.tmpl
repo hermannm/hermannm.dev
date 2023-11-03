@@ -4,7 +4,9 @@
   <body
     class="mx-auto mb-4 mt-4 flex min-h-[var(--page-height)] max-w-2xl flex-col gap-4 bg-gruvbox-bg0 px-2 font-main leading-[normal] text-gruvbox-fg"
   >
-    <h1 class="flex justify-center text-2xl font-bold"><a href="/">hermannm.dev</a></h1>
+    <h1 class="flex justify-center text-2xl font-bold">
+      <a href="/">{{ .Meta.Common.SiteName }}</a>
+    </h1>
 
     {{ .Content }}
 
