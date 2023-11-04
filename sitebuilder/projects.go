@@ -262,14 +262,14 @@ func setLinkIcons(linkGroups []LinkGroup, icons IconMap) error {
 		return errors.New("failed to find GitHub icon in icon map")
 	}
 
+	gopherIcon, ok := icons["Gopher"]
+	if !ok {
+		return errors.New("failed to find Gopher icon in icon map")
+	}
+
 	for _, group := range linkGroups {
 		for i, link := range group.Links {
-			if link.Icon == "" {
-				if strings.HasPrefix(link.Link, "https://github.com") {
-					link.Icon = template.HTML(githubIcon.Icon)
-					group.Links[i] = link
-				}
-			} else {
+			if link.Icon != "" {
 				renderedIcon, ok := icons[string(link.Icon)]
 				if !ok {
 					return fmt.Errorf(
@@ -280,6 +280,12 @@ func setLinkIcons(linkGroups []LinkGroup, icons IconMap) error {
 				}
 
 				link.Icon = template.HTML(renderedIcon.Icon)
+				group.Links[i] = link
+			} else if strings.HasPrefix(link.Link, "https://github.com") {
+				link.Icon = template.HTML(githubIcon.Icon)
+				group.Links[i] = link
+			} else if strings.HasPrefix(link.Link, "https://pkg.go.dev") {
+				link.Icon = template.HTML(gopherIcon.Icon)
 				group.Links[i] = link
 			}
 		}

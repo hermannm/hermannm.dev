@@ -17,7 +17,6 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/ipfinder
         link: https://pkg.go.dev/hermannm.dev/ipfinder
-        icon: Gopher
 ---
 
 Go utility package for finding your local and public IP addresses.

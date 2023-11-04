@@ -17,7 +17,6 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/wrap
         link: https://pkg.go.dev/hermannm.dev/wrap
-        icon: Gopher
 ---
 
 A small Go package for wrapping errors with extra context in an easy-to-read format.

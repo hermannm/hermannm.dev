@@ -17,7 +17,6 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/set
         link: https://pkg.go.dev/hermannm.dev/set
-        icon: Gopher
 ---
 
 A Go package that provides generic Set data structures (collections of unique elements). It

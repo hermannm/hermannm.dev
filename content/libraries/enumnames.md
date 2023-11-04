@@ -17,7 +17,6 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/enumnames
         link: https://pkg.go.dev/hermannm.dev/enumnames
-        icon: Gopher
 ---
 
 A small Go package for efficient mapping between integer enum values and string names.
