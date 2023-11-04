@@ -66,30 +66,37 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
 		return wrap.Error(err, "failed to parse index page data")
 	}
 
-	personalInfo, err := content.PersonalInfo.toTemplateFields(renderer.commonData.Icons)
-	if err != nil {
-		return wrap.Error(err, "failed to parse personal info from index page content")
-	}
+	projectGroups := parseProjectGroups(content.ProjectGroups)
 
 	renderer.pagePaths <- content.Page.Path
 
-	groups := parseProjectGroups(content.ProjectGroups)
+	// Waits for icons to finish rendering before using them
+	select {
+	case <-renderer.ctx.Done():
+		return renderer.ctx.Err()
+	case <-renderer.iconsRendered:
+	}
+
+	personalInfo, err := content.PersonalInfo.toTemplateFields(renderer.icons)
+	if err != nil {
+		return wrap.Error(err, "failed to parse personal info from index page content")
+	}
 
 ProjectLoop:
 	for i := 0; i < renderer.projectCount; i++ {
 		select {
 		case project := <-renderer.parsedProjects:
-			if err = groups.AddIfIncluded(project); err != nil {
+			if err = projectGroups.AddIfIncluded(project); err != nil {
 				return wrap.Errorf(err, "failed to add project '%s' to groups", project.Slug)
 			}
-			if groups.IsFull() {
+			if projectGroups.IsFull() {
 				break ProjectLoop
 			}
 		case <-renderer.ctx.Done():
 			return nil
 		}
 	}
-	if !groups.IsFull() {
+	if !projectGroups.IsFull() {
 		return fmt.Errorf(
 			"index page did not receive all projects specified in 'projectGroups' in %s",
 			contentPath,
@@ -104,7 +111,7 @@ ProjectLoop:
 		},
 		AboutMe:       aboutMeText,
 		PersonalInfo:  personalInfo,
-		ProjectGroups: groups.ToSlice(),
+		ProjectGroups: projectGroups.ToSlice(),
 	}
 	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
 		return wrap.Error(err, "failed to render index page")
@@ -141,8 +148,8 @@ func (personalInfo PersonalInfoMarkdown) toTemplateFields(icons IconMap) ([]Link
 	fields := []LinkItem{
 		{Text: fmt.Sprintf("%d years old", ageFromBirthday(birthday))},
 		{Text: personalInfo.Location},
-		{Text: "GitHub"},
-		{Text: "LinkedIn"},
+		{Text: "GitHub", Link: personalInfo.GitHubURL},
+		{Text: "LinkedIn", Link: personalInfo.LinkedInURL},
 	}
 
 	for i, iconName := range [4]string{"person", "map-marker", "GitHub", "LinkedIn"} {
@@ -151,7 +158,7 @@ func (personalInfo PersonalInfoMarkdown) toTemplateFields(icons IconMap) ([]Link
 			return nil, fmt.Errorf("expected '%s' icon in icon map, but found none", iconName)
 		}
 
-		fields[i].IconPath = icon.Icon
+		fields[i].Icon = template.HTML(icon.Icon)
 	}
 
 	return fields, nil
@@ -235,12 +242,8 @@ func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
 		return fmt.Errorf("project index in group '%s' is out-of-bounds", group.Title)
 	}
 
-	if project.LogoPath == "" {
-		if project.IndexPageFallbackIcon != "" {
-			project.LogoPath = project.IndexPageFallbackIcon
-		} else {
-			return fmt.Errorf("no icon found for project '%s'", project.Slug)
-		}
+	if project.LogoPath == "" && project.IndexPageFallbackIcon == "" {
+		return fmt.Errorf("no icon found for project '%s'", project.Slug)
 	}
 
 	group.Projects[index] = project.ProjectProfile

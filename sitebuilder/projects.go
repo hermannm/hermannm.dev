@@ -2,6 +2,7 @@ package sitebuilder
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -16,8 +17,9 @@ type ProjectProfile struct {
 	Slug    string `yaml:"slug"     validate:"required"`
 	TagLine string `yaml:"tagLine"  validate:"required"`
 	// Optional if not included in index page.
-	LogoPath string `yaml:"logoPath" validate:"omitempty,filepath"`
-	LogoAlt  string `yaml:"logoAlt"`
+	LogoPath              string `yaml:"logoPath" validate:"omitempty,filepath"`
+	LogoAlt               string `yaml:"logoAlt"`
+	IndexPageFallbackIcon template.HTML
 }
 
 type ProjectBase struct {
@@ -30,7 +32,7 @@ type ProjectBase struct {
 
 type LinkGroup struct {
 	Title string `yaml:"title"`
-	// May omit IconPath field.
+	// May omit Icon field.
 	Links []LinkItem `yaml:"links,flow"`
 }
 
@@ -67,9 +69,8 @@ type ProjectPageTemplate struct {
 
 type ParsedProject struct {
 	ProjectTemplate
-	Page                  Page
-	ContentDir            string
-	IndexPageFallbackIcon string
+	Page       Page
+	ContentDir string
 }
 
 type ProjectContentFile struct {
@@ -85,7 +86,7 @@ func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) 
 	}()
 
 	var project ParsedProject
-	if project, err = parseProject(projectFile, renderer.commonData); err != nil {
+	if project, err = renderer.parseProject(projectFile); err != nil {
 		return wrap.Errorf(err, "failed to parse project '%s'", projectFile.name)
 	}
 
@@ -133,10 +134,7 @@ const (
 	DefaultTechStackTitle   = "Built with"
 )
 
-func parseProject(
-	projectFile ProjectContentFile,
-	commonData CommonPageData,
-) (ParsedProject, error) {
+func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (ParsedProject, error) {
 	markdownFilePath := fmt.Sprintf(
 		"%s/%s/%s", BaseContentDir, projectFile.directory, projectFile.name,
 	)
@@ -147,25 +145,15 @@ func parseProject(
 		return ParsedProject{}, wrap.Error(err, "failed to read markdown for project")
 	}
 
-	project.Page.Title = fmt.Sprintf("%s/%s", commonData.SiteName, project.Slug)
+	project.Page.Title = fmt.Sprintf("%s/%s", renderer.commonData.SiteName, project.Slug)
 	project.Page.Path = fmt.Sprintf("/%s", project.Slug)
 	project.Page.TemplateName = ProjectPageTemplateName
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
 	}
-	setGitHubLinkIcons(project.LinkGroups, commonData.GitHubIconPath)
 
 	if err := validate.Struct(project); err != nil {
 		return ParsedProject{}, wrap.Error(err, "invalid project metadata")
-	}
-
-	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, commonData.Icons)
-	if err != nil {
-		return ParsedProject{}, wrap.Errorf(
-			err,
-			"failed to parse tech stack for project '%s'",
-			project.Name,
-		)
 	}
 
 	if project.Footnote != "" {
@@ -180,24 +168,45 @@ func parseProject(
 		project.Footnote = removeParagraphTagsAroundHTML(builder.String())
 	}
 
+	// Waits for icons to finish rendering before using them
+	select {
+	case <-renderer.ctx.Done():
+		return ParsedProject{}, renderer.ctx.Err()
+	case <-renderer.iconsRendered:
+	}
+
+	if err := setLinkIcons(project.LinkGroups, renderer.icons); err != nil {
+		return ParsedProject{}, wrap.Error(err, "failed to set link icons")
+	}
+
+	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, renderer.icons)
+	if err != nil {
+		return ParsedProject{}, wrap.Errorf(
+			err,
+			"failed to parse tech stack for project '%s'",
+			project.Name,
+		)
+	}
+
+	project.IndexPageFallbackIcon = indexPageFallbackIcon
+
 	return ParsedProject{
 		ProjectTemplate: ProjectTemplate{
 			ProjectBase: project.ProjectBase,
 			Description: template.HTML(descriptionBuffer.String()),
 			TechStack:   techStack,
 		},
-		Page:                  project.Page,
-		ContentDir:            projectFile.directory,
-		IndexPageFallbackIcon: indexPageFallbackIcon,
+		Page:       project.Page,
+		ContentDir: projectFile.directory,
 	}, nil
 }
 
 func parseTechStack(
 	techStack []TechStackItemMarkdown,
 	icons IconMap,
-) (parsed []TechStackItemTemplate, indexPageFallbackIcon string, err error) {
+) (parsed []TechStackItemTemplate, indexPageFallbackIcon template.HTML, err error) {
 	parsed = make([]TechStackItemTemplate, len(techStack))
-	var firstIndexPageFallbackIcon string
+	var firstIndexPageFallbackIcon template.HTML
 
 	for i, tech := range techStack {
 		linkItem, indexPageFallbackIcon, err := getTechIcon(tech.Tech, icons)
@@ -231,31 +240,50 @@ func parseTechStack(
 func getTechIcon(
 	techName string,
 	icons IconMap,
-) (linkItem LinkItem, indexPageFallbackIcon string, err error) {
+) (linkItem LinkItem, indexPageFallbackIcon template.HTML, err error) {
 	techIcon, ok := icons[techName]
 	if !ok {
 		return LinkItem{}, "", fmt.Errorf(
-			"failed to find technology '%s' in tech icon map",
+			"failed to find icon for technology '%s' in icon map",
 			techName,
 		)
 	}
 
 	return LinkItem{
-		Text:     techName,
-		Link:     techIcon.Link,
-		IconPath: techIcon.Icon,
-	}, techIcon.IndexPageFallbackIcon, nil
+		Text: techName,
+		Link: techIcon.Link,
+		Icon: template.HTML(techIcon.Icon),
+	}, template.HTML(techIcon.IndexPageFallbackIcon), nil
 }
 
-const githubBaseURL = "https://github.com"
+func setLinkIcons(linkGroups []LinkGroup, icons IconMap) error {
+	githubIcon, ok := icons["GitHub"]
+	if !ok {
+		return errors.New("failed to find GitHub icon in icon map")
+	}
 
-func setGitHubLinkIcons(linkGroups []LinkGroup, githubIconPath string) {
 	for _, group := range linkGroups {
 		for i, link := range group.Links {
-			if link.IconPath == "" && strings.HasPrefix(link.Link, githubBaseURL) {
-				link.IconPath = githubIconPath
+			if link.Icon == "" {
+				if strings.HasPrefix(link.Link, "https://github.com") {
+					link.Icon = template.HTML(githubIcon.Icon)
+					group.Links[i] = link
+				}
+			} else {
+				renderedIcon, ok := icons[string(link.Icon)]
+				if !ok {
+					return fmt.Errorf(
+						"icon '%s' not found in icon map for link '%s'",
+						link.Icon,
+						link.Text,
+					)
+				}
+
+				link.Icon = template.HTML(renderedIcon.Icon)
 				group.Links[i] = link
 			}
 		}
 	}
+
+	return nil
 }

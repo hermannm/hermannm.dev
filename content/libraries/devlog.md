@@ -17,7 +17,7 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/devlog
         link: https://pkg.go.dev/hermannm.dev/devlog
-        iconPath: /img/icons/gopher.svg
+        icon: Gopher
 ---
 
 A structured logging handler for Go, with a human-readable output format designed for development

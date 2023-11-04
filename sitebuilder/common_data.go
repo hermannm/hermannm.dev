@@ -6,9 +6,9 @@ import (
 )
 
 type LinkItem struct {
-	Text     string `yaml:"text"     validate:"required"`
-	Link     string `yaml:"link"     validate:"omitempty,url"`
-	IconPath string `yaml:"iconPath" validate:"omitempty,filepath"`
+	Text string        `yaml:"text" validate:"required"`
+	Link string        `yaml:"link" validate:"omitempty,url"`
+	Icon template.HTML `yaml:"icon" validate:"omitempty,filepath"`
 }
 
 type TemplateMetadata struct {
@@ -17,12 +17,15 @@ type TemplateMetadata struct {
 }
 
 type CommonPageData struct {
-	SiteName         string  `validate:"required"`
-	SiteDescription  string  `validate:"required"`
-	BaseURL          string  `validate:"required,url"`
-	GitHubIconPath   string  `validate:"required,filepath"`
-	GitHubIssuesLink string  `validate:"required,url"`
-	Icons            IconMap `validate:"required"`
+	SiteName         string `validate:"required"`
+	SiteDescription  string `validate:"required"`
+	BaseURL          string `validate:"required,url"`
+	GitHubIssuesLink string `validate:"required,url"`
+	githubIcon       template.HTML
+}
+
+func (commonData CommonPageData) GitHubIcon() template.HTML {
+	return commonData.githubIcon
 }
 
 type Page struct {

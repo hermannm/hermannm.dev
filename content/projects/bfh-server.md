@@ -20,7 +20,7 @@ linkGroups:
     links:
       - text: pkg.go.dev/hermannm.dev/bfh-server
         link: https://pkg.go.dev/hermannm.dev/bfh-server
-        iconPath: /img/icons/gopher.svg
+        icon: Gopher
 ---
 
 Online multiplayer board game server written in Go, using WebSockets.

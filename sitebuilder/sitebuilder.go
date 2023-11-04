@@ -42,13 +42,7 @@ type ContentPaths struct {
 	BasicPages  []string
 }
 
-type IconMap map[string]struct {
-	Icon                  string `validate:"required,filepath"`
-	Link                  string `validate:"omitempty,url"`
-	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
-}
-
-func RenderPages(contentPaths ContentPaths, commonData CommonPageData) error {
+func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons IconMap) error {
 	if err := validate.Struct(commonData); err != nil {
 		return wrap.Errorf(err, "invalid common page data")
 	}
@@ -58,12 +52,20 @@ func RenderPages(contentPaths ContentPaths, commonData CommonPageData) error {
 		return err
 	}
 
-	renderer, err := NewPageRenderer(commonData, len(projectFiles), len(contentPaths.BasicPages), 1)
+	renderer, err := NewPageRenderer(
+		commonData,
+		icons,
+		len(projectFiles),
+		len(contentPaths.BasicPages),
+		1,
+	)
 	if err != nil {
 		return err
 	}
 
 	var goroutines errgroup.Group
+
+	goroutines.Go(renderer.RenderIcons)
 
 	for _, projectFile := range projectFiles {
 		projectFile := projectFile // Copy mutating loop variable to use in goroutine
@@ -100,12 +102,16 @@ type PageRenderer struct {
 	pagePaths chan string
 	pageCount int
 
+	icons         IconMap
+	iconsRendered chan struct{}
+
 	ctx       context.Context
 	cancelCtx func()
 }
 
 func NewPageRenderer(
 	commonData CommonPageData,
+	icons IconMap,
 	projectCount int,
 	basicPageCount int,
 	otherPagesCount int,
@@ -129,6 +135,8 @@ func NewPageRenderer(
 		projectCount:   projectCount,
 		pagePaths:      pagePaths,
 		pageCount:      pageCount,
+		icons:          icons,
+		iconsRendered:  make(chan struct{}),
 		ctx:            ctx,
 		cancelCtx:      cancelCtx,
 	}, nil

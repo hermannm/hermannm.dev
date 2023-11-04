@@ -19,13 +19,7 @@
             {{- if $infoField.Link }}
               <li>
                 <a class="flex items-center gap-2" href="{{ $infoField.Link }}" target="_blank">
-                  <img
-                    class="h-[16px] w-[16px]"
-                    width="16"
-                    height="16"
-                    src="{{ $infoField.IconPath }}"
-                    alt
-                  />
+                  <div class="flex h-4 w-4 items-center justify-center">{{ $infoField.Icon }}</div>
                   <div class="w-min text-center">
                     {{ personalInfoTextWrapping $infoField.Text }}
                   </div>
@@ -33,13 +27,7 @@
               </li>
             {{- else }}
               <li class="flex items-center gap-2">
-                <img
-                  class="h-[16px] w-[16px]"
-                  width="16"
-                  height="16"
-                  src="{{ $infoField.IconPath }}"
-                  alt
-                />
+                <div class="flex h-4 w-4 items-center justify-center">{{ $infoField.Icon }}</div>
                 <div class="w-min text-center">
                   {{ personalInfoTextWrapping $infoField.Text }}
                 </div>
@@ -83,13 +71,17 @@
               >
                 <a class="flex h-full flex-col items-center no-underline" href="/{{ $project.Slug }}">
                   <div class="half-border-background w-full pb-1 pt-1">
-                    <img
-                      class="mx-auto max-w-[60px] rounded-lg"
-                      width="60"
-                      height="60"
-                      src="{{ $project.LogoPath }}"
-                      alt="{{ $project.LogoAlt }}"
-                    />
+                    {{ if $project.LogoPath }}
+                      <img
+                        class="mx-auto max-w-[60px] rounded-lg"
+                        width="60"
+                        height="60"
+                        src="{{ $project.LogoPath }}"
+                        alt="{{ $project.LogoAlt }}"
+                      />
+                    {{ else }}
+                      <div class="mx-auto max-w-[60px]">{{ $project.IndexPageFallbackIcon }}</div>
+                    {{ end }}
                   </div>
                   <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
                     <h3 class="text-lg font-bold">{{ $project.Name }}</h3>
