@@ -19,7 +19,9 @@
             {{- if $infoField.Link }}
               <li>
                 <a class="flex items-center gap-2" href="{{ $infoField.Link }}" target="_blank">
-                  <div class="flex h-4 w-4 items-center justify-center">{{ $infoField.Icon }}</div>
+                  <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">
+                    {{- $infoField.Icon -}}
+                  </div>
                   <div class="w-min text-center">
                     {{ personalInfoTextWrapping $infoField.Text }}
                   </div>
@@ -27,7 +29,9 @@
               </li>
             {{- else }}
               <li class="flex items-center gap-2">
-                <div class="flex h-4 w-4 items-center justify-center">{{ $infoField.Icon }}</div>
+                <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">
+                  {{- $infoField.Icon -}}
+                </div>
                 <div class="w-min text-center">
                   {{ personalInfoTextWrapping $infoField.Text }}
                 </div>

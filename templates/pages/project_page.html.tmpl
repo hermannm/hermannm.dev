@@ -124,7 +124,7 @@
 {{ define "linkItem" }}
   {{ if .Icon -}}
     <a class="flex items-center gap-1" href="{{ .Link }}" target="_blank">
-      <div class="flex h-4 w-4 items-center justify-center">{{ .Icon }}</div>
+      <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">{{ .Icon }}</div>
       {{ .Text }}
     </a>
   {{- else -}}
