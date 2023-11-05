@@ -1,11 +1,13 @@
 package main
 
 import (
+	"flag"
 	"log/slog"
 	"os"
 
 	"hermannm.dev/devlog"
 	"hermannm.dev/devlog/log"
+	"hermannm.dev/personal-website/devserver"
 	"hermannm.dev/personal-website/sitebuilder"
 )
 
@@ -13,27 +15,39 @@ func main() {
 	logger := slog.New(devlog.NewHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug}))
 	slog.SetDefault(logger)
 
-	log.Info("building website...")
+	useDevServer, port := parseCLIFlags()
+	if useDevServer {
+		if err := devserver.ServeAndRebuildOnChange(
+			contentPaths, commonData, icons, "styles.css", port,
+		); err != nil {
+			log.Error(err, "devserver stopped")
+			os.Exit(1)
+		}
+	} else {
+		log.Info("building website...")
 
-	if err := sitebuilder.RenderPages(contentPaths, commonData, icons); err != nil {
-		log.Error(err, "")
-		os.Exit(1)
+		if err := sitebuilder.BuildSite(contentPaths, commonData, icons, "styles.css"); err != nil {
+			log.Error(err, "")
+			os.Exit(1)
+		}
+
+		log.Info(
+			"website built successfully!",
+			slog.String("outputDirectory", "./"+sitebuilder.BaseOutputDir),
+		)
 	}
+}
 
-	if err := sitebuilder.FormatRenderedPages(); err != nil {
-		log.Error(err, "failed to format rendered html")
-		os.Exit(1)
-	}
-
-	if err := sitebuilder.GenerateTailwindCSS("styles.css"); err != nil {
-		log.Error(err, "failed to generate tailwind css")
-		os.Exit(1)
-	}
-
-	log.Info(
-		"website built successfully!",
-		slog.String("outputDirectory", "./"+sitebuilder.BaseOutputDir),
+func parseCLIFlags() (useDevServer bool, port string) {
+	flag.BoolVar(
+		&useDevServer,
+		"dev",
+		false,
+		"Serve and rebuild the site every time content/templates/sitebuilder files change",
 	)
+	flag.StringVar(&port, "port", "8080", "The port to serve the website from when using -dev")
+	flag.Parse()
+	return useDevServer, port
 }
 
 var (

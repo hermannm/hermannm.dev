@@ -27,9 +27,8 @@ const (
 	BaseContentDir = "content"
 	BaseOutputDir  = "static"
 
-	BaseTemplatesDir      = "templates"
-	PageTemplatesDir      = "pages"
-	ComponentTemplatesDir = "components"
+	PageTemplatesDir      = "templates/pages"
+	ComponentTemplatesDir = "templates/components"
 
 	IconDir = "img/icons"
 )
@@ -42,7 +41,12 @@ type ContentPaths struct {
 	BasicPages  []string
 }
 
-func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons IconMap) error {
+func BuildSite(
+	contentPaths ContentPaths,
+	commonData CommonPageData,
+	icons IconMap,
+	cssFileName string,
+) error {
 	if err := validate.Struct(commonData); err != nil {
 		return wrap.Errorf(err, "invalid common page data")
 	}
@@ -89,7 +93,19 @@ func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons Ico
 		return renderer.BuildSitemap()
 	})
 
-	return goroutines.Wait()
+	if err := goroutines.Wait(); err != nil {
+		return err
+	}
+
+	if err := FormatRenderedPages(); err != nil {
+		return wrap.Error(err, "failed to format rendered html")
+	}
+
+	if err := GenerateTailwindCSS(cssFileName); err != nil {
+		return wrap.Error(err, "failed to generate tailwind css")
+	}
+
+	return nil
 }
 
 type PageRenderer struct {
@@ -144,12 +160,12 @@ func NewPageRenderer(
 
 func FormatRenderedPages() error {
 	patternToFormat := fmt.Sprintf("%s/**/*.html", BaseOutputDir)
-	return execCommand("prettier", "npx", "prettier", "--write", patternToFormat)
+	return ExecCommand("prettier", "npx", "prettier", "--write", patternToFormat)
 }
 
 func GenerateTailwindCSS(cssFileName string) error {
 	outputPath := fmt.Sprintf("%s/%s", BaseOutputDir, cssFileName)
-	return execCommand(
+	return ExecCommand(
 		"tailwind",
 		"npx",
 		"tailwindcss",
@@ -161,7 +177,7 @@ func GenerateTailwindCSS(cssFileName string) error {
 	)
 }
 
-func execCommand(displayName string, commandName string, args ...string) error {
+func ExecCommand(displayName string, commandName string, args ...string) error {
 	command := exec.Command(commandName, args...)
 
 	stderr, err := command.StderrPipe()
@@ -197,13 +213,13 @@ func execCommand(displayName string, commandName string, args ...string) error {
 func parseTemplates() (*template.Template, error) {
 	templates := template.New(ProjectPageTemplateName).Funcs(TemplateFunctions)
 
-	pageTemplates := fmt.Sprintf("%s/%s/*.tmpl", BaseTemplatesDir, PageTemplatesDir)
+	pageTemplates := fmt.Sprintf("%s/*.tmpl", PageTemplatesDir)
 	templates, err := templates.ParseGlob(pageTemplates)
 	if err != nil {
 		return nil, wrap.Error(err, "failed to parse page templates")
 	}
 
-	componentTemplates := fmt.Sprintf("%s/%s/*.tmpl", BaseTemplatesDir, ComponentTemplatesDir)
+	componentTemplates := fmt.Sprintf("%s/*.tmpl", ComponentTemplatesDir)
 	templates, err = templates.ParseGlob(componentTemplates)
 	if err != nil {
 		return nil, wrap.Error(err, "failed to parse component templates")
