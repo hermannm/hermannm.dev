@@ -153,6 +153,14 @@ var (
 			Icon: "content/icons/mqtt.svg",
 			Link: "https://mqtt.org/",
 		},
+		"ClickHouse": {
+			Icon: "content/icons/clickhouse.svg",
+			Link: "https://clickhouse.com/docs/en/intro",
+		},
+		"Elasticsearch": {
+			Icon: "content/icons/elasticsearch.svg",
+			Link: "https://www.elastic.co/guide/en/elasticsearch/reference/8.10/elasticsearch-intro.html",
+		},
 		"AWS CDK": {
 			Icon: "content/icons/aws.svg",
 			Link: "https://aws.amazon.com/cdk/",
