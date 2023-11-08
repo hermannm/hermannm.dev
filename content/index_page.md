@@ -24,6 +24,7 @@ projectGroups:
     projectSlugs:
       - indok-web
       - bfh
+      - analysis
       - coffeetalk
       - corona-defense
       - rov-sim
