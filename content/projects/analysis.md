@@ -22,7 +22,7 @@ linkGroups:
 In 2018, I started studying
 [Industrial Economics and Technology Management](https://www.ntnu.edu/studies/mtiot) at NTNU
 Trondheim. At the time, I was interested in both economics and engineering, so I found the degree to
-be a good balance between the two. But as time went on, my interest in economics faltered, while my
+be a good balance between the two. But as time went on, my interest in economics waned, while my
 interest in programming grew and grew. This came to a head in my fourth year, when I decided to
 switch my degree to Computer Science. This extended my studies by half a year, but in return I got
 to take technical courses that I truly loved, and got to write the master's thesis that I wanted.
@@ -31,7 +31,7 @@ The year prior to my thesis, I worked as a software developer for [Ignite](/igni
 internship there, Ignite's CTO suggested to me a possible thesis one could write about the Ignite
 platform. You see, Ignite uses
 [Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/8.10/elasticsearch-intro.html)
-to enable complex data analyses by their customers. This works well, but they've had issues when it
+to enable complex data analysis for their customers. This works well, but they've had issues when it
 comes to the performance of updating data, stale reads, memory use and more. It would be interesting
 to study the analytical database landscape, to see if other databases with different tradeoffs might
 be better suited for the type of platform that Ignite has built. Thus, my thesis was born:
