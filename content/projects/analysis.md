@@ -22,7 +22,7 @@ linkGroups:
 In 2018, I started studying
 [Industrial Economics and Technology Management](https://www.ntnu.edu/studies/mtiot) at NTNU
 Trondheim. At the time, I was interested in both economics and engineering, so I found the degree to
-be a good balance between the two. But as time went on, my interest in economics waned, while my
+be a good balance between the two. But as time went on, my interest in economics decreased, while my
 interest in programming grew and grew. This came to a head in my fourth year, when I decided to
 switch my degree to Computer Science. This extended my studies by half a year, but in return I got
 to take technical courses that I truly loved, and got to write the master's thesis that I wanted.
