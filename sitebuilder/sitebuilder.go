@@ -115,8 +115,8 @@ type PageRenderer struct {
 	parsedProjects chan ParsedProject
 	projectCount   int
 
-	pagePaths chan string
-	pageCount int
+	parsedPages chan Page
+	pageCount   int
 
 	icons         IconMap
 	iconsRendered chan struct{}
@@ -140,7 +140,7 @@ func NewPageRenderer(
 	parsedProjects := make(chan ParsedProject, projectCount)
 
 	pageCount := basicPageCount + projectCount + otherPagesCount
-	pagePaths := make(chan string, pageCount)
+	pagePaths := make(chan Page, pageCount)
 
 	ctx, cancelCtx := context.WithCancel(context.Background())
 
@@ -149,7 +149,7 @@ func NewPageRenderer(
 		templates:      templates,
 		parsedProjects: parsedProjects,
 		projectCount:   projectCount,
-		pagePaths:      pagePaths,
+		parsedPages:    pagePaths,
 		pageCount:      pageCount,
 		icons:          icons,
 		iconsRendered:  make(chan struct{}),
@@ -234,11 +234,11 @@ func (renderer *PageRenderer) BuildSitemap() error {
 	pageURLs := make([]string, 0, renderer.pageCount)
 	for i := 0; i < renderer.pageCount; i++ {
 		select {
-		case pagePath := <-renderer.pagePaths:
-			if pagePath != "/404.html" {
+		case page := <-renderer.parsedPages:
+			if page.Path != "/404.html" && page.RedirectURL == "" {
 				pageURLs = append(
 					pageURLs,
-					fmt.Sprintf("%s%s", renderer.commonData.BaseURL, pagePath),
+					fmt.Sprintf("%s%s", renderer.commonData.BaseURL, page.Path),
 				)
 			}
 		case <-renderer.ctx.Done():

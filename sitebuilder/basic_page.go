@@ -40,7 +40,7 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 		return wrap.Errorf(err, "invalid metadata for page '%s'", contentPath)
 	}
 
-	renderer.pagePaths <- frontmatter.Page.Path
+	renderer.parsedPages <- frontmatter.Page
 
 	pageTemplate := BasicPageTemplate{
 		Meta: TemplateMetadata{

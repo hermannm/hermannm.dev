@@ -68,7 +68,7 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
 
 	projectGroups := parseProjectGroups(content.ProjectGroups)
 
-	renderer.pagePaths <- content.Page.Path
+	renderer.parsedPages <- content.Page
 
 	// Waits for icons to finish rendering before using them
 	select {

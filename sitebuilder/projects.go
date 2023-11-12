@@ -90,7 +90,7 @@ func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) 
 		return wrap.Errorf(err, "failed to parse project '%s'", projectFile.name)
 	}
 
-	renderer.pagePaths <- project.Page.Path
+	renderer.parsedPages <- project.Page
 	renderer.parsedProjects <- project
 
 	projectPage := ProjectPageTemplate{
