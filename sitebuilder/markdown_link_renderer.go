@@ -32,7 +32,8 @@ func (linkRenderer MarkdownLinkRenderer) RegisterFuncs(
 	registerer.Register(ast.KindLink, linkRenderer.RenderLink)
 }
 
-// Copied from goldmark HTML renderer, but now adds target="_blank" to all external links.
+// Copied from goldmark HTML renderer, but now adds class="break-words" to all links, and
+// target="_blank" to all external links.
 //
 // https://github.com/yuin/goldmark/blob/b2df67847ed38c31cf4f9e32483377a8e907a6ae/renderer/html/html.go#L552
 func (linkRenderer MarkdownLinkRenderer) RenderLink(
@@ -43,6 +44,7 @@ func (linkRenderer MarkdownLinkRenderer) RenderLink(
 ) (ast.WalkStatus, error) {
 	linkNode := node.(*ast.Link)
 
+	linkNode.SetAttribute([]byte("class"), []byte("break-words"))
 	if bytes.HasPrefix(linkNode.Destination, []byte("http")) {
 		linkNode.SetAttribute([]byte("target"), []byte("_blank"))
 	}

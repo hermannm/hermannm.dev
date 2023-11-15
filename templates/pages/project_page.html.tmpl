@@ -125,7 +125,9 @@
   {{ if .Icon -}}
     <a class="flex items-center gap-1" href="{{ .Link }}" target="_blank">
       <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">{{ .Icon }}</div>
-      {{ .Text }}
+      <div class="max-w-[100vw] break-words">
+        {{ .Text }}
+      </div>
     </a>
   {{- else -}}
     <a href="{{ .Link }}" target="_blank">
