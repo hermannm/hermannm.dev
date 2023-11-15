@@ -160,33 +160,36 @@ func NewPageRenderer(
 
 func FormatRenderedPages() error {
 	patternToFormat := fmt.Sprintf("%s/**/*.html", BaseOutputDir)
-	return ExecCommand("prettier", "npx", "prettier", "--write", patternToFormat)
+	return ExecCommand(false, "npx", "prettier", "--write", patternToFormat)
 }
 
 func GenerateTailwindCSS(cssFileName string) error {
 	outputPath := fmt.Sprintf("%s/%s", BaseOutputDir, cssFileName)
-	return ExecCommand(
-		"tailwind",
-		"npx",
-		"tailwindcss",
-		"-i",
-		cssFileName,
-		"-o",
-		outputPath,
-		"--minify",
-	)
+	return ExecCommand(false, "npx", "tailwindcss", "-i", cssFileName, "-o", outputPath, "--minify")
 }
 
-func ExecCommand(displayName string, commandName string, args ...string) error {
+func ExecCommand(printOutput bool, commandName string, args ...string) error {
+	var displayName string
+	if commandName == "npx" && len(args) != 0 {
+		displayName = args[0]
+	} else {
+		displayName = commandName
+	}
+
 	command := exec.Command(commandName, args...)
 
 	stderr, err := command.StderrPipe()
 	if err != nil {
-		return wrap.Errorf(err, "failed to get pipe to %s command's error output", displayName)
+		return wrap.Errorf(err, "failed to get pipe to %s's error output", displayName)
+	}
+
+	if printOutput {
+		command.Stdout = os.Stdout
+		command.Stderr = os.Stderr
 	}
 
 	if err := command.Start(); err != nil {
-		return wrap.Errorf(err, "failed to start %s command", displayName)
+		return wrap.Errorf(err, "failed to run %s", displayName)
 	}
 
 	errScanner := bufio.NewScanner(stderr)
@@ -199,7 +202,7 @@ func ExecCommand(displayName string, commandName string, args ...string) error {
 	}
 
 	if err := command.Wait(); err != nil {
-		err = fmt.Errorf("%s command failed: %w", displayName, err)
+		err = fmt.Errorf("%s failed: %w", displayName, err)
 		if commandErrs.Len() == 0 {
 			return err
 		} else {

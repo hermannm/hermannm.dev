@@ -3,6 +3,7 @@ package devserver
 import (
 	"fmt"
 	"log/slog"
+	"strings"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -19,18 +20,14 @@ func ServeAndRebuildOnChange(
 	port string,
 ) error {
 	buildSite := func() {
-		err := sitebuilder.BuildSite(contentPaths, commonData, icons, cssFileName)
-		if err == nil {
-			log.Info(
-				"website built successfully!",
-				slog.String("outputDirectory", "./"+sitebuilder.BaseOutputDir),
-			)
-		} else {
+		err := sitebuilder.ExecCommand(true, "go", "run", "hermannm.dev/personal-website")
+		// We only want to log command setup errors, as actual build errors will be logged by the
+		// program
+		if err != nil && !strings.HasPrefix(err.Error(), "go failed") {
 			log.Error(err)
 		}
 	}
 
-	log.Info("building website...")
 	buildSite()
 
 	watcher, err := fsnotify.NewWatcher()
@@ -54,7 +51,6 @@ func ServeAndRebuildOnChange(
 					continue
 				}
 
-				log.Info("rebuilding website...", slog.String("trigger", event.Name))
 				buildSite()
 
 				lastEvent = event
@@ -92,7 +88,7 @@ func ServeAndRebuildOnChange(
 
 	log.Info("serving website...", slog.String("port", port))
 	return sitebuilder.ExecCommand(
-		"live-server",
+		false,
 		"npx",
 		"live-server",
 		sitebuilder.BaseOutputDir,
