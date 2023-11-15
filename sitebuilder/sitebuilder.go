@@ -41,12 +41,7 @@ type ContentPaths struct {
 	BasicPages  []string
 }
 
-func BuildSite(
-	contentPaths ContentPaths,
-	commonData CommonPageData,
-	icons IconMap,
-	cssFileName string,
-) error {
+func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons IconMap) error {
 	if err := validate.Struct(commonData); err != nil {
 		return wrap.Errorf(err, "invalid common page data")
 	}
@@ -68,7 +63,6 @@ func BuildSite(
 	}
 
 	var goroutines errgroup.Group
-
 	goroutines.Go(renderer.RenderIcons)
 
 	for _, projectFile := range projectFiles {
@@ -93,19 +87,7 @@ func BuildSite(
 		return renderer.BuildSitemap()
 	})
 
-	if err := goroutines.Wait(); err != nil {
-		return err
-	}
-
-	if err := FormatRenderedPages(); err != nil {
-		return wrap.Error(err, "failed to format rendered html")
-	}
-
-	if err := GenerateTailwindCSS(cssFileName); err != nil {
-		return wrap.Error(err, "failed to generate tailwind css")
-	}
-
-	return nil
+	return goroutines.Wait()
 }
 
 type PageRenderer struct {

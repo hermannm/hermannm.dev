@@ -21,8 +21,7 @@ func ServeAndRebuildOnChange(
 ) error {
 	buildSite := func() {
 		err := sitebuilder.ExecCommand(true, "go", "run", "hermannm.dev/personal-website")
-		// We only want to log command setup errors, as actual build errors will be logged by the
-		// program
+		// We only log exec errors here, as actual build errors will be printed by the command
 		if err != nil && !strings.HasPrefix(err.Error(), "go failed") {
 			log.Error(err)
 		}

@@ -18,19 +18,29 @@ func main() {
 	useDevServer, port := parseCLIFlags()
 	if useDevServer {
 		if err := devserver.ServeAndRebuildOnChange(
-			contentPaths, commonData, icons, "styles.css", port,
+			contentPaths,
+			commonData,
+			icons,
+			inputCSSFileName,
+			port,
 		); err != nil {
 			log.ErrorCause(err, "devserver stopped")
 			os.Exit(1)
 		}
 	} else {
 		log.Info("building website...")
-
-		if err := sitebuilder.BuildSite(contentPaths, commonData, icons, "styles.css"); err != nil {
+		if err := sitebuilder.RenderPages(contentPaths, commonData, icons); err != nil {
 			log.Error(err)
 			os.Exit(1)
 		}
-
+		if err := sitebuilder.FormatRenderedPages(); err != nil {
+			log.ErrorCause(err, "failed to format rendered pages")
+			os.Exit(1)
+		}
+		if err := sitebuilder.GenerateTailwindCSS(inputCSSFileName); err != nil {
+			log.ErrorCause(err, "failed to generate css for rendered pages")
+			os.Exit(1)
+		}
 		log.Info(
 			"website built successfully!",
 			slog.String("outputDirectory", "./"+sitebuilder.BaseOutputDir),
@@ -51,18 +61,20 @@ func parseCLIFlags() (useDevServer bool, port string) {
 }
 
 var (
-	contentPaths = sitebuilder.ContentPaths{
-		IndexPage:   "index_page.md",
-		ProjectDirs: []string{"projects", "companies", "libraries"},
-		BasicPages:  []string{"404_page.md"},
-	}
-
 	commonData = sitebuilder.CommonPageData{
 		SiteName:         "hermannm.dev",
 		SiteDescription:  "Hermann Mørkrid's personal website.",
 		BaseURL:          "https://hermannm.dev",
 		GitHubIssuesLink: "https://github.com/hermannm/hermannm.dev/issues",
 	}
+
+	contentPaths = sitebuilder.ContentPaths{
+		IndexPage:   "index_page.md",
+		ProjectDirs: []string{"projects", "companies", "libraries"},
+		BasicPages:  []string{"404_page.md"},
+	}
+
+	inputCSSFileName = "styles.css"
 
 	icons = sitebuilder.IconMap{
 		"person": {
