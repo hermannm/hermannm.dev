@@ -20,14 +20,14 @@ func main() {
 		if err := devserver.ServeAndRebuildOnChange(
 			contentPaths, commonData, icons, "styles.css", port,
 		); err != nil {
-			log.Error(err, "devserver stopped")
+			log.ErrorCause(err, "devserver stopped")
 			os.Exit(1)
 		}
 	} else {
 		log.Info("building website...")
 
 		if err := sitebuilder.BuildSite(contentPaths, commonData, icons, "styles.css"); err != nil {
-			log.Error(err, "")
+			log.Error(err)
 			os.Exit(1)
 		}
 

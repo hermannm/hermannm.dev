@@ -26,7 +26,7 @@ func ServeAndRebuildOnChange(
 				slog.String("outputDirectory", "./"+sitebuilder.BaseOutputDir),
 			)
 		} else {
-			log.Error(err, "")
+			log.Error(err)
 		}
 	}
 
@@ -64,7 +64,7 @@ func ServeAndRebuildOnChange(
 					return // Watcher closed
 				}
 
-				log.Error(err, "file system watcher error")
+				log.ErrorCause(err, "file system watcher error")
 			}
 		}
 	}()
