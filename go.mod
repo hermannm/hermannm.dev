@@ -9,7 +9,7 @@ require (
 	github.com/yuin/goldmark v1.5.4
 	golang.org/x/sync v0.2.0
 	hermannm.dev/devlog v0.3.2
-	hermannm.dev/wrap v0.3.0
+	hermannm.dev/wrap v0.3.1
 )
 
 require (

@@ -83,3 +83,5 @@ hermannm.dev/devlog v0.3.2 h1:XGj8UwWPP8VGG7feOUkq1xeDIXrPzTc+lPGMrFNtkFE=
 hermannm.dev/devlog v0.3.2/go.mod h1:GZOMC2V1GutRWWlre21AScHju48/KompKih1Bs21gRg=
 hermannm.dev/wrap v0.3.0 h1:n82G6Ln5hGhSGng2Y11gX0/o+/UwAc2dEdqk8290DxI=
 hermannm.dev/wrap v0.3.0/go.mod h1:W2PoHmpfK1VpZF01eZfAZ2lj02BL+3PAAQT/tP1aEt0=
+hermannm.dev/wrap v0.3.1 h1:wQcLygCmso7mkOX26j167yhrJnUb15npPgqUSY7oIHc=
+hermannm.dev/wrap v0.3.1/go.mod h1:W2PoHmpfK1VpZF01eZfAZ2lj02BL+3PAAQT/tP1aEt0=
