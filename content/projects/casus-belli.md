@@ -5,9 +5,9 @@ page:
     githubURL: https://github.com/hermannm/casus-belli
 name: casus-belli
 slug: casus-belli
-tagLine: Multiplayer online board game.
-logoPath: /img/projects/immerse.png
-logoAlt: Immerse NTNU student organization logo
+tagLine: Online multiplayer board game.
+logoPath: /img/projects/casus-belli.png
+logoAlt: A fort, surrounded by forest
 techStack:
   - tech: Godot
     usedFor: client-side
