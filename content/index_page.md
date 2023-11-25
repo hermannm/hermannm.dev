@@ -23,7 +23,7 @@ projectGroups:
     contentDir: projects
     projectSlugs:
       - indok-web
-      - bfh
+      - casus-belli
       - analysis
       - coffeetalk
       - corona-defense

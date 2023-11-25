@@ -1,6 +1,10 @@
 ---
-name: bfh-client & bfh-server
-slug: bfh
+page:
+  goPackage:
+    fullName: hermannm.dev/casus-belli
+    githubURL: https://github.com/hermannm/casus-belli
+name: casus-belli
+slug: casus-belli
 tagLine: Multiplayer online board game.
 logoPath: /img/projects/immerse.png
 logoAlt: Immerse NTNU student organization logo
@@ -14,17 +18,15 @@ techStack:
 linkGroups:
   - title: Code
     links:
-      - text: immerse-ntnu/bfh-client
-        link: https://github.com/immerse-ntnu/bfh-client
-      - text: hermannm/bfh-server
-        link: https://github.com/hermannm/bfh-server
+      - text: hermannm/casus-belli
+        link: https://github.com/hermannm/casus-belli
 ---
 
-The story of this project starts in the fall of 2020, when my dad gave me one of the coolest
-birthday gifts I've ever received. He made me my very own board game: _The Battle for Hermannia_!
-The game involves strategy, diplomacy and intrigue, and I've played it a lot with friends in
-Trondheim. A couple friends of mine were particular fans of the game, and so in November 2021, we
-started developing a digital edition of it as a hobby project.
+The story of this project started in the fall of 2020, when my dad gave me the coolest birthday gift
+I've ever received: he made me my very own board game! The game involves strategy, diplomacy and
+war, and I've played it a lot with friends and family. A couple friends of mine were particular fans
+of the game, so in the fall of 2021, we started developing a digital edition of it as a hobby
+project. Thus, _Casus Belli_ was born.
 
 We decided to build the digital edition as a proper multiplayer online game. I wrote the server in
 Go, finding its native concurrency support suitable for the parallel nature of the game. My friends
