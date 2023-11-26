@@ -25,8 +25,8 @@ linkGroups:
 
 The story of this project started in the fall of 2020, when my dad gave me the coolest birthday gift
 I've ever received: he made me my very own board game! The game involves strategy, diplomacy and
-war, and I've played it a lot with friends and family. A couple friends of mine were particular fans
-of the game, so in the fall of 2021, we started developing a digital edition of it as a hobby
+battle, and I've played it a lot with friends and family. A couple friends of mine were particular
+fans of the game, so in the fall of 2021, we started developing a digital edition of it as a hobby
 project. Thus, _Casus Belli_ was born.
 
 We decided to build the digital edition as a proper multiplayer online game. I wrote the server in
