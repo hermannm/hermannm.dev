@@ -1,6 +1,11 @@
 ---
+page:
+  goPackage:
+    fullName: hermannm.dev/casus-belli
+    githubURL: https://github.com/hermannm/casus-belli
+  redirectURL: /casus-belli
 name: casus-belli
-slug: casus-belli
+slug: casus-belli/server
 tagLine: Online multiplayer board game.
 logoPath: /img/projects/casus-belli.png
 logoAlt: A fort, surrounded by forest
