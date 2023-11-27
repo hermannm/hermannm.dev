@@ -28,12 +28,12 @@ battle, and I've played it a lot with friends and family. A couple friends of mi
 fans of the game, so in the fall of 2021, we started developing a digital edition of it as a hobby
 project. Thus, _Casus Belli_ was born.
 
-We decided to build the digital edition as a proper multiplayer online game. I wrote the server in
+We decided to build the digital edition as a proper online multiplayer game. I wrote the server in
 Go, finding its native concurrency support suitable for the parallel nature of the game. My friends
 and I collaborated on the client, where we initially used the Unity game engine. During this time,
 one of my friends also founded [Immerse NTNU](https://immersentnu.no/), a student organization for
-game development. He made this game client their first project, and so we also got invaluable help
-from new members there.
+game development. We continued the project under that organization, and so we also got great
+contributions from new members there.
 
 In the fall of 2023, the company behind Unity decided to
 [upend the terms for developers using their game engine](https://blog.unity.com/news/plan-pricing-and-packaging-updates).
