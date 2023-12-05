@@ -1,11 +1,13 @@
 <head>
   {{- if .Page.GoPackage -}}
-    {{- $package := .Page.GoPackage -}}
     <!-- Metadata for Go package hosting -->
-    <meta name="go-import" content="{{ $package.FullName }} git {{ $package.GitHubURL }}" />
+    <meta
+      name="go-import"
+      content="{{ .Page.GoPackage.RootName }} git {{ .Page.GoPackage.GitHubURL }}"
+    />
     <meta
       name="go-source"
-      content="{{ $package.FullName }} {{ $package.GitHubURL }} {{ $package.GitHubURL }}/tree/main{/dir} {{ $package.GitHubURL }}/blob/main{/dir}/{file}#L{line}"
+      content="{{ .Page.GoPackage.RootName }} {{ .Page.GoPackage.GitHubURL }} {{ .Page.GoPackage.GitHubURL }}/tree/main{/dir} {{ .Page.GoPackage.GitHubURL }}/blob/main{/dir}/{file}#L{line}"
     />
   {{- end }}
 

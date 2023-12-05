@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/set
+    rootName: hermannm.dev/set
     githubURL: https://github.com/hermannm/set
 name: set
 slug: set

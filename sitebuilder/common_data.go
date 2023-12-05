@@ -39,7 +39,7 @@ type Page struct {
 }
 
 type GoPackage struct {
-	FullName  string `yaml:"fullName"  validate:"required"`
+	RootName  string `yaml:"rootName"  validate:"required"`
 	GitHubURL string `yaml:"githubURL" validate:"required,url"`
 }
 

@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/condqueue
+    rootName: hermannm.dev/condqueue
     githubURL: https://github.com/hermannm/condqueue
 name: condqueue
 slug: condqueue

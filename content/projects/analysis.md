@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/analysis
+    rootName: hermannm.dev/analysis
     githubURL: https://github.com/hermannm/analysis
 name: analysis
 slug: analysis

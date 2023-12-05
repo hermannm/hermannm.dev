@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/casus-belli
+    rootName: hermannm.dev/casus-belli
     githubURL: https://github.com/hermannm/casus-belli
   redirectURL: /casus-belli
 name: casus-belli

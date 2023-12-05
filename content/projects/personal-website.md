@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/personal-website
+    rootName: hermannm.dev/personal-website
     githubURL: https://github.com/hermannm/hermannm.dev
 name: personal-website
 slug: personal-website

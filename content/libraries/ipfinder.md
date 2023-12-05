@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/ipfinder
+    rootName: hermannm.dev/ipfinder
     githubURL: https://github.com/hermannm/ipfinder
 name: ipfinder
 slug: ipfinder

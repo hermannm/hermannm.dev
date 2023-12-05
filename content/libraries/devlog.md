@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/devlog
+    rootName: hermannm.dev/devlog
     githubURL: https://github.com/hermannm/devlog
 name: devlog
 slug: devlog

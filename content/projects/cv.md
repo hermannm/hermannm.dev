@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/cv
+    rootName: hermannm.dev/cv
     githubURL: https://github.com/hermannm/cv
 name: cv
 slug: cv

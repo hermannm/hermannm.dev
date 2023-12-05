@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/enumnames
+    rootName: hermannm.dev/enumnames
     githubURL: https://github.com/hermannm/enumnames
 name: enumnames
 slug: enumnames

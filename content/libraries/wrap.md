@@ -1,7 +1,7 @@
 ---
 page:
   goPackage:
-    fullName: hermannm.dev/wrap
+    rootName: hermannm.dev/wrap
     githubURL: https://github.com/hermannm/wrap
 name: wrap
 slug: wrap
