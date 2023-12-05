@@ -1,4 +1,8 @@
 ---
+page:
+  goPackage:
+    rootName: hermannm.dev/casus-belli
+    githubURL: https://github.com/hermannm/casus-belli
 name: casus-belli
 slug: casus-belli
 tagLine: Online multiplayer board game.
