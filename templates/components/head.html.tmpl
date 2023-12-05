@@ -5,10 +5,6 @@
       name="go-import"
       content="{{ .Page.GoPackage.RootName }} git {{ .Page.GoPackage.GitHubURL }}"
     />
-    <meta
-      name="go-source"
-      content="{{ .Page.GoPackage.RootName }} {{ .Page.GoPackage.GitHubURL }} {{ .Page.GoPackage.GitHubURL }}/tree/main{/dir} {{ .Page.GoPackage.GitHubURL }}/blob/main{/dir}/{file}#L{line}"
-    />
   {{- end }}
 
   {{ if .Page.RedirectURL -}}
