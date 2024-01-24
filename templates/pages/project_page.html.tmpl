@@ -47,27 +47,30 @@
 
         {{- .Project.Description -}}
 
-        {{- range $linkGroup := .Project.LinkGroups }}
-          {{- $linkGroupLength := len $linkGroup.Links -}}
-          {{- if ge $linkGroupLength 2 -}}
-            <div class="flex flex-col gap-1 leading-[normal]">
-              <strong>{{ $linkGroup.Title }}:</strong>
-              <ul class="flex list-none flex-col gap-1 pl-0">
-                {{- range $linkItem := $linkGroup.Links }}
-                  <li class="flex">
-                    {{- template "linkItem" $linkItem -}}
-                  </li>
-                {{- end }}
-              </ul>
-            </div>
-          {{- else if eq $linkGroupLength 1 }}
-            {{ $linkItem := index $linkGroup.Links 0 }}
-            <div class="flex flex-wrap gap-x-2 gap-y-0">
-              <strong>{{ $linkGroup.Title }}:</strong>
-              {{- template "linkItem" $linkItem -}}
-            </div>
-          {{- end }}
-        {{- end -}}
+
+        <div class="flex flex-col gap-1">
+          {{- range $linkGroup := .Project.LinkGroups }}
+            {{- $linkGroupLength := len $linkGroup.Links -}}
+            {{- if ge $linkGroupLength 2 -}}
+              <div class="flex flex-col gap-1 leading-[normal]">
+                <strong>{{ $linkGroup.Title }}:</strong>
+                <ul class="flex list-none flex-col gap-1 pl-0">
+                  {{- range $linkItem := $linkGroup.Links }}
+                    <li class="flex">
+                      {{- template "linkItem" $linkItem -}}
+                    </li>
+                  {{- end }}
+                </ul>
+              </div>
+            {{- else if eq $linkGroupLength 1 }}
+              {{ $linkItem := index $linkGroup.Links 0 }}
+              <div class="flex flex-wrap gap-x-2 gap-y-0">
+                <strong>{{ $linkGroup.Title }}:</strong>
+                {{- template "linkItem" $linkItem -}}
+              </div>
+            {{- end }}
+          {{- end -}}
+        </div>
 
         {{ if .Project.Footnote }}
           <em>{{ .Project.Footnote }}</em>
