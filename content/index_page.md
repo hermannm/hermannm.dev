@@ -35,7 +35,7 @@ projectGroups:
   - title: Companies I've worked for
     contentDir: companies
     projectSlugs:
-      - liflig-by-capra
+      - liflig
       - ignite
   - title: Utility libraries I've built
     contentDir: libraries
