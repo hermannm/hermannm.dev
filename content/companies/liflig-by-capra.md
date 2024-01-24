@@ -17,8 +17,8 @@ techStack:
 linkGroups:
   - title: More about Liflig
     links:
-      - text: capraconsulting.no/dette-kan-vi/liflig
-        link: https://www.capraconsulting.no/dette-kan-vi/liflig
+      - text: liflig.no
+        link: https://www.liflig.no/
 ---
 
 In June 2023, I started a summer internship as a software developer at Capra, an IT consulting firm.
