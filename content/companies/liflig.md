@@ -1,5 +1,5 @@
 ---
-name: Liflig / Capra
+name: Liflig by Capra
 slug: liflig
 tagLine: IT consulting firm, but with an in-house approach.
 logoPath: /img/companies/liflig.png
