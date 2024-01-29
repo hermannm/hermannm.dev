@@ -5,7 +5,7 @@ page:
   templateName: index_page.html.tmpl
 personalInfo:
   birthday: "1999-09-12"
-  location: Trondheim, Norway
+  location: Oslo, Norway
   githubURL: https://github.com/hermannm
   linkedinURL: https://www.linkedin.com/in/hermannmorkrid
 profilePictureMobile:
@@ -48,6 +48,6 @@ projectGroups:
       - ipfinder
 ---
 
-Hello there! I'm Hermann Mørkrid, a Computer Science student at NTNU Trondheim. I mostly do web
+Hello there! I'm Hermann Mørkrid, a Computer Science student from Norway. I mostly do web
 development (frontend and backend) and some hobby game development. Click the projects below to read
 more about things I've done!
