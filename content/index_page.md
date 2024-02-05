@@ -48,6 +48,6 @@ projectGroups:
       - ipfinder
 ---
 
-Hello there! I'm Hermann Mørkrid, a Computer Science student from Norway. I mostly do web
-development (frontend and backend) and some hobby game development. Click the projects below to read
-more about things I've done!
+Hello there! I'm Hermann Mørkrid, a software developer and Computer Science graduate from Norway. I
+mostly do web development (frontend and backend) and some hobby game development. Click the projects
+below to read more about things I've done!

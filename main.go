@@ -171,7 +171,7 @@ var (
 		},
 		"Elasticsearch": {
 			Icon: "content/icons/elasticsearch.svg",
-			Link: "https://www.elastic.co/guide/en/elasticsearch/reference/8.10/elasticsearch-intro.html",
+			Link: "https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html",
 		},
 		"AWS CDK": {
 			Icon: "content/icons/aws.svg",
