@@ -28,3 +28,5 @@ responses — all our questions were answered by every company, and many of them
 resources for further research. _Blueye Robotics_, a drone company headquartered in Trondheim, went
 even further: they invited us to their office, to test a real ROV! This was a great experience, and
 helped us a lot to improve the realism of the simulator.
+
+![The wreck inspection scenario in the simulator](/img/projects/rov-sim-screenshot.png)

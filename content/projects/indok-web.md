@@ -37,3 +37,5 @@ our new members. We then elected a new project manager, and I stepped down from 
 realizing that I needed more time for school, work and other projects. Leaving the project was
 tough, but I felt like I left it in good hands after teaching the foundations of web development to
 our new members.
+
+![Landing page of indokntnu.no](/img/projects/indokntnu-screenshot.png)

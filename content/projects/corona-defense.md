@@ -29,3 +29,5 @@ doctors, nurses and vaccines.
 I mainly worked on the mobile client, developing the user interface and display of data coming from
 the server. Since we made the game for Android, I got the pleasure of working with Kotlin, which was
 a breath of fresh air compared to what I'd previously done with Java.
+
+![The NTNU map in the buy phase of the game](/img/projects/corona-defense-screenshot.png)

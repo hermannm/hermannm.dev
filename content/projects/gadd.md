@@ -35,3 +35,5 @@ often the case, it is more complex than it looks on the surface!
 
 Now I use _gadd_ almost daily, and quite enjoy it. There's something extra satisfying about creating
 your own tool and tailoring it exactly to your needs.
+
+![gadd's terminal user interface](/img/projects/gadd-screenshot.png)
