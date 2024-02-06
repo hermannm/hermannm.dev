@@ -155,7 +155,7 @@ func (renderer MarkdownRenderer) RenderImage(
 	if len(altText) == 0 {
 		return ast.WalkStop, errors.New("missing alt text for image")
 	}
-	writer.WriteString(`<figcaption class="italic mb-1">`)
+	writer.WriteString(`<figcaption class="italic text-center mb-1">`)
 	writer.Write(altText)
 	writer.WriteString("</p>")
 
