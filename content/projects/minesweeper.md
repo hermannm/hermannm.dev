@@ -24,4 +24,4 @@ This project still has a special place in my heart. In the spring of 2022, I wen
 project to configure [Gradle](https://gradle.org/), allowing me to build a distributable JAR file
 for the game.
 
-![Screenshot from the game](/img/screenshots/minesweeper.png)
+![Screenshot from the 'easy mode' of the game](/img/screenshots/minesweeper.png)
