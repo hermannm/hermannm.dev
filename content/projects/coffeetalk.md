@@ -2,7 +2,7 @@
 name: coffeetalk
 slug: coffeetalk
 tagLine: Peer-to-peer video chat application.
-logoPath: /img/projects/coffeetalk.png
+logoPath: /img/logos/coffeetalk.png
 logoAlt: CoffeeTalk project logo
 techStack:
   - tech: JavaScript
@@ -28,4 +28,4 @@ in vanilla JavaScript.
 In the end, we deployed the app with [DigitalOcean](https://www.digitalocean.com/). My proudest
 moment that semester was having an hour-long conversation with my dad through my own video chat app!
 
-![My dad and I talking through CoffeeTalk](/img/projects/coffeetalk-screenshot.png)
+![My dad and I talking through CoffeeTalk](/img/screenshots/coffeetalk.png)

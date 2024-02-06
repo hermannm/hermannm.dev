@@ -2,7 +2,7 @@
 name: Ignite
 slug: ignite
 tagLine: Procurement data analysis platform.
-logoPath: /img/companies/ignite.png
+logoPath: /img/logos/ignite.png
 logoAlt: Ignite company logo
 techStackTitle: Technologies I worked with
 techStack:

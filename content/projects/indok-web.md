@@ -2,7 +2,7 @@
 name: indok-web
 slug: indok-web
 tagLine: Student association website.
-logoPath: /img/projects/rubberdok.png
+logoPath: /img/logos/rubberdok.png
 logoAlt: Rubberdøk student organization logo
 techStack:
   - tech: TypeScript
@@ -38,4 +38,4 @@ realizing that I needed more time for school, work and other projects. Leaving t
 tough, but I felt like I left it in good hands after teaching the foundations of web development to
 our new members.
 
-![Landing page of indokntnu.no](/img/projects/indokntnu-screenshot.png)
+![Landing page of indokntnu.no](/img/screenshots/indokntnu.png)

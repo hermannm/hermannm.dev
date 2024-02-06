@@ -2,7 +2,7 @@
 name: rov-sim
 slug: rov-sim
 tagLine: Underwater drone simulator.
-logoPath: /img/projects/rov-sim.png
+logoPath: /img/logos/rov-sim.png
 logoAlt: ROV-SIM project logo
 techStack:
   - tech: Unity
@@ -29,4 +29,4 @@ resources for further research. _Blueye Robotics_, a drone company headquartered
 even further: they invited us to their office, to test a real ROV! This was a great experience, and
 helped us a lot to improve the realism of the simulator.
 
-![The wreck inspection scenario in the simulator](/img/projects/rov-sim-screenshot.png)
+![The wreck inspection scenario in the simulator](/img/screenshots/rov-sim.png)

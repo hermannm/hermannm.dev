@@ -6,7 +6,7 @@ page:
 name: analysis
 slug: analysis
 tagLine: Data analysis service, built for my master's thesis.
-logoPath: /img/projects/analysis.png
+logoPath: /img/logos/analysis.png
 logoAlt: Combined logos of ClickHouse and Elasticsearch
 techStack:
   - tech: Go

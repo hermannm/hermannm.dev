@@ -2,7 +2,7 @@
 name: corona-defense
 slug: corona-defense
 tagLine: Tower Defense mobile game.
-logoPath: /img/projects/corona-defense.png
+logoPath: /img/logos/corona-defense.png
 logoAlt: Corona Defense project logo
 techStack:
   - tech: Kotlin
@@ -30,4 +30,4 @@ I mainly worked on the mobile client, developing the user interface and display 
 the server. Since we made the game for Android, I got the pleasure of working with Kotlin, which was
 a breath of fresh air compared to what I'd previously done with Java.
 
-![The NTNU map in the buy phase of the game](/img/projects/corona-defense-screenshot.png)
+![The NTNU map in the buy phase of the game](/img/screenshots/corona-defense.png)

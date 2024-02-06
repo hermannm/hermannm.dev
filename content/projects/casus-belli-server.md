@@ -7,7 +7,7 @@ page:
 name: casus-belli
 slug: casus-belli/server
 tagLine: Online multiplayer board game.
-logoPath: /img/projects/casus-belli.png
+logoPath: /img/logos/casus-belli.png
 logoAlt: A fort, surrounded by forest
 techStack:
   - tech: Godot

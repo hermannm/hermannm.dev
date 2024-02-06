@@ -2,7 +2,7 @@
 name: gruvbox-plain
 slug: gruvboxplain
 tagLine: Color theme for VSCode and IntelliJ.
-logoPath: /img/projects/gruvbox-plain.png
+logoPath: /img/logos/gruvbox-plain.png
 logoAlt: Diagonal stripes with the gruvbox-plain color scheme
 linkGroups:
   - title: Code
@@ -18,4 +18,4 @@ were still a bit too sharp for my taste, so I decided to make my own, plainer va
 gruvbox-plain. Over the course of my programming projects, I've kept improving the theme's support
 for various syntaxes, and even made two different variants.
 
-![The gruvbox-plain-cold theme in VSCode](/img/projects/gruvbox-plain-vscode-screenshot.png)
+![The gruvbox-plain-cold theme in VSCode](/img/screenshots/gruvbox-plain.png)

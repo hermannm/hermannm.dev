@@ -2,7 +2,7 @@
 name: export-control
 slug: export-control
 tagLine: Search tool for the Norwegian Export Control Law.
-logoPath: /img/projects/safetec.png
+logoPath: /img/logos/safetec.png
 logoAlt: Safetec company logo
 techStack:
   - tech: Python
@@ -32,4 +32,4 @@ result, as we were able to deliver a fully functional product that the customer 
 project taught me a lot about the back-and-forth process of requirement elicitation, and dealing
 with changing requirements.
 
-![The Export Control search interface](/img/projects/export-control-screenshot.png)
+![The Export Control search interface](/img/screenshots/export-control.png)
