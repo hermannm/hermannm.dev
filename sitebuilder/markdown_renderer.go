@@ -13,11 +13,14 @@ import (
 // Custom markdown renderer which:
 //   - adds class="break-words" to all links, and target="_blank" to all external links
 //   - adds stand-alone images as <figure>, with alt text in a <figcaption>
+//
+// Rendering implementations are based on the originals from Goldmark:
+// https://github.com/yuin/goldmark/blob/b2df67847ed38c31cf4f9e32483377a8e907a6ae/renderer/html/html.go
 type MarkdownRenderer struct {
 	html.Config
 }
 
-func NewMarkdownLinkRenderer(opts ...html.Option) render.NodeRenderer {
+func NewMarkdownRenderer(opts ...html.Option) render.NodeRenderer {
 	linkRenderer := &MarkdownRenderer{
 		Config: html.NewConfig(),
 	}
@@ -35,10 +38,6 @@ func (renderer MarkdownRenderer) RegisterFuncs(registerer render.NodeRendererFun
 	registerer.Register(ast.KindImage, renderer.RenderImage)
 }
 
-// Copied from goldmark HTML renderer, but now adds class="break-words" to all links, and
-// target="_blank" to all external links.
-//
-// https://github.com/yuin/goldmark/blob/b2df67847ed38c31cf4f9e32483377a8e907a6ae/renderer/html/html.go#L552
 func (renderer MarkdownRenderer) RenderLink(
 	writer util.BufWriter,
 	source []byte,
@@ -53,23 +52,24 @@ func (renderer MarkdownRenderer) RenderLink(
 	}
 
 	if entering {
-		_, _ = writer.WriteString(`<a href="`)
+		writer.WriteString(`<a href="`)
 		if renderer.Unsafe || !html.IsDangerousURL(link.Destination) {
-			_, _ = writer.Write(util.EscapeHTML(util.URLEscape(link.Destination, true)))
+			writer.Write(util.EscapeHTML(util.URLEscape(link.Destination, true)))
 		}
-		_ = writer.WriteByte('"')
+		writer.WriteByte('"')
 		if link.Title != nil {
-			_, _ = writer.WriteString(` title="`)
+			writer.WriteString(` title="`)
 			renderer.Writer.Write(writer, link.Title)
-			_ = writer.WriteByte('"')
+			writer.WriteByte('"')
 		}
 		if link.Attributes() != nil {
 			html.RenderAttributes(writer, link, html.LinkAttributeFilter)
 		}
-		_ = writer.WriteByte('>')
+		writer.WriteByte('>')
 	} else {
-		_, _ = writer.WriteString("</a>")
+		writer.WriteString("</a>")
 	}
+
 	return ast.WalkContinue, nil
 }
 
@@ -83,23 +83,24 @@ func (renderer MarkdownRenderer) RenderParagraph(
 		if node.ChildCount() == 1 && node.FirstChild().Kind() == ast.KindImage {
 			writer.WriteString(`<figure class="flex flex-col gap-2 items-center">`)
 		} else if node.Attributes() != nil {
-			_, _ = writer.WriteString("<p")
+			writer.WriteString("<p")
 			html.RenderAttributes(writer, node, html.ParagraphAttributeFilter)
-			_ = writer.WriteByte('>')
+			writer.WriteByte('>')
 		} else {
-			_, _ = writer.WriteString("<p>")
+			writer.WriteString("<p>")
 		}
 	} else {
 		if node.ChildCount() == 1 && node.FirstChild().Kind() == ast.KindImage {
-			_, _ = writer.WriteString("</figure>\n")
+			writer.WriteString("</figure>\n")
 		} else {
-			_, _ = writer.WriteString("</p>\n")
+			writer.WriteString("</p>\n")
 		}
 	}
+
 	return ast.WalkContinue, nil
 }
 
-func (linkRenderer MarkdownRenderer) RenderImage(
+func (renderer MarkdownRenderer) RenderImage(
 	writer util.BufWriter,
 	source []byte,
 	node ast.Node,
@@ -116,47 +117,47 @@ func (linkRenderer MarkdownRenderer) RenderImage(
 		[]byte("rounded-lg border-2 border-solid border-gruvbox-bg2"),
 	)
 
-	if !linkRenderer.Unsafe && html.IsDangerousURL(image.Destination) {
+	if !renderer.Unsafe && html.IsDangerousURL(image.Destination) {
 		return ast.WalkContinue, nil
 	}
 
 	destination := util.EscapeHTML(util.URLEscape(image.Destination, true))
 
-	_, _ = writer.WriteString(`<a href="`)
-	_, _ = writer.Write(destination)
-	_, _ = writer.WriteString(`">`)
+	writer.WriteString(`<a href="`)
+	writer.Write(destination)
+	writer.WriteString(`">`)
 
-	_, _ = writer.WriteString(`<img src="`)
-	_, _ = writer.Write(destination)
+	writer.WriteString(`<img src="`)
+	writer.Write(destination)
 
 	// Set empty alt attribute, since we set figcaption below
 	// Rationale: https://stackoverflow.com/a/58468470
-	_, _ = writer.WriteString(`" alt=""`)
+	writer.WriteString(`" alt=""`)
 
 	if image.Title != nil {
-		_, _ = writer.WriteString(` title="`)
-		linkRenderer.Writer.Write(writer, image.Title)
-		_ = writer.WriteByte('"')
+		writer.WriteString(` title="`)
+		renderer.Writer.Write(writer, image.Title)
+		writer.WriteByte('"')
 	}
 
 	if image.Attributes() != nil {
 		html.RenderAttributes(writer, image, html.ImageAttributeFilter)
 	}
 
-	if linkRenderer.XHTML {
-		_, _ = writer.WriteString(" />")
+	if renderer.XHTML {
+		writer.WriteString(" />")
 	} else {
-		_, _ = writer.WriteString(">")
+		writer.WriteString(">")
 	}
-	_, _ = writer.WriteString("</a>")
+	writer.WriteString("</a>")
 
 	altText := nodeToHTMLText(image, source)
 	if len(altText) == 0 {
 		return ast.WalkStop, errors.New("missing alt text for image")
 	}
-	_, _ = writer.WriteString(`<figcaption class="italic mb-1">`)
-	_, _ = writer.Write(altText)
-	_, _ = writer.WriteString("</p>")
+	writer.WriteString(`<figcaption class="italic mb-1">`)
+	writer.Write(altText)
+	writer.WriteString("</p>")
 
 	return ast.WalkSkipChildren, nil
 }

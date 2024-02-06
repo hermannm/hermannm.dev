@@ -326,7 +326,7 @@ func readMarkdownWithFrontmatter(
 func newMarkdownParser() goldmark.Markdown {
 	markdownOptions := goldmark.WithRendererOptions(
 		html.WithUnsafe(),
-		renderer.WithNodeRenderers(util.Prioritized(NewMarkdownLinkRenderer(), 1)),
+		renderer.WithNodeRenderers(util.Prioritized(NewMarkdownRenderer(), 1)),
 	)
 
 	return goldmark.New(markdownOptions)
