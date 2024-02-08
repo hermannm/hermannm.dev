@@ -101,8 +101,8 @@ type PageRenderer struct {
 	icons         IconMap
 	iconsRendered chan struct{}
 
-	ctx       context.Context
-	cancelCtx func()
+	ctx    context.Context
+	cancel func()
 }
 
 func NewPageRenderer(
@@ -122,7 +122,7 @@ func NewPageRenderer(
 	pageCount := basicPageCount + projectCount + otherPagesCount
 	pagePaths := make(chan Page, pageCount)
 
-	ctx, cancelCtx := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(context.Background())
 
 	return PageRenderer{
 		commonData:     commonData,
@@ -134,7 +134,7 @@ func NewPageRenderer(
 		icons:          icons,
 		iconsRendered:  make(chan struct{}),
 		ctx:            ctx,
-		cancelCtx:      cancelCtx,
+		cancel:         cancel,
 	}, nil
 }
 

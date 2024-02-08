@@ -19,7 +19,7 @@ type IconMap map[string]*struct {
 func (renderer *PageRenderer) RenderIcons() (err error) {
 	defer func() {
 		if err != nil {
-			renderer.cancelCtx()
+			renderer.cancel()
 		}
 	}()
 

@@ -57,7 +57,7 @@ type Image struct {
 func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
 	defer func() {
 		if err != nil {
-			renderer.cancelCtx()
+			renderer.cancel()
 		}
 	}()
 

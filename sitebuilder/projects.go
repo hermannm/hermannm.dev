@@ -81,7 +81,7 @@ type ProjectContentFile struct {
 func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) (err error) {
 	defer func() {
 		if err != nil {
-			renderer.cancelCtx()
+			renderer.cancel()
 		}
 	}()
 
