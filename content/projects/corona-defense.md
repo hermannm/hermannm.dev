@@ -30,4 +30,4 @@ I mainly worked on the mobile client, developing the user interface and display 
 the server. Since we made the game for Android, I got the pleasure of working with Kotlin, which was
 a breath of fresh air compared to what I'd previously done with Java.
 
-![The NTNU map in the buy phase of the game](/img/screenshots/corona-defense.png)
+![The NTNU map of the game, in the 'buy phase'](/img/screenshots/corona-defense.png)
