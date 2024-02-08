@@ -1,6 +1,6 @@
 module hermannm.dev/personal-website
 
-go 1.21.3
+go 1.22.0
 
 require (
 	github.com/adrg/frontmatter v0.2.0

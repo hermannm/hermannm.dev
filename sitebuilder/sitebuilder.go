@@ -66,7 +66,6 @@ func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons Ico
 	goroutines.Go(renderer.RenderIcons)
 
 	for _, projectFile := range projectFiles {
-		projectFile := projectFile // Copy mutating loop variable to use in goroutine
 		goroutines.Go(func() error {
 			return renderer.RenderProjectPage(projectFile)
 		})
@@ -77,7 +76,6 @@ func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons Ico
 	})
 
 	for _, basicPage := range contentPaths.BasicPages {
-		basicPage := basicPage // Copy mutating loop variable to use in goroutine
 		goroutines.Go(func() error {
 			return renderer.RenderBasicPage(basicPage)
 		})

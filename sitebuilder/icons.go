@@ -26,8 +26,6 @@ func (renderer *PageRenderer) RenderIcons() (err error) {
 	var goroutines errgroup.Group
 
 	for _, icon := range renderer.icons {
-		icon := icon // Avoids mutating loop variable
-
 		// If the Icon field starts with '<', then it has already been rendered to SVG
 		if !strings.HasPrefix(icon.Icon, "<") {
 			goroutines.Go(func() error {
