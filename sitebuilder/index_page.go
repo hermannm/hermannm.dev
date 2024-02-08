@@ -61,7 +61,7 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
 		}
 	}()
 
-	content, aboutMeText, err := parseIndexPageContent(contentPath, renderer.commonData)
+	content, aboutMeText, err := parseIndexPageContent(contentPath)
 	if err != nil {
 		return wrap.Error(err, "failed to parse index page data")
 	}
@@ -122,7 +122,6 @@ ProjectLoop:
 
 func parseIndexPageContent(
 	contentPath string,
-	commonData CommonPageData,
 ) (content IndexPageMarkdown, aboutMeText template.HTML, err error) {
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)
