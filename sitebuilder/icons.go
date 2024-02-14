@@ -4,7 +4,6 @@ import (
 	"errors"
 	"html/template"
 	"os"
-	"strings"
 
 	"golang.org/x/sync/errgroup"
 	"hermannm.dev/wrap"
@@ -26,14 +25,11 @@ func (renderer *PageRenderer) RenderIcons() (err error) {
 	var goroutines errgroup.Group
 
 	for _, icon := range renderer.icons {
-		// If the Icon field starts with '<', then it has already been rendered to SVG
-		if !strings.HasPrefix(icon.Icon, "<") {
-			goroutines.Go(func() error {
-				return replaceIconWithSVG(&icon.Icon)
-			})
-		}
+		goroutines.Go(func() error {
+			return replaceIconWithSVG(&icon.Icon)
+		})
 
-		if icon.IndexPageFallbackIcon != "" && !strings.HasPrefix(icon.IndexPageFallbackIcon, "<") {
+		if icon.IndexPageFallbackIcon != "" {
 			goroutines.Go(func() error {
 				return replaceIconWithSVG(&icon.IndexPageFallbackIcon)
 			})
