@@ -3,14 +3,16 @@ package sitebuilder
 import (
 	"bytes"
 	"errors"
-	"log/slog"
+	"image"
+	_ "image/png"
+	"os"
 	"strconv"
 
 	"github.com/yuin/goldmark/ast"
 	render "github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
-	"hermannm.dev/devlog/log"
+	"hermannm.dev/wrap"
 )
 
 // Custom markdown renderer which:
@@ -126,16 +128,12 @@ func (renderer MarkdownRenderer) RenderImage(
 
 	destination := util.EscapeHTML(util.URLEscape(image.Destination, true))
 
-	altText := string(nodeToHTMLText(image, source))
-	if len(altText) == 0 {
-		return ast.WalkStop, errors.New("missing alt text for image")
-	}
-
-	altText, width, height, dimensionsSpecified := imageDimensionsFromAltText(altText)
-	if !dimensionsSpecified {
-		log.Warn(
-			"failed to extract image dimensions from alt text",
-			slog.String("image", string(destination)),
+	width, height, err := getImageDimensions(BaseOutputDir + string(destination))
+	if err != nil {
+		return ast.WalkStop, wrap.Errorf(
+			err,
+			"failed to get dimensions for image '%s'",
+			string(destination),
 		)
 	}
 
@@ -146,17 +144,14 @@ func (renderer MarkdownRenderer) RenderImage(
 	writer.WriteString(`<img src="`)
 	writer.Write(destination)
 
+	writer.WriteString(`" width="`)
+	writer.WriteString(strconv.Itoa(width))
+	writer.WriteString(`" height="`)
+	writer.WriteString(strconv.Itoa(height))
+
 	// Set empty alt attribute, since we set figcaption below
 	// Rationale: https://stackoverflow.com/a/58468470
 	writer.WriteString(`" alt=""`)
-
-	if dimensionsSpecified {
-		writer.WriteString(` width="`)
-		writer.WriteString(width)
-		writer.WriteString(`" height="`)
-		writer.WriteString(height)
-		writer.WriteByte('"')
-	}
 
 	if image.Title != nil {
 		writer.WriteString(` title="`)
@@ -175,8 +170,13 @@ func (renderer MarkdownRenderer) RenderImage(
 	}
 	writer.WriteString("</a>")
 
+	altText := nodeToHTMLText(image, source)
+	if len(altText) == 0 {
+		return ast.WalkStop, errors.New("missing alt text for image")
+	}
+
 	writer.WriteString(`<figcaption class="italic text-center mb-1">`)
-	writer.WriteString(altText)
+	writer.Write(altText)
 	writer.WriteString("</p>")
 
 	return ast.WalkSkipChildren, nil
@@ -196,46 +196,16 @@ func nodeToHTMLText(n ast.Node, source []byte) []byte {
 	return buf.Bytes()
 }
 
-// We store image dimensions in Markdown in parentheses at the end of the alt text, like (1482x926).
-// This extracts these dimensions from the alt text, to render them as proper attributes.
-//
-// This lets us avoid having <img> tags in our Markdown, which would complicate our custom renderer.
-func imageDimensionsFromAltText(
-	altText string,
-) (altTextWithoutDimensions string, width string, height string, dimensionsSpecified bool) {
-	if len(altText) < 2 {
-		return "", "", "", false
+func getImageDimensions(path string) (width int, height int, err error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return 0, 0, wrap.Error(err, "failed to open image file")
 	}
 
-	closeParenthesis := len(altText) - 1
-	if altText[closeParenthesis] != ')' {
-		return "", "", "", false
+	config, _, err := image.DecodeConfig(file)
+	if err != nil {
+		return 0, 0, wrap.Error(err, "failed to decode config from image")
 	}
 
-	openParenthesis, x := -1, -1
-Loop:
-	for i := closeParenthesis - 1; i >= 0; i-- {
-		switch altText[i] {
-		case 'x':
-			x = i
-		case '(':
-			openParenthesis = i
-			break Loop
-		}
-	}
-	if openParenthesis == -1 || x == -1 {
-		return "", "", "", false
-	}
-
-	width = altText[openParenthesis+1 : x]
-	if _, err := strconv.Atoi(width); err != nil {
-		return "", "", "", false
-	}
-
-	height = altText[x+1 : closeParenthesis]
-	if _, err := strconv.Atoi(height); err != nil {
-		return "", "", "", false
-	}
-
-	return altText[0:openParenthesis], width, height, true
+	return config.Width, config.Height, nil
 }
