@@ -36,3 +36,6 @@ Through the project, I got the opportunity to set up integration tests with
 frontend styling, and even implement login through
 [Apple's OAuth API](https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api)!
 I learned a lot from all this, and I'm proud of what our team delivered.
+
+In February 2024, after delivering my [master's thesis](/analysis), I started working full-time for
+Liflig.
