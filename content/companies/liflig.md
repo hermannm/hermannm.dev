@@ -38,4 +38,5 @@ frontend styling, and even implement login through
 I learned a lot from all this, and I'm proud of what our team delivered.
 
 In February 2024, after delivering my [master's thesis](/analysis), I started working full-time for
-Liflig.
+Liflig. Here I'm working with the same tech stack as in my internship, but at a larger scale, with
+microservices and event-driven architecture.
