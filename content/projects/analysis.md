@@ -17,6 +17,10 @@ linkGroups:
     links:
       - text: hermannm/analysis
         link: https://github.com/hermannm/analysis
+  - title: Thesis
+    links:
+      - text: NTNU Open
+        link: https://ntnuopen.ntnu.no/ntnu-xmlui/handle/11250/3122754
 ---
 
 In 2018, I started studying Industrial Economics and Technology Management at NTNU Trondheim. At the
