@@ -1,7 +1,7 @@
 ---
 name: Liflig by Capra
 slug: liflig
-tagLine: IT consulting firm, but with an in-house approach.
+tagLine: Software consulting firm, but with an in-house approach.
 logoPath: /img/logos/liflig.png
 logoAlt: "Liflig company logo"
 techStackTitle: Technologies I worked with
