@@ -42,8 +42,8 @@ projectGroups:
     projectSlugs:
       - devlog
       - condqueue
-      - opt
       - wrap
+      - opt
       - enumnames
       - set
       - ipfinder
