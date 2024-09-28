@@ -8,16 +8,28 @@ slug: devlog
 tagLine: A structured logging output handler.
 techStack:
   - tech: Go
+  - tech: Rust
 linkGroups:
-  - title: Code
+  - title: Go version
     links:
       - text: hermannm/devlog
         link: https://github.com/hermannm/devlog
-  - title: Docs
+  - title: Rust version
     links:
-      - text: pkg.go.dev/hermannm.dev/devlog
-        link: https://pkg.go.dev/hermannm.dev/devlog
+      - text: hermannm/devlog-tracing
+        link: https://github.com/hermannm/devlog-tracing
 ---
 
-A structured logging handler for Go, with a human-readable output format designed for development
-builds.
+After working with Go in multiple projects ([casus-belli](/casus-belli), [analysis](/analysis),
+[Ignite](/ignite), [coffeetalk](/coffeetalk)), one of the things I missed was a nicer human-readable
+log output format. When Go added structured logging to the standard library, I took the opportunity
+to write my own log handler. Using an
+[amazing guide](https://github.com/golang/example/blob/1d6d2400d4027025cb8edc86a139c9c581d672f7/slog-handler-guide/README.md)
+written by one of the Go maintainers, I created _devlog_, a structured logging handler with an
+output format designed for readability in local development. I now use this in all my Go projects
+where I need logging.
+
+Later, I started writing more and more Rust (see [gadd](/gadd)), and there too I found myself
+missing nicer log output formats. So I decided to write my own log subscriber for _tracing_, one of
+the most popular logging libraries for Rust, to use the same output format as my Go library. And so,
+_devlog-tracing_ was born.
