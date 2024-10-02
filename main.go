@@ -93,13 +93,17 @@ var (
 			Link:                  "https://go.dev/",
 			IndexPageFallbackIcon: "content/icons/go-alt.svg",
 		},
+		"Rust": {
+			Icon:                  "content/icons/rust.svg",
+			Link:                  "https://www.rust-lang.org/",
+			IndexPageFallbackIcon: "content/icons/rust-alt.svg",
+		},
+		"Go+Rust": {
+			IndexPageFallbackIcon: "content/icons/go-rust-combined.svg",
+		},
 		"TypeScript": {
 			Icon: "content/icons/typescript.svg",
 			Link: "https://www.typescriptlang.org/",
-		},
-		"Rust": {
-			Icon: "content/icons/rust.svg",
-			Link: "https://www.rust-lang.org/",
 		},
 		"JavaScript": {
 			Icon: "content/icons/javascript.svg",
