@@ -12,8 +12,7 @@ import (
 )
 
 func main() {
-	logHandler := devlog.NewHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug})
-	slog.SetDefault(slog.New(logHandler))
+	devlog.InitDefaultLogHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug})
 
 	useDevServer, port := parseCLIFlags()
 	if useDevServer {
@@ -41,10 +40,7 @@ func main() {
 			log.ErrorCause(err, "failed to generate css for rendered pages")
 			os.Exit(1)
 		}
-		log.Info(
-			"website built successfully!",
-			slog.String("outputDirectory", "./"+sitebuilder.BaseOutputDir),
-		)
+		log.Info("website built successfully!", "outputDirectory", "./"+sitebuilder.BaseOutputDir)
 	}
 }
 

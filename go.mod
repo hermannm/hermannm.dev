@@ -8,7 +8,7 @@ require (
 	github.com/go-playground/validator/v10 v10.15.1
 	github.com/yuin/goldmark v1.5.4
 	golang.org/x/sync v0.2.0
-	hermannm.dev/devlog v0.3.2
+	hermannm.dev/devlog v0.5.0
 	hermannm.dev/wrap v0.3.1
 )
 

@@ -2,7 +2,6 @@ package devserver
 
 import (
 	"fmt"
-	"log/slog"
 	"strings"
 	"time"
 
@@ -85,7 +84,7 @@ func ServeAndRebuildOnChange(
 		}
 	}
 
-	log.Info("serving website...", slog.String("port", port))
+	log.Info("serving website...", "port", port)
 	return sitebuilder.ExecCommand(
 		false,
 		"npx",
