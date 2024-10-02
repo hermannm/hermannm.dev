@@ -22,8 +22,8 @@ linkGroups:
 
 After working with Go in multiple projects ([casus-belli](/casus-belli), [analysis](/analysis),
 [Ignite](/ignite), [coffeetalk](/coffeetalk)), one of the things I missed was a nicer human-readable
-log output format. When Go added structured logging to its standard library, I took the opportunity
-to write my own log handler. Using an
+log output format. So when Go added structured logging to its standard library, I took the
+opportunity to write my own log handler! With help from an
 [amazing guide](https://github.com/golang/example/blob/1d6d2400d4027025cb8edc86a139c9c581d672f7/slog-handler-guide/README.md)
 written by one of the Go maintainers, I created _devlog_, a structured log handler with an output
 format designed for readability in local development. I now use this in all my Go projects where I
