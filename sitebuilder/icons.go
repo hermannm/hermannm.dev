@@ -25,9 +25,12 @@ func (renderer *PageRenderer) RenderIcons() (err error) {
 	var goroutines errgroup.Group
 
 	for _, icon := range renderer.icons {
-		goroutines.Go(func() error {
-			return replaceIconWithSVG(&icon.Icon)
-		})
+		// Combined icons, such as "Go+Rust", only define IndexPageFallbackIcon
+		if icon.Icon != "" {
+			goroutines.Go(func() error {
+				return replaceIconWithSVG(&icon.Icon)
+			})
+		}
 
 		if icon.IndexPageFallbackIcon != "" {
 			goroutines.Go(func() error {

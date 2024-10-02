@@ -206,15 +206,23 @@ func parseTechStack(
 	icons IconMap,
 ) (parsed []TechStackItemTemplate, indexPageFallbackIcon template.HTML, err error) {
 	parsed = make([]TechStackItemTemplate, len(techStack))
-	var firstIndexPageFallbackIcon template.HTML
+
+	// If there is an icon with the tech names combined, e.g. "Go+Rust", we want to use that - if
+	// not, we fall back to the first defined IndexPageFallbackIcon in the tech stack
+	var combinedTechNames strings.Builder
 
 	for i, tech := range techStack {
-		linkItem, indexPageFallbackIcon, err := getTechIcon(tech.Tech, icons)
+		if combinedTechNames.Len() != 0 {
+			combinedTechNames.WriteByte('+')
+		}
+		combinedTechNames.WriteString(tech.Tech)
+
+		linkItem, indexPageIcon, err := getTechIcon(tech.Tech, icons)
 		if err != nil {
 			return nil, "", err
 		}
-		if firstIndexPageFallbackIcon == "" && indexPageFallbackIcon != "" {
-			firstIndexPageFallbackIcon = indexPageFallbackIcon
+		if indexPageFallbackIcon == "" && indexPageIcon != "" {
+			indexPageFallbackIcon = indexPageIcon
 		}
 
 		usedWith := make([]LinkItem, len(tech.UsedWith))
@@ -234,7 +242,11 @@ func parseTechStack(
 		}
 	}
 
-	return parsed, firstIndexPageFallbackIcon, nil
+	if combinedTechIcon, ok := icons[combinedTechNames.String()]; ok {
+		indexPageFallbackIcon = template.HTML(combinedTechIcon.IndexPageFallbackIcon)
+	}
+
+	return parsed, indexPageFallbackIcon, nil
 }
 
 func getTechIcon(
