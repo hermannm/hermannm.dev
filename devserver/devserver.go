@@ -70,6 +70,7 @@ func ServeAndRebuildOnChange(
 		sitebuilder.PageTemplatesDir,
 		sitebuilder.ComponentTemplatesDir,
 		sitebuilder.BaseContentDir,
+		sitebuilder.BaseContentDir + "/icons",
 	}
 	for _, projectDir := range contentPaths.ProjectDirs {
 		dirsToWatch = append(
