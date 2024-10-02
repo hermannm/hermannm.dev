@@ -84,7 +84,9 @@
                         alt="{{ $project.LogoAlt }}"
                       />
                     {{ else }}
-                      <div class="mx-auto max-w-[60px]">{{ $project.IndexPageFallbackIcon }}</div>
+                      <div class="mx-auto h-[40px] flex justify-center">
+                        {{ $project.IndexPageFallbackIcon }}
+                      </div>
                     {{ end }}
                   </div>
                   <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
