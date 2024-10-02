@@ -23,24 +23,24 @@ func main() {
 			inputCSSFileName,
 			port,
 		); err != nil {
-			log.ErrorCause(err, "devserver stopped")
+			log.ErrorCause(err, "Dev server stopped")
 			os.Exit(1)
 		}
 	} else {
-		log.Info("building website...")
+		log.Info("Building website...")
 		if err := sitebuilder.RenderPages(contentPaths, commonData, icons); err != nil {
 			log.Error(err)
 			os.Exit(1)
 		}
 		if err := sitebuilder.FormatRenderedPages(); err != nil {
-			log.ErrorCause(err, "failed to format rendered pages")
+			log.ErrorCause(err, "Failed to format rendered pages")
 			os.Exit(1)
 		}
 		if err := sitebuilder.GenerateTailwindCSS(inputCSSFileName); err != nil {
-			log.ErrorCause(err, "failed to generate css for rendered pages")
+			log.ErrorCause(err, "Failed to generate CSS for rendered pages")
 			os.Exit(1)
 		}
-		log.Info("website built successfully!", "outputDirectory", "./"+sitebuilder.BaseOutputDir)
+		log.Info("Website built successfully!", "outputDirectory", "./"+sitebuilder.BaseOutputDir)
 	}
 }
 

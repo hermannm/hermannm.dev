@@ -58,7 +58,7 @@ func ServeAndRebuildOnChange(
 					return // Watcher closed
 				}
 
-				log.ErrorCause(err, "file system watcher error")
+				log.ErrorCause(err, "File system watcher error")
 			}
 		}
 	}()
@@ -85,7 +85,7 @@ func ServeAndRebuildOnChange(
 		}
 	}
 
-	log.Info("serving website...", "port", port)
+	log.Info("Serving website...", "port", port)
 	return sitebuilder.ExecCommand(
 		false,
 		"npx",
