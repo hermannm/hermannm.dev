@@ -37,7 +37,7 @@ projectGroups:
     projectSlugs:
       - liflig
       - ignite
-  - title: Utility libraries I've built
+  - title: Libraries I've built
     contentDir: libraries
     projectSlugs:
       - devlog
