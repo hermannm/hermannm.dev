@@ -22,10 +22,10 @@ linkGroups:
 ---
 
 Liflig is a firm that delivers tailor-made software projects for clients, taking responsibility for
-the full lifecycle of a project - architecture, design, development, maintenance and operations.
-Behind this model stands the Liflig Delivery Platform: a set of tools and libraries, both on the
-infrastructure and application side, that allow us to quickly bootstrap and iterate on new projects
-and services.
+the full lifecycle of a project - architecture, design, development, maintenance and operations. The
+key that makes this model work well is the Liflig Delivery Platform: a set of tools and libraries,
+both on the infrastructure and application side, that allow us to quickly bootstrap and iterate on
+new projects and services.
 
 My work at Liflig started with an internship in the summer of 2023. Our team of interns were tasked
 with building a backend system and admin UI for [IDTag](https://www.idtagtech.com/), an exciting
