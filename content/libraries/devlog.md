@@ -30,6 +30,6 @@ format designed for readability in local development. I now use this in all my G
 need logging.
 
 Later, I started writing more and more Rust (see [`gadd`](/gadd)), and there too I found myself
-missing nicer log output formats. So I decided to write my own log subscriber for _tracing_, one of
-the most popular logging libraries for Rust, to use the same output format as my Go library. And so,
-<span class="whitespace-nowrap">_`devlog-tracing`_</span> was born.
+missing nicer log output formats. So I decided to write my own log subscriber for _`tracing`_, one
+of the most popular logging libraries for Rust, to use the same output format as my Go library. And
+so, <span class="whitespace-nowrap">_`devlog-tracing`_</span> was born.

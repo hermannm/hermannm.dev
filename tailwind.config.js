@@ -2,9 +2,6 @@
 export default {
   content: ["./static/**/*.html"],
   theme: {
-    fontFamily: {
-      main: ["Roboto", "sans-serif"],
-    },
     extend: {
       colors: {
         /** From https://github.com/morhetz/gruvbox#palette */
