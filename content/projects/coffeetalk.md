@@ -19,7 +19,7 @@ linkGroups:
 ---
 
 In the spring semester of 2022, I took the course _Design of Communicating Systems_ at NTNU. A part
-of that course was a group project to build a video chat application. And thus CoffeeTalk was born:
+of that course was a group project to build a video chat application. And thus, CoffeeTalk was born:
 a web app with peer-to-peer video streaming, and even a basic quiz game! We developed the
 application as 3 servers (one for serving the web app, one for WebRTC video stream coordination, and
 one for the quiz game using MQTT). The servers were all written in Go, while the web app was written

@@ -30,7 +30,7 @@ new projects and services.
 My work at Liflig started with an internship in the summer of 2023. Our team of interns were tasked
 with building a backend system and admin UI for [IDTag](https://www.idtagtech.com/), an exciting
 startup! Through the project, I got the opportunity to set up integration tests with
-[testcontainers](https://testcontainers.com/), use [Tailwind CSS](https://tailwindcss.com/) for
+[`testcontainers`](https://testcontainers.com/), use [Tailwind CSS](https://tailwindcss.com/) for
 frontend styling, and even implement login through
 [Apple's OAuth API](https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api).
 I learned a lot from all this, and I'm proud of what our team delivered.

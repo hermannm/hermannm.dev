@@ -67,6 +67,7 @@ func ServeAndRebuildOnChange(
 		"main.go",
 		"sitebuilder",
 		cssFileName,
+		"tailwind.config.js",
 		sitebuilder.PageTemplatesDir,
 		sitebuilder.ComponentTemplatesDir,
 		sitebuilder.BaseContentDir,

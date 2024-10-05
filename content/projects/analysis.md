@@ -42,8 +42,8 @@ Analytics Platform".
 I started out by searching for possible alternatives to Elasticsearch, and found that the world of
 databases was even more vast than I expected. But eventually, I did find one particularly promising
 database: ClickHouse, a column-oriented database that promises efficient analytical queries. I then
-built _analysis_, a backend service with an analytical query API, where you can toggle between using
-Elasticsearch or ClickHouse as the backing database. With this, I could measure differences between
-the two for different types of workloads. In the end, I found ClickHouse to be a viable alternative
-to Elasticsearch, both in quantitative and qualitative aspects, though some mixed results and
-limitations of the experiment made it not an obvious choice.
+built _`analysis`_, a backend service with an analytical query API, where you can toggle between
+using Elasticsearch or ClickHouse as the backing database. With this, I could measure differences
+between the two for different types of workloads. In the end, I found ClickHouse to be a viable
+alternative to Elasticsearch, both in quantitative and qualitative aspects, though some mixed
+results and limitations of the experiment made it not an obvious choice.

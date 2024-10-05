@@ -25,11 +25,9 @@ customers were worried about how the regulations might affect them, and had trou
 new lists. The goal of our tool was to be a resource that Safetec could give to their customers, so
 they can find out if export control affects them.
 
-Our final product was a web application built with Django, using PostgreSQL for its database. We
-deployed the application in Safetec's Azure cloud, where it is now running at
-[exportcontrol.safetec.no](https://exportcontrol.safetec.no/). I was quite proud of our final
-result, as we were able to deliver a fully functional product that the customer was happy with. The
-project taught me a lot about the back-and-forth process of requirement elicitation, and dealing
-with changing requirements.
+Our final product was a web application built with Django, using PostgreSQL for its database, and
+deployed on the Azure cloud platform. I was quite proud of our final result, as we were able to
+deliver a fully functional product that the customer was happy with. The project taught me a lot
+about the back-and-forth process of requirement elicitation, and dealing with changing requirements.
 
 ![The Export Control search interface](/img/screenshots/export-control.png)

@@ -128,9 +128,7 @@
   {{ if .Icon -}}
     <a class="flex items-center gap-1" href="{{ .Link }}" target="_blank">
       <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">{{ .Icon }}</div>
-      <div class="break-all">
-        {{ .Text }}
-      </div>
+      <code class="break-all">{{ .Text }}</code>
     </a>
   {{- else -}}
     <a href="{{ .Link }}" target="_blank">

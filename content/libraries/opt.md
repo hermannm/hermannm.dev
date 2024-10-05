@@ -19,5 +19,5 @@ linkGroups:
         link: https://pkg.go.dev/hermannm.dev/opt
 ---
 
-A simple Go package that provides a generic Option type: a container that either has a value or is
+A simple Go package that provides a generic `Option` type: a container that either has a value or is
 empty.

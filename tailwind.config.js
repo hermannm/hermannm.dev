@@ -3,7 +3,7 @@ export default {
   content: ["./static/**/*.html"],
   theme: {
     fontFamily: {
-      main: ["Roboto Mono", "Consolas", "Courier New", "sans-serif"],
+      main: ["Roboto", "sans-serif"],
     },
     extend: {
       colors: {
