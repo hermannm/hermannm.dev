@@ -1,7 +1,7 @@
 ---
-name: Liflig by Capra
+name: Liflig
 slug: liflig
-tagLine: Software consulting firm, but with an in-house approach.
+tagLine: Software development firm, with a robust delivery platform.
 logoPath: /img/logos/liflig.png
 logoAlt: "Liflig company logo"
 techStackTitle: Technologies I worked with
@@ -19,22 +19,20 @@ linkGroups:
     links:
       - text: liflig.no
         link: https://www.liflig.no/
-  - title: More about Capra
-    links:
-      - text: capraconsulting.no
-        link: https://www.capraconsulting.no/
 ---
 
-In June 2023, I started a summer internship as a software developer at Capra, an IT consulting firm.
-I worked in the Liflig division, which takes more of an in-house approach to their projects,
-offering full developer teams rather than individual consultants. Our project this summer was to
-build a backend system and admin platform for [IDTAG](https://www.idtagtech.com/), an exciting
-startup!
+Liflig is a firm that delivers tailor-made software projects for clients, taking responsibility for
+the full lifecycle of a project - architecture, design, development, maintenance and operations.
+Behind this model stands the Liflig Delivery Platform: a set of tools and libraries, both on the
+infrastructure and application side, that allow us to quickly bootstrap and iterate on new projects
+and services.
 
-Through the project, I got the opportunity to set up integration tests with
+My work at Liflig started with an internship in the summer of 2023. Our team of interns were tasked
+with building a backend system and admin UI for [IDTag](https://www.idtagtech.com/), an exciting
+startup! Through the project, I got the opportunity to set up integration tests with
 [testcontainers](https://testcontainers.com/), use [Tailwind CSS](https://tailwindcss.com/) for
 frontend styling, and even implement login through
-[Apple's OAuth API](https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api)!
+[Apple's OAuth API](https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api).
 I learned a lot from all this, and I'm proud of what our team delivered.
 
 In February 2024, after delivering my [master's thesis](/analysis), I started working full-time for
