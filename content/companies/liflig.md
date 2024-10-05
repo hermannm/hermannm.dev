@@ -4,7 +4,7 @@ slug: liflig
 tagLine: Software development firm, with a robust delivery platform.
 logoPath: /img/logos/liflig.png
 logoAlt: "Liflig company logo"
-techStackTitle: Technologies I worked with
+techStackTitle: "Technologies I'm working with"
 techStack:
   - tech: TypeScript
     usedFor: frontend
