@@ -5,8 +5,9 @@ tagLine: Online multiplayer board game.
 goPackage:
   rootName: hermannm.dev/casus-belli
   githubURL: https://github.com/hermannm/casus-belli
-logoPath: /img/logos/casus-belli.png
-logoAlt: A fort, surrounded by forest
+logo:
+  path: /img/logos/casus-belli.png
+  altText: A fort, surrounded by forest
 techStack:
   - tech: Godot
     usedFor: client-side

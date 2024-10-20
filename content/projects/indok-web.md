@@ -2,8 +2,9 @@
 name: indok-web
 path: /indok-web
 tagLine: Student association website.
-logoPath: /img/logos/rubberdok.png
-logoAlt: Rubberdøk student organization logo
+logo:
+  path: /img/logos/rubberdok.png
+  altText: Rubberdøk student organization logo
 techStack:
   - tech: TypeScript
     usedFor: frontend

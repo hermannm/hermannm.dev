@@ -75,13 +75,13 @@
               >
                 <a class="flex h-full flex-col items-center no-underline" href="{{ $project.Path }}/">
                   <div class="half-border-background w-full pb-1 pt-1">
-                    {{ if $project.LogoPath }}
+                    {{ if $project.Logo.Path }}
                       <img
                         class="mx-auto max-w-[60px] rounded-lg"
                         width="60"
                         height="60"
-                        src="{{ $project.LogoPath }}"
-                        alt="{{ $project.LogoAlt }}"
+                        src="{{ $project.Logo.Path }}"
+                        alt="{{ $project.Logo.AltText }}"
                       />
                     {{ else }}
                       <div class="mx-auto h-[40px] flex justify-center">

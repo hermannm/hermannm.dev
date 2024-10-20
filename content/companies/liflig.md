@@ -2,8 +2,9 @@
 name: Liflig
 path: /liflig
 tagLine: Software development firm, with a robust delivery platform.
-logoPath: /img/logos/liflig.png
-logoAlt: "Liflig company logo"
+logo:
+  path: /img/logos/liflig.png
+  altText: "Liflig company logo"
 techStackTitle: "Technologies I'm working with"
 techStack:
   - tech: TypeScript

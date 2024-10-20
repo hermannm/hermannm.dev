@@ -241,7 +241,7 @@ func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
 		return fmt.Errorf("project index in group '%s' is out-of-bounds", group.Title)
 	}
 
-	if project.LogoPath == "" && project.IndexPageFallbackIcon == "" {
+	if project.Logo.Path == "" && project.IndexPageFallbackIcon == "" {
 		return fmt.Errorf("no icon found for project '%s'", project.Name)
 	}
 

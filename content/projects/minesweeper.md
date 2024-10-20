@@ -2,8 +2,9 @@
 name: minesweeper
 path: /minesweeper
 tagLine: Java implementation of the classic Minesweeper game.
-logoPath: /img/logos/minesweeper.png
-logoAlt: Screenshot of a Minesweeper game round
+logo:
+  path: /img/logos/minesweeper.png
+  altText: Screenshot of a Minesweeper game round
 techStack:
   - tech: Java
 linkGroups:

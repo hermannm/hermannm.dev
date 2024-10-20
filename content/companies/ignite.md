@@ -2,8 +2,9 @@
 name: Ignite
 path: /ignite
 tagLine: Procurement data analytics platform.
-logoPath: /img/logos/ignite.png
-logoAlt: Ignite company logo
+logo:
+  path: /img/logos/ignite.png
+  altText: Ignite company logo
 techStackTitle: Technologies I worked with
 techStack:
   - tech: TypeScript

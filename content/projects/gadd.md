@@ -2,8 +2,10 @@
 name: gadd
 path: /gadd
 tagLine: Command-line utility for Git.
-logoPath: /img/logos/ferris-the-git-crab.png
-logoAlt: Ferris the Crab, mascot of the Rust programming language, with the Git logo on its forehead
+logo:
+  path: /img/logos/ferris-the-git-crab.png
+  altText:
+    Ferris the Crab, mascot of the Rust programming language, with the Git logo on its forehead
 techStack:
   - tech: Rust
 linkGroups:

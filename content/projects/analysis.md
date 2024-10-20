@@ -5,8 +5,9 @@ tagLine: Data analysis service, built for my master's thesis.
 goPackage:
   rootName: hermannm.dev/analysis
   githubURL: https://github.com/hermannm/analysis
-logoPath: /img/logos/analysis.png
-logoAlt: Combined logos of ClickHouse and Elasticsearch
+logo:
+  path: /img/logos/analysis.png
+  altText: Combined logos of ClickHouse and Elasticsearch
 techStack:
   - tech: Go
   - tech: ClickHouse

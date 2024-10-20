@@ -2,8 +2,9 @@
 name: coffeetalk
 path: /coffeetalk
 tagLine: Peer-to-peer video chat application.
-logoPath: /img/logos/coffeetalk.png
-logoAlt: CoffeeTalk project logo
+logo:
+  path: /img/logos/coffeetalk.png
+  altText: CoffeeTalk project logo
 techStack:
   - tech: JavaScript
     usedFor: frontend

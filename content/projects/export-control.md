@@ -2,8 +2,9 @@
 name: export-control
 path: /export-control
 tagLine: Search tool for the Norwegian Export Control Law.
-logoPath: /img/logos/safetec.png
-logoAlt: Safetec company logo
+logo:
+  path: /img/logos/safetec.png
+  altText: Safetec company logo
 techStack:
   - tech: Python
     usedWith:

@@ -14,11 +14,13 @@ import (
 
 type ProjectProfile struct {
 	Page    `yaml:",inline"`
-	Name    string `yaml:"name"     validate:"required"`
-	TagLine string `yaml:"tagLine"  validate:"required"`
+	Name    string `yaml:"name"    validate:"required"`
+	TagLine string `yaml:"tagLine" validate:"required"`
 	// Optional if not included in index page.
-	LogoPath              string `yaml:"logoPath" validate:"omitempty,filepath"`
-	LogoAlt               string `yaml:"logoAlt"`
+	Logo struct {
+		Path    string `yaml:"path" validate:"omitempty,filepath"`
+		AltText string `yaml:"altText"`
+	} `yaml:"logo"`
 	IndexPageFallbackIcon template.HTML
 }
 

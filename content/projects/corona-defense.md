@@ -2,8 +2,9 @@
 name: corona-defense
 path: /corona-defense
 tagLine: Tower Defense mobile game.
-logoPath: /img/logos/corona-defense.png
-logoAlt: Corona Defense project logo
+logo:
+  path: /img/logos/corona-defense.png
+  altText: Corona Defense project logo
 techStack:
   - tech: Kotlin
     usedFor: client-side
