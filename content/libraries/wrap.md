@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/wrap
-    githubURL: https://github.com/hermannm/wrap
 name: wrap
-slug: wrap
+path: /wrap
 tagLine: Utility for wrapping error messages with extra context.
+goPackage:
+  rootName: hermannm.dev/wrap
+  githubURL: https://github.com/hermannm/wrap
 techStack:
   - tech: Go
 linkGroups:

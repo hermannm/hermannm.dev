@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/analysis
-    githubURL: https://github.com/hermannm/analysis
 name: analysis
-slug: analysis
+path: /analysis
 tagLine: Data analysis service, built for my master's thesis.
+goPackage:
+  rootName: hermannm.dev/analysis
+  githubURL: https://github.com/hermannm/analysis
 logoPath: /img/logos/analysis.png
 logoAlt: Combined logos of ClickHouse and Elasticsearch
 techStack:

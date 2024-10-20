@@ -218,11 +218,15 @@ func (renderer *PageRenderer) BuildSitemap() error {
 	for i := 0; i < renderer.pageCount; i++ {
 		select {
 		case page := <-renderer.parsedPages:
-			if page.Path != "/404.html" && page.RedirectURL == "" {
-				pageURLs = append(
-					pageURLs,
-					fmt.Sprintf("%s%s", renderer.commonData.BaseURL, page.Path),
-				)
+			if page.Path != "/404.html" && page.RedirectPath == "" {
+				var url string
+				if page.Path == "/" {
+					url = renderer.commonData.BaseURL + "/"
+				} else {
+					url = renderer.commonData.BaseURL + page.Path + "/"
+				}
+
+				pageURLs = append(pageURLs, url)
 			}
 		case <-renderer.ctx.Done():
 			return nil
@@ -284,8 +288,10 @@ func getRenderOutputPath(basePath string) (string, error) {
 
 		dir = strings.Join(dirs, "/")
 	} else {
-		dir = basePath
 		file = "index.html"
+		if basePath != "/" {
+			dir = basePath
+		}
 	}
 
 	dir = fmt.Sprintf("%s%s", BaseOutputDir, dir)

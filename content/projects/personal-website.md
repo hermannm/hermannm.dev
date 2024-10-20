@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/personal-website
-    githubURL: https://github.com/hermannm/hermannm.dev
 name: personal-website
-slug: personal-website
+path: /personal-website
 tagLine: hermannm's personal website and Go package host.
+goPackage:
+  rootName: hermannm.dev/personal-website
+  githubURL: https://github.com/hermannm/hermannm.dev
 techStack:
   - tech: Go
 linkGroups:

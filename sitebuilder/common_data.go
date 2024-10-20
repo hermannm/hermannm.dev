@@ -30,9 +30,9 @@ func (commonData CommonPageData) GitHubIcon() template.HTML {
 
 type Page struct {
 	Title        string `yaml:"title"        validate:"required"`
-	Path         string `yaml:"path"`
+	Path         string `yaml:"path"         validate:"required,startswith=/"`
 	TemplateName string `yaml:"templateName" validate:"required,filepath"`
-	RedirectURL  string `yaml:"redirectURL"` // Optional.
+	RedirectPath string `yaml:"redirectPath"` // Optional.
 
 	// Nil if page does not host a Go package.
 	GoPackage *GoPackage `yaml:"goPackage" validate:"omitempty"`

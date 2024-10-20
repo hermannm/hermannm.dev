@@ -1,6 +1,6 @@
 ---
 name: minesweeper
-slug: minesweeper
+path: /minesweeper
 tagLine: Java implementation of the classic Minesweeper game.
 logoPath: /img/logos/minesweeper.png
 logoAlt: Screenshot of a Minesweeper game round

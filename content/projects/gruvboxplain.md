@@ -1,6 +1,6 @@
 ---
 name: gruvbox-plain
-slug: gruvboxplain
+path: /gruvboxplain
 tagLine: Color theme for VSCode and IntelliJ.
 logoPath: /img/logos/gruvbox-plain.png
 logoAlt: Diagonal stripes with the gruvbox-plain color scheme

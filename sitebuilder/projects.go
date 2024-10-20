@@ -13,8 +13,8 @@ import (
 )
 
 type ProjectProfile struct {
+	Page    `yaml:",inline"`
 	Name    string `yaml:"name"     validate:"required"`
-	Slug    string `yaml:"slug"     validate:"required"`
 	TagLine string `yaml:"tagLine"  validate:"required"`
 	// Optional if not included in index page.
 	LogoPath              string `yaml:"logoPath" validate:"omitempty,filepath"`
@@ -39,9 +39,6 @@ type LinkGroup struct {
 type ProjectMarkdown struct {
 	ProjectBase `                        yaml:",inline"`
 	TechStack   []TechStackItemMarkdown `yaml:"techStack,flow"` // Optional.
-	// Optional if project page only needs Title, Path and TemplateName (these are set
-	// automatically). Other fields can be set here, e.g. if project page should host a Go package.
-	Page Page `yaml:"page"`
 }
 
 type ProjectTemplate struct {
@@ -102,7 +99,7 @@ func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) 
 	}
 
 	if err = renderer.renderPage(projectPage.Meta, projectPage); err != nil {
-		return wrap.Errorf(err, "failed to render page for project '%s'", project.Slug)
+		return wrap.Errorf(err, "failed to render page for project '%s'", project.Name)
 	}
 
 	return nil
@@ -145,8 +142,7 @@ func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (Pars
 		return ParsedProject{}, wrap.Error(err, "failed to read markdown for project")
 	}
 
-	project.Page.Title = fmt.Sprintf("%s/%s", renderer.commonData.SiteName, project.Slug)
-	project.Page.Path = fmt.Sprintf("/%s", project.Slug)
+	project.Page.Title = fmt.Sprintf("%s%s", renderer.commonData.SiteName, project.Page.Path)
 	project.Page.TemplateName = ProjectPageTemplateName
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
@@ -162,7 +158,7 @@ func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (Pars
 			return ParsedProject{}, wrap.Errorf(
 				err,
 				"failed to parse footnote for project '%s' as markdown",
-				project.Slug,
+				project.Name,
 			)
 		}
 		project.Footnote = removeParagraphTagsAroundHTML(builder.String())

@@ -1,8 +1,7 @@
 ---
-page:
-  title: hermannm.dev
-  path: ""
-  templateName: index_page.html.tmpl
+title: hermannm.dev
+path: /
+templateName: index_page.html.tmpl
 personalInfo:
   birthday: "1999-09-12"
   location: Oslo, Norway
@@ -21,32 +20,32 @@ profilePictureDesktop:
 projectGroups:
   - title: Projects I've contributed to
     contentDir: projects
-    projectSlugs:
-      - indok-web
-      - casus-belli
-      - analysis
-      - coffeetalk
-      - corona-defense
-      - rov-sim
-      - export-control
-      - gadd
-      - minesweeper
-      - gruvboxplain
+    projectPaths:
+      - /indok-web
+      - /casus-belli
+      - /analysis
+      - /coffeetalk
+      - /corona-defense
+      - /rov-sim
+      - /export-control
+      - /gadd
+      - /minesweeper
+      - /gruvboxplain
   - title: Companies I've worked for
     contentDir: companies
-    projectSlugs:
-      - liflig
-      - ignite
+    projectPaths:
+      - /liflig
+      - /ignite
   - title: Libraries I've built
     contentDir: libraries
-    projectSlugs:
-      - devlog
-      - condqueue
-      - wrap
-      - opt
-      - enumnames
-      - set
-      - ipfinder
+    projectPaths:
+      - /devlog
+      - /condqueue
+      - /wrap
+      - /opt
+      - /enumnames
+      - /set
+      - /ipfinder
 ---
 
 Hello there! I'm Hermann Mørkrid, a software developer and Computer Science graduate from Norway. I

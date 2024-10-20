@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/opt
-    githubURL: https://github.com/hermannm/opt
 name: opt
-slug: opt
+path: /opt
 tagLine: An Option type for Go.
+goPackage:
+  rootName: hermannm.dev/opt
+  githubURL: https://github.com/hermannm/opt
 techStack:
   - tech: Go
 linkGroups:

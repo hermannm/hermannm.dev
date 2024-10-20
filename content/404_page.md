@@ -1,7 +1,6 @@
 ---
-page:
-  title: hermannm.dev/???
-  path: 404.html
+title: hermannm.dev/???
+path: /404.html
 ---
 
 <figure class="flex flex-col items-center m-0">

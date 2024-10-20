@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/devlog
-    githubURL: https://github.com/hermannm/devlog
 name: devlog
-slug: devlog
+path: /devlog
 tagLine: Structured log handling.
+goPackage:
+  rootName: hermannm.dev/devlog
+  githubURL: https://github.com/hermannm/devlog
 techStack:
   - tech: Go
   - tech: Rust

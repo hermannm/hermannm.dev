@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/enumnames
-    githubURL: https://github.com/hermannm/enumnames
 name: enumnames
-slug: enumnames
+path: /enumnames
 tagLine: Efficient string representation for enum values.
+goPackage:
+  rootName: hermannm.dev/enumnames
+  githubURL: https://github.com/hermannm/enumnames
 techStack:
   - tech: Go
 linkGroups:

@@ -1,6 +1,6 @@
 ---
 name: corona-defense
-slug: corona-defense
+path: /corona-defense
 tagLine: Tower Defense mobile game.
 logoPath: /img/logos/corona-defense.png
 logoAlt: Corona Defense project logo

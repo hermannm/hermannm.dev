@@ -1,6 +1,6 @@
 ---
 name: monkeylang
-slug: monkeylang
+path: /monkeylang
 tagLine: Lexer for the Monkey programming language.
 techStack:
   - tech: Kotlin

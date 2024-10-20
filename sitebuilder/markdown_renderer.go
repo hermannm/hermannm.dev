@@ -52,7 +52,11 @@ func (renderer MarkdownRenderer) RenderLink(
 	link := node.(*ast.Link)
 
 	link.SetAttribute([]byte("class"), []byte("break-words"))
-	if bytes.HasPrefix(link.Destination, []byte("http")) {
+	if bytes.HasPrefix(link.Destination, []byte{'/'}) {
+		if !bytes.HasSuffix(link.Destination, []byte{'/'}) {
+			link.Destination = append(link.Destination, '/')
+		}
+	} else {
 		link.SetAttribute([]byte("target"), []byte("_blank"))
 	}
 

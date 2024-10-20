@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/cv
-    githubURL: https://github.com/hermannm/cv
 name: cv
-slug: cv
+path: /cv
 tagLine: Dynamic CV and job application builder.
+goPackage:
+  rootName: hermannm.dev/cv
+  githubURL: https://github.com/hermannm/cv
 techStack:
   - tech: Go
 linkGroups:

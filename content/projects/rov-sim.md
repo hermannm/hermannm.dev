@@ -1,6 +1,6 @@
 ---
 name: rov-sim
-slug: rov-sim
+path: /rov-sim
 tagLine: Underwater drone simulator.
 logoPath: /img/logos/rov-sim.png
 logoAlt: ROV-SIM project logo

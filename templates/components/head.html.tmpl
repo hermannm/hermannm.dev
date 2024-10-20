@@ -7,8 +7,8 @@
     />
   {{- end }}
 
-  {{ if .Page.RedirectURL -}}
-    <meta http-equiv="Refresh" content="0; url='{{ .Page.RedirectURL }}'" />
+  {{ if .Page.RedirectPath -}}
+    <meta http-equiv="Refresh" content="0; url='{{ .Page.RedirectPath }}/'" />
   {{- end }}
 
 

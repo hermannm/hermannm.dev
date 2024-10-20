@@ -1,6 +1,6 @@
 ---
 name: Ignite
-slug: ignite
+path: /ignite
 tagLine: Procurement data analytics platform.
 logoPath: /img/logos/ignite.png
 logoAlt: Ignite company logo

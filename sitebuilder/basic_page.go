@@ -11,7 +11,7 @@ import (
 const BasicPageTemplateName = "basic_page.html.tmpl"
 
 type BasicPageMarkdown struct {
-	Page Page `yaml:"page"`
+	Page `yaml:",inline"`
 }
 
 type BasicPageTemplate struct {
@@ -33,7 +33,6 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 		return wrap.Error(err, "failed to read markdown for page")
 	}
 
-	frontmatter.Page.Path = fmt.Sprintf("/%s", frontmatter.Page.Path)
 	frontmatter.Page.TemplateName = BasicPageTemplateName
 
 	if err = validate.Struct(frontmatter); err != nil {

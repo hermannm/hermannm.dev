@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/set
-    githubURL: https://github.com/hermannm/set
 name: set
-slug: set
+path: /set
 tagLine: Generic Set data structures.
+goPackage:
+  rootName: hermannm.dev/set
+  githubURL: https://github.com/hermannm/set
 techStack:
   - tech: Go
 linkGroups:

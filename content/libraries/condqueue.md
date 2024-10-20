@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/condqueue
-    githubURL: https://github.com/hermannm/condqueue
 name: condqueue
-slug: condqueue
+path: /condqueue
 tagLine: A concurrent queue.
+goPackage:
+  rootName: hermannm.dev/condqueue
+  githubURL: https://github.com/hermannm/condqueue
 techStack:
   - tech: Go
 linkGroups:

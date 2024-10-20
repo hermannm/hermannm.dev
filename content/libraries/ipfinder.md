@@ -1,11 +1,10 @@
 ---
-page:
-  goPackage:
-    rootName: hermannm.dev/ipfinder
-    githubURL: https://github.com/hermannm/ipfinder
 name: ipfinder
-slug: ipfinder
+path: /ipfinder
 tagLine: Utility for finding your local and public IP addresses.
+goPackage:
+  rootName: hermannm.dev/ipfinder
+  githubURL: https://github.com/hermannm/ipfinder
 techStack:
   - tech: Go
 linkGroups:

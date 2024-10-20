@@ -16,7 +16,7 @@ type IndexPageBase struct {
 
 type IndexPageMarkdown struct {
 	IndexPageBase `                       yaml:",inline"`
-	Page          Page                   `yaml:"page"`
+	Page          `                       yaml:",inline"`
 	PersonalInfo  PersonalInfoMarkdown   `yaml:"personalInfo"`
 	ProjectGroups []ProjectGroupMarkdown `yaml:"projectGroups,flow" validate:"required,dive"`
 }
@@ -38,7 +38,7 @@ type IndexPageTemplate struct {
 
 type ProjectGroupMarkdown struct {
 	Title        string   `yaml:"title"             validate:"required"`
-	ProjectSlugs []string `yaml:"projectSlugs,flow" validate:"required,dive"`
+	ProjectPaths []string `yaml:"projectPaths,flow" validate:"required,dive"`
 	ContentDir   string   `yaml:"contentDir"        validate:"required"`
 }
 
@@ -87,7 +87,7 @@ ProjectLoop:
 		select {
 		case project := <-renderer.parsedProjects:
 			if err = projectGroups.AddIfIncluded(project); err != nil {
-				return wrap.Errorf(err, "failed to add project '%s' to groups", project.Slug)
+				return wrap.Errorf(err, "failed to add project '%s' to groups", project.Name)
 			}
 			if projectGroups.IsFull() {
 				break ProjectLoop
@@ -180,10 +180,10 @@ func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
 	targetNumberOfProjects := 0
 
 	for i, group := range groups {
-		projectsLength := len(group.ProjectSlugs)
+		projectsLength := len(group.ProjectPaths)
 
 		projectIndicesBySlug := make(map[string]int, projectsLength)
-		for j, slug := range group.ProjectSlugs {
+		for j, slug := range group.ProjectPaths {
 			projectIndicesBySlug[slug] = j
 			targetNumberOfProjects++
 		}
@@ -193,8 +193,8 @@ func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
 				Title:    group.Title,
 				Projects: make([]ProjectProfile, projectsLength),
 			},
-			projectIndicesBySlug: projectIndicesBySlug,
-			contentDir:           group.ContentDir,
+			projectIndiciesByPath: projectIndicesBySlug,
+			contentDir:            group.ContentDir,
 		}
 	}
 
@@ -213,8 +213,8 @@ type ParsedProjectGroups struct {
 
 type ParsedProjectGroup struct {
 	ProjectGroupTemplate
-	projectIndicesBySlug map[string]int
-	contentDir           string
+	projectIndiciesByPath map[string]int
+	contentDir            string
 }
 
 func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
@@ -231,7 +231,7 @@ func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
 		return nil
 	}
 
-	index, isIncluded := group.projectIndicesBySlug[project.Slug]
+	index, isIncluded := group.projectIndiciesByPath[project.Page.Path]
 	if !isIncluded {
 		return nil
 	}
@@ -242,7 +242,7 @@ func (groups *ParsedProjectGroups) AddIfIncluded(project ParsedProject) error {
 	}
 
 	if project.LogoPath == "" && project.IndexPageFallbackIcon == "" {
-		return fmt.Errorf("no icon found for project '%s'", project.Slug)
+		return fmt.Errorf("no icon found for project '%s'", project.Name)
 	}
 
 	group.Projects[index] = project.ProjectProfile

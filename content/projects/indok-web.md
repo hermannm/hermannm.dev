@@ -1,6 +1,6 @@
 ---
 name: indok-web
-slug: indok-web
+path: /indok-web
 tagLine: Student association website.
 logoPath: /img/logos/rubberdok.png
 logoAlt: Rubberdøk student organization logo
