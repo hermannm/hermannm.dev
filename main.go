@@ -14,21 +14,24 @@ import (
 func main() {
 	devlog.InitDefaultLogHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug})
 
-	useDevServer, port := parseCLIFlags()
-	if useDevServer {
+	args := parseCommandLineArgs()
+	if args.useDevServer {
 		if err := devserver.ServeAndRebuildOnChange(
 			contentPaths,
-			commonData,
-			icons,
 			inputCSSFileName,
-			port,
+			args.devServerPort,
 		); err != nil {
 			log.ErrorCause(err, "Dev server stopped")
 			os.Exit(1)
 		}
 	} else {
 		log.Info("Building website...")
-		if err := sitebuilder.RenderPages(contentPaths, commonData, icons); err != nil {
+		if err := sitebuilder.RenderPages(
+			contentPaths,
+			commonData,
+			icons,
+			args.invokedByDevServer,
+		); err != nil {
 			log.Error(err)
 			os.Exit(1)
 		}
@@ -44,16 +47,36 @@ func main() {
 	}
 }
 
-func parseCLIFlags() (useDevServer bool, port string) {
+type commandLineArgs struct {
+	useDevServer       bool
+	devServerPort      string
+	invokedByDevServer bool
+}
+
+func parseCommandLineArgs() commandLineArgs {
+	var args commandLineArgs
+
 	flag.BoolVar(
-		&useDevServer,
+		&args.useDevServer,
 		"dev",
 		false,
 		"Serve and rebuild the site every time content/templates/sitebuilder files change",
 	)
-	flag.StringVar(&port, "port", "8080", "The port to serve the website from when using -dev")
+	flag.StringVar(
+		&args.devServerPort,
+		"port",
+		"8080",
+		"The port to serve the website from when using -dev",
+	)
+	flag.BoolVar(
+		&args.invokedByDevServer,
+		"invoked-by-dev-server",
+		false,
+		"Internal flag: identifies if we are being invoked by the dev server",
+	)
+
 	flag.Parse()
-	return useDevServer, port
+	return args
 }
 
 var (

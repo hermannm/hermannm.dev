@@ -41,7 +41,12 @@ type ContentPaths struct {
 	BasicPages  []string
 }
 
-func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons IconMap) error {
+func RenderPages(
+	contentPaths ContentPaths,
+	commonData CommonPageData,
+	icons IconMap,
+	devMode bool,
+) error {
 	if err := validate.Struct(commonData); err != nil {
 		return wrap.Errorf(err, "invalid common page data")
 	}
@@ -57,6 +62,7 @@ func RenderPages(contentPaths ContentPaths, commonData CommonPageData, icons Ico
 		len(projectFiles),
 		len(contentPaths.BasicPages),
 		1,
+		devMode,
 	)
 	if err != nil {
 		return err
@@ -103,6 +109,8 @@ type PageRenderer struct {
 
 	ctx    context.Context
 	cancel func()
+
+	devMode bool
 }
 
 func NewPageRenderer(
@@ -111,6 +119,7 @@ func NewPageRenderer(
 	projectCount int,
 	basicPageCount int,
 	otherPagesCount int,
+	devMode bool,
 ) (PageRenderer, error) {
 	templates, err := parseTemplates()
 	if err != nil {
@@ -135,6 +144,7 @@ func NewPageRenderer(
 		iconsRendered:  make(chan struct{}),
 		ctx:            ctx,
 		cancel:         cancel,
+		devMode:        devMode,
 	}, nil
 }
 
@@ -221,9 +231,9 @@ func (renderer *PageRenderer) BuildSitemap() error {
 			if page.Path != "/404.html" && page.RedirectPath == "" {
 				var url string
 				if page.Path == "/" {
-					url = renderer.commonData.BaseURL + "/"
+					url = renderer.commonData.BaseURL
 				} else {
-					url = renderer.commonData.BaseURL + page.Path + "/"
+					url = renderer.commonData.BaseURL + page.Path
 				}
 
 				pageURLs = append(pageURLs, url)
@@ -250,8 +260,73 @@ func (renderer *PageRenderer) BuildSitemap() error {
 	return nil
 }
 
-func (renderer *PageRenderer) renderPage(meta TemplateMetadata, data any) error {
-	outputPath, err := getRenderOutputPath(meta.Page.Path)
+// Used by [PageRenderer.renderPageWithAndWithoutTrailingSlash] to copy the template data, but with
+// a trailing slash added to the page path.
+type withPager interface {
+	// Should return a copy of self, with the given page set.
+	withPage(Page) any
+}
+
+// We want our page paths to not have a trailing slash, and for URLs with a trailing slash to
+// redirect to the URL without the trailing slash. This poses a couple challenges when deploying
+// with GitHub Pages:
+//   - If we have /path/index.html, and no /path.html, then /path/ serves index.html, and /path
+//     redirects to /path/
+//   - If we have /path.html, and no /path/index.html, then /path serves path.html, and /path/ gives
+//     404
+//   - If we have both /path/index.html AND /path.html, then /path/ serves index.html and /path
+//     serves path.html
+//
+// To achieve what we want, we:
+//   - Render both /path/index.html and /path.html
+//   - Put an HTTP redirect on /path/index.html to /path
+//   - Set <link rel="canonical"> to the path without trailing slash, to tell the Google Search
+//     crawler that the URL with no trailing slash is preferred
+//
+// For more info on how GitHub handles trailing slashes, see
+// https://github.com/slorber/trailing-slash-guide.
+func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
+	page Page,
+	data withPager,
+) error {
+	// If the page path ends with .html, then we only want to render it once.
+	if strings.HasSuffix(page.Path, ".html") {
+		return renderer.renderPage(page, data)
+	}
+
+	if strings.HasSuffix(page.Path, "/") {
+		return fmt.Errorf("expected page path '%s' not to end with trailing slash", page.Path)
+	}
+
+	var goroutines errgroup.Group
+
+	// Original page, without trailing slash
+	goroutines.Go(func() error {
+		return renderer.renderPage(page, data)
+	})
+
+	// With trailing slash
+	goroutines.Go(func() error {
+		newPage := page
+		newPage.Path += "/"
+		// In production, we want to redirect pages with trailing slashes to pages without.
+		// But in dev, we use the live-server npm package for the dev server, which only works with
+		// trailing slashes. So we disable redirect if we're in dev mode.
+		if !renderer.devMode {
+			newPage.RedirectPath = page.Path
+		}
+		return renderer.renderPage(newPage, data.withPage(newPage))
+	})
+
+	return goroutines.Wait()
+}
+
+func (renderer *PageRenderer) renderPage(page Page, data any) error {
+	if page.CanonicalURL == "" {
+		return errors.New("Page.CanonicalURL must be set before rendering")
+	}
+
+	outputPath, err := getRenderOutputPath(page.Path)
 	if err != nil {
 		return err
 	}
@@ -263,9 +338,9 @@ func (renderer *PageRenderer) renderPage(meta TemplateMetadata, data any) error 
 	defer outputFile.Close()
 
 	if err := renderer.templates.ExecuteTemplate(
-		outputFile, meta.Page.TemplateName, data,
+		outputFile, page.TemplateName, data,
 	); err != nil {
-		return wrap.Errorf(err, "failed to execute template '%s'", meta.Page.TemplateName)
+		return wrap.Errorf(err, "failed to execute template '%s'", page.TemplateName)
 	}
 
 	return nil
@@ -274,24 +349,29 @@ func (renderer *PageRenderer) renderPage(meta TemplateMetadata, data any) error 
 func getRenderOutputPath(basePath string) (string, error) {
 	var dir string
 	var file string
-	if strings.HasSuffix(basePath, ".html") {
+	if strings.HasSuffix(basePath, "/") {
+		file = "index.html"
+		// If this is the root path, we want to leave the dir blank
+		if basePath != "/" {
+			dir = basePath
+		}
+	} else {
 		pathElements := strings.Split(basePath, "/")
 
 		dirs := make([]string, 0, len(pathElements))
 		for i, pathElement := range pathElements {
 			if i == len(pathElements)-1 {
-				file = pathElement
+				if strings.HasSuffix(pathElement, ".html") {
+					file = pathElement
+				} else {
+					file = pathElement + ".html"
+				}
 			} else {
 				dirs = append(dirs, pathElement)
 			}
 		}
 
 		dir = strings.Join(dirs, "/")
-	} else {
-		file = "index.html"
-		if basePath != "/" {
-			dir = basePath
-		}
 	}
 
 	dir = fmt.Sprintf("%s%s", BaseOutputDir, dir)

@@ -8,13 +8,13 @@
   {{- end }}
 
   {{ if .Page.RedirectPath -}}
-    <meta http-equiv="Refresh" content="0; url='{{ .Page.RedirectPath }}/'" />
+    <meta http-equiv="Refresh" content="0; url='{{ .Page.RedirectPath }}'" />
   {{- end }}
 
 
   <title>{{ .Page.Title }}</title>
   <meta name="description" content="{{ .Common.SiteDescription }}" />
-  <link rel="canonical" href="{{ .Common.BaseURL }}{{ .Page.Path }}" />
+  <link rel="canonical" href="{{ .Page.CanonicalURL }}" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="shortcut icon" href="/favicon.ico" />
   <meta charset="utf8" />
@@ -67,7 +67,7 @@
   <!-- Metadata for Open Graph protocol -->
   <meta property="og:title" content="{{ .Page.Title }}" />
   <meta property="og:description" content="{{ .Common.SiteDescription }}" />
-  <meta property="og:url" content="{{ .Common.BaseURL }}{{ .Page.Path }}" />
+  <meta property="og:url" content="{{ .Page.CanonicalURL }}" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="{{ .Common.BaseURL }}/img/opengraph-image.png" />
 </head>

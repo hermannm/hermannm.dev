@@ -65,6 +65,7 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
 	if err != nil {
 		return wrap.Error(err, "failed to parse index page data")
 	}
+	content.Page.SetCanonicalURL(renderer.commonData.BaseURL)
 
 	projectGroups := parseProjectGroups(content.ProjectGroups)
 
@@ -113,7 +114,7 @@ ProjectLoop:
 		PersonalInfo:  personalInfo,
 		ProjectGroups: projectGroups.ToSlice(),
 	}
-	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
+	if err = renderer.renderPage(pageTemplate.Meta.Page, pageTemplate); err != nil {
 		return wrap.Error(err, "failed to render index page")
 	}
 

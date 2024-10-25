@@ -13,13 +13,17 @@ import (
 
 func ServeAndRebuildOnChange(
 	contentPaths sitebuilder.ContentPaths,
-	commonData sitebuilder.CommonPageData,
-	icons sitebuilder.IconMap,
 	cssFileName string,
 	port string,
 ) error {
 	buildSite := func() {
-		err := sitebuilder.ExecCommand(true, "go", "run", "hermannm.dev/personal-website")
+		err := sitebuilder.ExecCommand(
+			true,
+			"go",
+			"run",
+			"hermannm.dev/personal-website",
+			"-invoked-by-dev-server",
+		)
 		// We only log exec errors here, as actual build errors will be printed by the command
 		if err != nil && !strings.HasPrefix(err.Error(), "go failed") {
 			log.Error(err)

@@ -28,29 +28,39 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	body := new(bytes.Buffer)
-	var frontmatter BasicPageMarkdown
-	if err = readMarkdownWithFrontmatter(path, body, &frontmatter); err != nil {
+	var metadata BasicPageMarkdown
+	if err = readMarkdownWithFrontmatter(path, body, &metadata); err != nil {
 		return wrap.Error(err, "failed to read markdown for page")
 	}
 
-	frontmatter.Page.TemplateName = BasicPageTemplateName
+	metadata.Page.TemplateName = BasicPageTemplateName
+	metadata.Page.SetCanonicalURL(renderer.commonData.BaseURL)
 
-	if err = validate.Struct(frontmatter); err != nil {
+	if err = validate.Struct(metadata); err != nil {
 		return wrap.Errorf(err, "invalid metadata for page '%s'", contentPath)
 	}
 
-	renderer.parsedPages <- frontmatter.Page
+	renderer.parsedPages <- metadata.Page
 
 	pageTemplate := BasicPageTemplate{
 		Meta: TemplateMetadata{
 			Common: renderer.commonData,
-			Page:   frontmatter.Page,
+			Page:   metadata.Page,
 		},
 		Content: template.HTML(body.String()),
 	}
-	if err = renderer.renderPage(pageTemplate.Meta, pageTemplate); err != nil {
-		return wrap.Error(err, "failed to render page")
+	if err = renderer.renderPageWithAndWithoutTrailingSlash(
+		pageTemplate.Meta.Page,
+		pageTemplate,
+	); err != nil {
+		return wrap.Errorf(err, "failed to render page '%s'", pageTemplate.Meta.Page.Path)
 	}
 
 	return nil
+}
+
+// Implements WithPager to work with [PageRenderer.renderPageWithAndWithoutTrailingSlash].
+func (template BasicPageTemplate) withPage(page Page) any {
+	template.Meta.Page = page
+	return template
 }

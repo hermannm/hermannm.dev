@@ -100,7 +100,10 @@ func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) 
 		Project: project.ProjectTemplate,
 	}
 
-	if err = renderer.renderPage(projectPage.Meta, projectPage); err != nil {
+	if err = renderer.renderPageWithAndWithoutTrailingSlash(
+		projectPage.Meta.Page,
+		projectPage,
+	); err != nil {
 		return wrap.Errorf(err, "failed to render page for project '%s'", project.Name)
 	}
 
@@ -146,6 +149,7 @@ func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (Pars
 
 	project.Page.Title = fmt.Sprintf("%s%s", renderer.commonData.SiteName, project.Page.Path)
 	project.Page.TemplateName = ProjectPageTemplateName
+	project.Page.SetCanonicalURL(renderer.commonData.BaseURL)
 	if project.TechStackTitle == "" {
 		project.TechStackTitle = DefaultTechStackTitle
 	}
@@ -302,4 +306,10 @@ func setLinkIcons(linkGroups []LinkGroup, icons IconMap) error {
 	}
 
 	return nil
+}
+
+// Implements WithPager to work with [PageRenderer.renderPageWithAndWithoutTrailingSlash].
+func (template ProjectPageTemplate) withPage(page Page) any {
+	template.Meta.Page = page
+	return template
 }

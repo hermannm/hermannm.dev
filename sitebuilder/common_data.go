@@ -34,8 +34,21 @@ type Page struct {
 	TemplateName string `yaml:"templateName" validate:"required,filepath"`
 	RedirectPath string `yaml:"redirectPath"` // Optional.
 
+	// Must be set with [Page.SetCanonicalURL] after parsing.
+	CanonicalURL string
+
 	// Nil if page does not host a Go package.
 	GoPackage *GoPackage `yaml:"goPackage" validate:"omitempty"`
+}
+
+func (page *Page) SetCanonicalURL(baseURL string) {
+	if page.Path == "/" {
+		page.CanonicalURL = baseURL
+	} else if page.RedirectPath != "" {
+		page.CanonicalURL = baseURL + page.RedirectPath
+	} else {
+		page.CanonicalURL = baseURL + page.Path
+	}
 }
 
 type GoPackage struct {
