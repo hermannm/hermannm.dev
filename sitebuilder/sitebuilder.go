@@ -279,7 +279,7 @@ type withPager interface {
 //
 // To achieve what we want, we:
 //   - Render both /path/index.html and /path.html
-//   - Put an HTTP redirect on /path/index.html to /path
+//   - Put an HTML redirect on /path/index.html to /path
 //   - Set <link rel="canonical"> to the path without trailing slash, to tell the Google Search
 //     crawler that the URL with no trailing slash is preferred
 //

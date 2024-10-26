@@ -308,7 +308,7 @@ func setLinkIcons(linkGroups []LinkGroup, icons IconMap) error {
 	return nil
 }
 
-// Implements WithPager to work with [PageRenderer.renderPageWithAndWithoutTrailingSlash].
+// Implements [withPager] to work with [PageRenderer.renderPageWithAndWithoutTrailingSlash].
 func (template ProjectPageTemplate) withPage(page Page) any {
 	template.Meta.Page = page
 	return template

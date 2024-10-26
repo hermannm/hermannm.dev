@@ -59,7 +59,7 @@ func (renderer *PageRenderer) RenderBasicPage(contentPath string) (err error) {
 	return nil
 }
 
-// Implements WithPager to work with [PageRenderer.renderPageWithAndWithoutTrailingSlash].
+// Implements [withPager] to work with [PageRenderer.renderPageWithAndWithoutTrailingSlash].
 func (template BasicPageTemplate) withPage(page Page) any {
 	template.Meta.Page = page
 	return template
