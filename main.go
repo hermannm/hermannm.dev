@@ -121,6 +121,10 @@ var (
 			Link:                  "https://www.rust-lang.org/",
 			IndexPageFallbackIcon: "content/icons/rust-alt.svg",
 		},
+		"Kotlin": {
+			Icon: "content/icons/kotlin.svg",
+			Link: "https://kotlinlang.org/",
+		},
 		"Go+Rust+Kotlin": {
 			IndexPageFallbackIcon: "content/icons/go-rust-kotlin-combined.svg",
 		},
@@ -139,10 +143,6 @@ var (
 		"Java": {
 			Icon: "content/icons/java.svg",
 			Link: "https://www.java.com/en/download/help/whatis_java.html",
-		},
-		"Kotlin": {
-			Icon: "content/icons/kotlin.svg",
-			Link: "https://kotlinlang.org/",
 		},
 		"Python": {
 			Icon: "content/icons/python.svg",
