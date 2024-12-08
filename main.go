@@ -121,8 +121,8 @@ var (
 			Link:                  "https://www.rust-lang.org/",
 			IndexPageFallbackIcon: "content/icons/rust-alt.svg",
 		},
-		"Go+Rust": {
-			IndexPageFallbackIcon: "content/icons/go-rust-combined.svg",
+		"Go+Rust+Kotlin": {
+			IndexPageFallbackIcon: "content/icons/go-rust-kotlin-combined.svg",
 		},
 		"TypeScript": {
 			Icon: "content/icons/typescript.svg",
