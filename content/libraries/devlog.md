@@ -5,6 +5,7 @@ tagLine: Structured log handling.
 goPackage:
   rootName: hermannm.dev/devlog
   githubURL: https://github.com/hermannm/devlog
+techStackTitle: Implemented in
 techStack:
   - tech: Go
   - tech: Rust
