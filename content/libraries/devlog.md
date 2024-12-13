@@ -40,6 +40,5 @@ so, <span class="whitespace-nowrap">_`devlog-tracing`_</span> was born.
 
 Finally, after starting my job at [Liflig](/liflig), I started writing Kotlin for the backend. I
 found myself unhappy with the logging library we were using at the time, and so I decided to write
-yet another version of _`devlog`_. The implementation is a thin wrapper over the standard Java
-logging libraries _SLF4J_ and _Logback_, but with a more ergonomic API for Kotlin. It also provides
-a log output encoder for local development, using the same format as my Go and Rust implementations.
+yet another version of _`devlog`_. This implementation is a thin wrapper over the standard Java
+logging libraries _SLF4J_ and _Logback_, but with a more ergonomic API for Kotlin.
