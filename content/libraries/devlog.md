@@ -1,7 +1,7 @@
 ---
 name: devlog
 path: /devlog
-tagLine: Structured log handling.
+tagLine: Structured logging.
 goPackage:
   rootName: hermannm.dev/devlog
   githubURL: https://github.com/hermannm/devlog
