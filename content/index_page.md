@@ -49,5 +49,5 @@ projectGroups:
 ---
 
 Hello there! I'm Hermann Mørkrid, a software developer and Computer Science graduate from Norway. I
-mostly do web development (frontend and backend) and some hobby game development. Click the projects
+mostly do web development (backend and frontend) and some hobby game development. Click the projects
 below to read more about things I've done!

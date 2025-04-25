@@ -6,10 +6,10 @@ logo:
   path: /img/logos/coffeetalk.png
   altText: CoffeeTalk project logo
 techStack:
-  - tech: JavaScript
-    usedFor: frontend
   - tech: Go
     usedFor: backend
+  - tech: JavaScript
+    usedFor: frontend
   - tech: WebRTC
   - tech: MQTT
 linkGroups:

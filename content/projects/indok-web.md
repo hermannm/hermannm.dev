@@ -6,15 +6,15 @@ logo:
   path: /img/logos/rubberdok.png
   altText: Rubberdøk student organization logo
 techStack:
+  - tech: Python
+    usedFor: backend
+    usedWith:
+      - Django
   - tech: TypeScript
     usedFor: frontend
     usedWith:
       - React
       - Next.js
-  - tech: Python
-    usedFor: backend
-    usedWith:
-      - Django
   - tech: GraphQL
 linkGroups:
   - title: Code

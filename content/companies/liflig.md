@@ -7,12 +7,12 @@ logo:
   altText: "Liflig company logo"
 techStackTitle: "Technologies I'm working with"
 techStack:
+  - tech: Kotlin
+    usedFor: backend
   - tech: TypeScript
     usedFor: frontend
     usedWith:
       - React
-  - tech: Kotlin
-    usedFor: backend
   - tech: AWS CDK
     usedFor: infrastructure-as-code
 linkGroups:

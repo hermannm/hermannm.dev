@@ -9,12 +9,12 @@ logo:
   path: /img/logos/casus-belli.png
   altText: A fort, surrounded by forest
 techStack:
+  - tech: Go
+    usedFor: server-side
   - tech: Godot
     usedFor: client-side
     usedWith:
       - C#
-  - tech: Go
-    usedFor: server-side
 linkGroups:
   - title: Code
     links:

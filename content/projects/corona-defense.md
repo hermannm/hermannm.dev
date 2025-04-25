@@ -6,12 +6,12 @@ logo:
   path: /img/logos/corona-defense.png
   altText: Corona Defense project logo
 techStack:
+  - tech: C#
+    usedFor: server-side
   - tech: Kotlin
     usedFor: client-side
     usedWith:
       - libGDX
-  - tech: C#
-    usedFor: server-side
 linkGroups:
   - title: Code
     links:

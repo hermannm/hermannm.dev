@@ -7,12 +7,12 @@ logo:
   altText: Ignite company logo
 techStackTitle: Technologies I worked with
 techStack:
+  - tech: Go
+    usedFor: backend microservices
   - tech: TypeScript
     usedFor: frontend
     usedWith:
       - React
-  - tech: Go
-    usedFor: backend microservices
   - tech: gRPC
   - tech: GraphQL
 linkGroups:
