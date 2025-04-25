@@ -24,11 +24,11 @@ projectGroups:
       - /indok-web
       - /casus-belli
       - /analysis
+      - /gadd
       - /coffeetalk
       - /corona-defense
       - /rov-sim
       - /export-control
-      - /gadd
       - /minesweeper
       - /gruvboxplain
   - title: Companies I've worked for

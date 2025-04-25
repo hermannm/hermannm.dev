@@ -35,7 +35,7 @@ a terminal application like this. To interact with Git, I used Rust bindings for
 [`libgit2`](https://libgit2.org/). This taught me a lot about how Git works under the hood ⁠— as is
 often the case, it is more complex than it looks on the surface!
 
-Now I use _`gadd`_ almost daily, and quite enjoy it. There's something extra satisfying about
+Now I use _`gadd`_ almost every day, and quite enjoy it. There's something quite satisfying about
 creating your own tool and tailoring it exactly to your needs.
 
 ![gadd's terminal user interface](/img/screenshots/gadd.png)
