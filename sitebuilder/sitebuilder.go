@@ -29,8 +29,6 @@ const (
 
 	PageTemplatesDir      = "templates/pages"
 	ComponentTemplatesDir = "templates/components"
-
-	IconDir = "img/icons"
 )
 
 var validate *validator.Validate = validator.New()
