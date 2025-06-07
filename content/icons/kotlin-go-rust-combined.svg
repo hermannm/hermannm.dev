@@ -1,10 +1,10 @@
 <svg
-  aria-label="Rust, Go and Kotlin programming language logos"
+  aria-label="Kotlin, Go and Rust programming language logos"
   id="Layer_1"
   x="0px"
   y="0px"
-  viewBox="0 0 572.29499 116.7"
-  width="572.29498"
+  viewBox="0 0 518.29499 116.7"
+  width="518.29498"
   height="116.7"
 >
   <defs id="defs14">
@@ -17,7 +17,7 @@
       <use xlink:href="#hole" transform="rotate(-72)" id="use39" />
     </mask>
   </defs>
-  <g id="go" transform="translate(160.907,20.034327)">
+  <g id="go" transform="translate(133.907,20.034327)">
     <g id="g3">
       <g id="g2">
         <g id="g1">
@@ -72,7 +72,7 @@
       </g>
     </g>
   </g>
-  <g id="rust" transform="matrix(1.1075772,0,0,1.1114316,58.147646,58.350001)">
+  <g id="rust" transform="matrix(1.1075772,0,0,1.1114316,460.14765,58.350001)">
     <path
       id="r"
       transform="translate(0.5,0.5)"
@@ -149,9 +149,9 @@
     </mask>
   </g>
   <polygon
-    points="499.8,20.4 249.9,270.2 499.8,520.1 0,520.1 0,20.4 "
+    points="0,520.1 0,20.4 499.8,20.4 249.9,270.2 499.8,520.1 "
     id="kotlin"
-    transform="matrix(0.18010806,0,0,0.18010806,442.277,9.6757956)"
+    transform="matrix(0.18010806,0,0,0.18010806,0,9.6757956)"
     style="fill: #ebdbb2; fill-opacity: 1"
   />
 </svg>

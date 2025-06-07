@@ -137,8 +137,8 @@ var (
 			Icon:        "content/icons/jetbrains.svg",
 			IconForLink: "https://klibs.io",
 		},
-		"Go+Rust+Kotlin": {
-			IndexPageFallbackIcon: "content/icons/go-rust-kotlin-combined.svg",
+		"Kotlin+Go+Rust": {
+			IndexPageFallbackIcon: "content/icons/kotlin-go-rust-combined.svg",
 		},
 		"TypeScript": {
 			Icon: "content/icons/typescript.svg",
