@@ -133,6 +133,10 @@ var (
 			Link:        "https://kotlinlang.org/",
 			IconForLink: "https://devlog-kotlin.hermannm.dev",
 		},
+		"JetBrains": {
+			Icon:        "content/icons/jetbrains.svg",
+			IconForLink: "https://klibs.io",
+		},
 		"Go+Rust+Kotlin": {
 			IndexPageFallbackIcon: "content/icons/go-rust-kotlin-combined.svg",
 		},
