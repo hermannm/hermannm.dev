@@ -36,7 +36,7 @@ links:
 ---
 
 _`devlog`_ is the name of a set of logging libraries that I've built for different programming
-languages. They all focus on structured logging, but they differ in their scope:
+languages. They all focus on developer-friendly structured logging, but they differ in their scope:
 
 - The Go and Rust implementations provide an alternate log output format for the standard structured
   logging libraries, designed for use in local development.
