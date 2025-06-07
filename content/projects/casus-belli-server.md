@@ -16,11 +16,9 @@ techStack:
     usedFor: client-side
     usedWith:
       - C#
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/casus-belli
-        link: https://github.com/hermannm/casus-belli
+    link: https://github.com/hermannm/casus-belli
 ---
 
 The story of this project started in the fall of 2020, when my dad gave me the coolest birthday gift

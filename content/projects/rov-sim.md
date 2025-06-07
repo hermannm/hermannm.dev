@@ -9,11 +9,9 @@ techStack:
   - tech: Unity
     usedWith:
       - C#
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: eit-nemo-group3/rov-sim
-        link: https://github.com/eit-nemo-group3/rov-sim
+    link: https://github.com/eit-nemo-group3/rov-sim
 ---
 
 In the spring semester of 2022, I took the course _Experts in Teamwork_ at NTNU. The course involved

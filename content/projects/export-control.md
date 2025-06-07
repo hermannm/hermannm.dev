@@ -9,11 +9,9 @@ techStack:
   - tech: Python
     usedWith:
       - Django
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: cdp-group4/export-control
-        link: https://github.com/cdp-group4/export-control
+    link: https://github.com/cdp-group4/export-control
 ---
 
 In the fall semester of 2022, I took the course _Customer-Driven Project_ at NTNU. In the course,

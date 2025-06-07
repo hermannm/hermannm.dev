@@ -7,11 +7,9 @@ logo:
   altText: Screenshot of a Minesweeper game round
 techStack:
   - tech: Java
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/minesweeper
-        link: https://github.com/hermannm/minesweeper
+    link: https://github.com/hermannm/minesweeper
 ---
 
 In the spring semester of 2019, I took a course on object-oriented programming at NTNU. One part of

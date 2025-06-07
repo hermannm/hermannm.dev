@@ -7,11 +7,9 @@ goPackage:
   githubURL: https://github.com/hermannm/cv
 techStack:
   - tech: Go
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/cv
-        link: https://github.com/hermannm/cv
+    link: https://github.com/hermannm/cv
 ---
 
 Dynamic CV and job application builder, rendering Markdown/YAML content into HTML templates.

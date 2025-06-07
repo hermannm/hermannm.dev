@@ -15,11 +15,9 @@ techStack:
       - React
   - tech: AWS CDK
     usedFor: infrastructure-as-code
-linkGroups:
+links:
   - title: More about Liflig
-    links:
-      - text: liflig.no
-        link: https://www.liflig.no/
+    link: https://liflig.no
 ---
 
 Liflig is a firm that delivers tailor-made software projects for clients, taking responsibility for

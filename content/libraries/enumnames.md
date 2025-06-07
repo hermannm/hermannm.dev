@@ -7,15 +7,11 @@ goPackage:
   githubURL: https://github.com/hermannm/enumnames
 techStack:
   - tech: Go
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/enumnames
-        link: https://github.com/hermannm/enumnames
+    link: https://github.com/hermannm/enumnames
   - title: Docs
-    links:
-      - text: pkg.go.dev/hermannm.dev/enumnames
-        link: https://pkg.go.dev/hermannm.dev/enumnames
+    link: https://pkg.go.dev/hermannm.dev/enumnames
 ---
 
 A small Go package for efficient mapping between integer enum values and string names.

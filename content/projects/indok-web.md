@@ -16,13 +16,11 @@ techStack:
       - React
       - Next.js
   - tech: GraphQL
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: rubberdok/indok-web
-        link: https://github.com/rubberdok/indok-web
-      - text: rubberdok/webdev-demo
-        link: https://github.com/rubberdok/webdev-demo
+    sublinks:
+      - link: https://github.com/rubberdok/indok-web
+      - link: https://github.com/rubberdok/webdev-demo
 ---
 
 In the fall of 2020, _Rubberdøk_ was founded, a student organization tasked with developing

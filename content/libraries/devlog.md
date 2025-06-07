@@ -10,19 +10,29 @@ techStack:
   - tech: Go
   - tech: Rust
   - tech: Kotlin
-linkGroups:
+links:
   - title: Go version
-    links:
-      - text: hermannm/devlog
+    sublinks:
+      - title: Code
         link: https://github.com/hermannm/devlog
+      - title: Docs
+        link: https://pkg.go.dev/hermannm.dev/devlog
   - title: Rust version
-    links:
-      - text: hermannm/devlog-tracing
+    sublinks:
+      - title: Code
         link: https://github.com/hermannm/devlog-tracing
+      - title: Docs
+        link: https://docs.rs/devlog-tracing
+      - title: Published on
+        link: https://crates.io/crates/devlog-tracing
   - title: Kotlin version
-    links:
-      - text: hermannm/devlog-kotlin
+    sublinks:
+      - title: Code
         link: https://github.com/hermannm/devlog-kotlin
+      - title: Docs
+        link: https://devlog-kotlin.hermannm.dev
+      - title: Published on
+        link: https://klibs.io/project/hermannm/devlog-kotlin
 ---
 
 After working with Go in multiple projects ([`casus-belli`](/casus-belli), [`analysis`](/analysis),

@@ -103,13 +103,15 @@ var (
 			Icon: "content/icons/map-marker.svg",
 		},
 		"GitHub": {
-			Icon: "content/icons/github.svg",
+			Icon:        "content/icons/github.svg",
+			IconForLink: "https://github.com",
 		},
 		"LinkedIn": {
 			Icon: "content/icons/linkedin.svg",
 		},
 		"Gopher": {
-			Icon: "content/icons/gopher.svg",
+			Icon:        "content/icons/gopher.svg",
+			IconForLink: "https://pkg.go.dev",
 		},
 		"Go": {
 			Icon:                  "content/icons/go.svg",
@@ -120,10 +122,12 @@ var (
 			Icon:                  "content/icons/rust.svg",
 			Link:                  "https://www.rust-lang.org/",
 			IndexPageFallbackIcon: "content/icons/rust-alt.svg",
+			IconForLink:           "https://docs.rs",
 		},
 		"Kotlin": {
-			Icon: "content/icons/kotlin.svg",
-			Link: "https://kotlinlang.org/",
+			Icon:        "content/icons/kotlin.svg",
+			Link:        "https://kotlinlang.org/",
+			IconForLink: "https://devlog-kotlin.hermannm.dev",
 		},
 		"Go+Rust+Kotlin": {
 			IndexPageFallbackIcon: "content/icons/go-rust-kotlin-combined.svg",

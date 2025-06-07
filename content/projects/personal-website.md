@@ -7,11 +7,9 @@ goPackage:
   githubURL: https://github.com/hermannm/hermannm.dev
 techStack:
   - tech: Go
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/hermannm.dev
-        link: https://github.com/hermannm/hermannm.dev
+    link: https://github.com/hermannm/hermannm.dev
 ---
 
 hermannm's personal website and Go package host. Built with Go's

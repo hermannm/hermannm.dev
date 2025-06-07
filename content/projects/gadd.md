@@ -8,11 +8,9 @@ logo:
     Ferris the Crab, mascot of the Rust programming language, with the Git logo on its forehead
 techStack:
   - tech: Rust
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/gadd
-        link: https://github.com/hermannm/gadd
+    link: https://github.com/hermannm/gadd
 footnote:
   Git logo adapted from [Jason Long](https://git-scm.com/downloads/logos) (licensed under [CC BY
   3.0](https://creativecommons.org/licenses/by/3.0/))

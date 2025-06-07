@@ -15,11 +15,9 @@ techStack:
       - React
   - tech: gRPC
   - tech: GraphQL
-linkGroups:
+links:
   - title: More about Ignite
-    links:
-      - text: ignite.no
-        link: https://www.ignite.no/
+    link: https://ignite.no
 ---
 
 Ignite has built a platform where businesses can analyze their data on spend, suppliers, carbon

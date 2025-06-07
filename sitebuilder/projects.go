@@ -2,7 +2,6 @@ package sitebuilder
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -27,15 +26,15 @@ type ProjectProfile struct {
 type ProjectBase struct {
 	ProjectProfile `yaml:",inline"`
 	// Optional, defaults to DefaultTechStackTitle when TechStack is not empty.
-	TechStackTitle string        `yaml:"techStackTitle"`
-	LinkGroups     []LinkGroup   `yaml:"linkGroups,flow"` // Optional.
-	Footnote       template.HTML `yaml:"footnote"`        // Optional.
+	TechStackTitle string         `yaml:"techStackTitle"`
+	Links          []TopLevelLink `yaml:"links,flow"` // Optional.
+	Footnote       template.HTML  `yaml:"footnote"`   // Optional.
 }
 
-type LinkGroup struct {
-	Title string `yaml:"title"`
+type TopLevelLink struct {
 	// May omit Icon field.
-	Links []LinkItem `yaml:"links,flow"`
+	LinkItem `yaml:",inline"`
+	Sublinks []LinkItem `yaml:"sublinks,flow"`
 }
 
 type ProjectMarkdown struct {
@@ -177,7 +176,7 @@ func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (Pars
 	case <-renderer.iconsRendered:
 	}
 
-	if err := setLinkIcons(project.LinkGroups, renderer.icons); err != nil {
+	if err := populateLinkTextAndIcons(project.Links, renderer.icons); err != nil {
 		return ParsedProject{}, wrap.Error(err, "failed to set link icons")
 	}
 
@@ -264,43 +263,55 @@ func getTechIcon(
 	}
 
 	return LinkItem{
-		Text: techName,
-		Link: techIcon.Link,
-		Icon: template.HTML(techIcon.Icon),
+		LinkText: techName,
+		Link:     techIcon.Link,
+		Icon:     template.HTML(techIcon.Icon),
 	}, template.HTML(techIcon.IndexPageFallbackIcon), nil
 }
 
-func setLinkIcons(linkGroups []LinkGroup, icons IconMap) error {
-	githubIcon, ok := icons["GitHub"]
-	if !ok {
-		return errors.New("failed to find GitHub icon in icon map")
+func populateLinkTextAndIcons(links []TopLevelLink, icons IconMap) error {
+	var knownIcons []IconConfig
+	for _, iconConfig := range icons {
+		if iconConfig.IconForLink != "" {
+			knownIcons = append(knownIcons, *iconConfig)
+		}
 	}
 
-	gopherIcon, ok := icons["Gopher"]
-	if !ok {
-		return errors.New("failed to find Gopher icon in icon map")
+	for i, link := range links {
+		link.populateLinkText()
+		if err := populateLinkIcon(&link.LinkItem, icons, knownIcons); err != nil {
+			return err
+		}
+		for i, sublink := range link.Sublinks {
+			sublink.IsSublink = true
+			sublink.populateLinkText()
+			if err := populateLinkIcon(&sublink, icons, knownIcons); err != nil {
+				return err
+			}
+			link.Sublinks[i] = sublink
+		}
+		links[i] = link
 	}
 
-	for _, group := range linkGroups {
-		for i, link := range group.Links {
-			if link.Icon != "" {
-				renderedIcon, ok := icons[string(link.Icon)]
-				if !ok {
-					return fmt.Errorf(
-						"icon '%s' not found in icon map for link '%s'",
-						link.Icon,
-						link.Text,
-					)
-				}
+	return nil
+}
 
-				link.Icon = template.HTML(renderedIcon.Icon)
-				group.Links[i] = link
-			} else if strings.HasPrefix(link.Link, "https://github.com") {
-				link.Icon = template.HTML(githubIcon.Icon)
-				group.Links[i] = link
-			} else if strings.HasPrefix(link.Link, "https://pkg.go.dev") {
-				link.Icon = template.HTML(gopherIcon.Icon)
-				group.Links[i] = link
+func populateLinkIcon(link *LinkItem, icons IconMap, knownIcons []IconConfig) error {
+	if link.Icon != "" {
+		renderedIcon, ok := icons[string(link.Icon)]
+		if !ok {
+			return fmt.Errorf(
+				"icon '%s' not found in icon map for link '%s'",
+				link.Icon,
+				link.LinkText,
+			)
+		}
+
+		link.Icon = template.HTML(renderedIcon.Icon)
+	} else {
+		for _, knownIcon := range knownIcons {
+			if strings.HasPrefix(link.Link, knownIcon.IconForLink) {
+				link.Icon = template.HTML(knownIcon.Icon)
 			}
 		}
 	}

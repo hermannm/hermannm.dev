@@ -5,11 +5,9 @@ tagLine: Color theme for VSCode and IntelliJ.
 logo:
   path: /img/logos/gruvbox-plain.png
   altText: Diagonal stripes with the gruvbox-plain color scheme
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/gruvbox-plain
-        link: https://github.com/hermannm/gruvbox-plain
+    link: https://github.com/hermannm/gruvbox-plain
 ---
 
 One of the things I enjoy is setting up my development environment to look just the way I like it.

@@ -146,10 +146,10 @@ func (personalInfo PersonalInfoMarkdown) toTemplateFields(icons IconMap) ([]Link
 	}
 
 	fields := []LinkItem{
-		{Text: fmt.Sprintf("%d years old", ageFromBirthday(birthday))},
-		{Text: personalInfo.Location},
-		{Text: "GitHub", Link: personalInfo.GitHubURL},
-		{Text: "LinkedIn", Link: personalInfo.LinkedInURL},
+		{LinkText: fmt.Sprintf("%d years old", ageFromBirthday(birthday))},
+		{LinkText: personalInfo.Location},
+		{LinkText: "GitHub", Link: personalInfo.GitHubURL},
+		{LinkText: "LinkedIn", Link: personalInfo.LinkedInURL},
 	}
 
 	for i, iconName := range [4]string{"person", "map-marker", "GitHub", "LinkedIn"} {

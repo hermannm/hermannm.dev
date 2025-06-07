@@ -12,11 +12,9 @@ techStack:
     usedFor: frontend
   - tech: WebRTC
   - tech: MQTT
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: dcs-team4/coffeetalk
-        link: https://github.com/dcs-team4/coffeetalk
+    link: https://github.com/dcs-team4/coffeetalk
 ---
 
 In the spring semester of 2022, I took the course _Design of Communicating Systems_ at NTNU. A part

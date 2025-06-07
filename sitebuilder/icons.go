@@ -9,10 +9,14 @@ import (
 	"hermannm.dev/wrap"
 )
 
-type IconMap map[string]*struct {
+type IconMap map[string]*IconConfig
+
+type IconConfig struct {
 	Icon                  string `validate:"required,filepath"`
 	Link                  string `validate:"omitempty,url"`
 	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
+	// Base URL of links that this icon should be used for.
+	IconForLink string `validate:"omitempty,url"`
 }
 
 func (renderer *PageRenderer) RenderIcons() (err error) {

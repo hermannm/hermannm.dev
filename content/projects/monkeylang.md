@@ -4,11 +4,9 @@ path: /monkeylang
 tagLine: Lexer for the Monkey programming language.
 techStack:
   - tech: Kotlin
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/monkeylang
-        link: https://github.com/hermannm/monkeylang
+    link: https://github.com/hermannm/monkeylang
 ---
 
 Kotlin implementation of the lexer for the [Monkey programming language](https://monkeylang.org/),

@@ -7,15 +7,11 @@ goPackage:
   githubURL: https://github.com/hermannm/set
 techStack:
   - tech: Go
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: hermannm/set
-        link: https://github.com/hermannm/set
+    link: https://github.com/hermannm/set
   - title: Docs
-    links:
-      - text: pkg.go.dev/hermannm.dev/set
-        link: https://pkg.go.dev/hermannm.dev/set
+    link: https://pkg.go.dev/hermannm.dev/set
 ---
 
 A Go package that provides generic Set data structures (collections of unique elements). It

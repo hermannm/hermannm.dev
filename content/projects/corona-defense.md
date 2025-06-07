@@ -12,13 +12,11 @@ techStack:
     usedFor: client-side
     usedWith:
       - libGDX
-linkGroups:
+links:
   - title: Code
-    links:
-      - text: swa-group1/corona-defense-client
-        link: https://github.com/swa-group1/corona-defense-client
-      - text: swa-group1/corona-defense-server
-        link: https://github.com/swa-group1/corona-defense-server
+    sublinks:
+      - link: https://github.com/swa-group1/corona-defense-client
+      - link: https://github.com/swa-group1/corona-defense-server
 ---
 
 In the spring semester of 2021, I took the course _Software Architecture_ at NTNU. The main part of
