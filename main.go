@@ -124,6 +124,10 @@ var (
 			IndexPageFallbackIcon: "content/icons/rust-alt.svg",
 			IconForLink:           "https://docs.rs",
 		},
+		"Cargo": {
+			Icon:        "content/icons/cargo.svg",
+			IconForLink: "https://crates.io",
+		},
 		"Kotlin": {
 			Icon:        "content/icons/kotlin.svg",
 			Link:        "https://kotlinlang.org/",
