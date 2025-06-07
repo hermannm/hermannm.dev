@@ -64,4 +64,4 @@ that makes it as easy as possible to attach structured data to logs, while keepi
 near-zero-cost at runtime. The implementation wraps the standard Java logging libraries _SLF4J_ and
 _Logback_, so that it can interoperate with logs from other libraries. We now use this library in
 many of our backend services at Liflig, and I'm quite happy with it! It's quite satisfying to make a
-library that exactly addresses frustrations you've been having.
+library that directly addresses frustrations you've been having.
