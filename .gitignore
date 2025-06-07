@@ -3,3 +3,4 @@ node_modules/
 static/**/*.html
 static/**/*.css
 static/sitemap.txt
+.DS_Store
