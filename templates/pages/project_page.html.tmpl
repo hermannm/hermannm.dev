@@ -47,22 +47,23 @@
 
         {{- .Project.Description -}}
 
+        {{ if ge (len .Project.Links) 1 }}
+          <ul class="flex list-none flex-col gap-3 pl-0">
+            {{- range $link := .Project.Links }}
+              <li class="flex flex-col gap-1">
+                {{- template "linkItem" $link.LinkItem -}}
 
-        <ul class="flex list-none flex-col gap-3 pl-0">
-          {{- range $link := .Project.Links }}
-            <li class="flex flex-col gap-1">
-              {{- template "linkItem" $link.LinkItem -}}
-
-              {{ if ge (len .Sublinks) 1 }}
-                <ul class="flex list-disc flex-col gap-1">
-                  {{ range $sublink := $link.Sublinks }}
-                    <li class="list-item">{{- template "linkItem" $sublink -}}</li>
-                  {{ end }}
-                </ul>
-              {{ end }}
-            </li>
-          {{- end -}}
-        </ul>
+                {{ if ge (len .Sublinks) 1 }}
+                  <ul class="flex list-disc flex-col gap-1">
+                    {{ range $sublink := $link.Sublinks }}
+                      <li class="list-item">{{- template "linkItem" $sublink -}}</li>
+                    {{ end }}
+                  </ul>
+                {{ end }}
+              </li>
+            {{- end -}}
+          </ul>
+        {{ end }}
 
         {{ if .Project.Footnote }}
           <em>{{ .Project.Footnote }}</em>
