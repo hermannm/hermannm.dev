@@ -38,8 +38,8 @@ links:
 _`devlog`_ is the name of a set of logging libraries that I've built for different programming
 languages. They all focus on developer-friendly structured logging, but they differ in their scope:
 
-- The Go and Rust implementations provide an alternate log output format for the standard structured
-  logging libraries, designed for use in local development.
+- The Go and Rust implementations provide an alternate log output format for their standard
+  structured logging libraries, designed for use in local development.
 - The Kotlin implementation is a more comprehensive library, providing a full-fledged logger API.
 
 The Go implementation was the first version of _`devlog`_. After working with Go in multiple
@@ -55,7 +55,7 @@ logging.
 Later, I started writing some Rust (see [`gadd`](/gadd)), and there too I found myself missing nicer
 log output formats. So I decided to write my own log subscriber for _`tracing`_, one of the most
 popular logging libraries for Rust, to use the same output format as my Go library. And so,
-<span class="whitespace-nowrap">_`devlog-tracing`_</span> was born.
+_`devlog-tracing`_ was born.
 
 Finally, after starting my job at [Liflig](/liflig), I started writing Kotlin for the backend. I
 found myself unhappy with the logging library we were using at the time, and so I decided to write
