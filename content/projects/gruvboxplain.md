@@ -1,7 +1,7 @@
 ---
 name: gruvbox-plain
 path: /gruvboxplain
-tagLine: Code editor theme.
+tagLine: Code editor color theme.
 logo:
   path: /img/logos/gruvbox-plain.png
   altText: Diagonal stripes with the gruvbox-plain color scheme
@@ -17,4 +17,4 @@ contrasts were still a bit too sharp for my taste, so I decided to make my own, 
 _`gruvbox-plain`_. Over the course of my programming projects, I've kept improving the theme's
 support for various languages, and even made two different variants!
 
-![The gruvbox-plain-cold theme in IntelliJ](/img/screenshots/gruvbox-plain.png)
+![Screenshot of gruvbox-plain-cold theme in IntelliJ](/img/screenshots/gruvbox-plain.png)
