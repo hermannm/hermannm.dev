@@ -17,4 +17,4 @@ contrasts were still a bit too sharp for my taste, so I decided to make my own, 
 _`gruvbox-plain`_. Over the course of my programming projects, I've kept improving the theme's
 support for various languages, and even made two different variants!
 
-![Screenshot of gruvbox-plain-cold theme in IntelliJ](/img/screenshots/gruvbox-plain.png)
+![The gruvbox-plain-cold theme in IntelliJ](/img/screenshots/gruvbox-plain.png)
