@@ -16,7 +16,7 @@ type IconConfig struct {
 	Link                  string `validate:"omitempty,url"`
 	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
 	// Base URL of links that this icon should be used for.
-	IconForLink string `validate:"omitempty,url"`
+	IconForLinks []string `validate:"omitempty,dive,url"`
 }
 
 func (renderer *PageRenderer) RenderIcons() (err error) {

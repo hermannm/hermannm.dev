@@ -272,7 +272,7 @@ func getTechIcon(
 func populateLinkTextAndIcons(links []TopLevelLink, icons IconMap) error {
 	var knownIcons []IconConfig
 	for _, iconConfig := range icons {
-		if iconConfig.IconForLink != "" {
+		if len(iconConfig.IconForLinks) > 0 {
 			knownIcons = append(knownIcons, *iconConfig)
 		}
 	}
@@ -309,9 +309,13 @@ func populateLinkIcon(link *LinkItem, icons IconMap, knownIcons []IconConfig) er
 
 		link.Icon = template.HTML(renderedIcon.Icon)
 	} else {
+	Outer:
 		for _, knownIcon := range knownIcons {
-			if strings.HasPrefix(link.Link, knownIcon.IconForLink) {
-				link.Icon = template.HTML(knownIcon.Icon)
+			for _, knownIconLink := range knownIcon.IconForLinks {
+				if strings.HasPrefix(link.Link, knownIconLink) {
+					link.Icon = template.HTML(knownIcon.Icon)
+					break Outer
+				}
 			}
 		}
 	}

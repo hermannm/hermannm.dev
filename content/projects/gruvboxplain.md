@@ -8,6 +8,10 @@ logo:
 links:
   - title: Code
     link: https://github.com/hermannm/gruvbox-plain
+  - title: IntelliJ plugin
+    link: https://plugins.jetbrains.com/plugin/27768-gruvbox-plain
+  - title: VSCode extension
+    link: https://marketplace.visualstudio.com/items?itemName=hermannm.gruvbox-plain
 ---
 
 One of the things I enjoy is setting up my development environment to look just the way I like it.

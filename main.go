@@ -103,15 +103,15 @@ var (
 			Icon: "content/icons/map-marker.svg",
 		},
 		"GitHub": {
-			Icon:        "content/icons/github.svg",
-			IconForLink: "https://github.com",
+			Icon:         "content/icons/github.svg",
+			IconForLinks: []string{"https://github.com"},
 		},
 		"LinkedIn": {
 			Icon: "content/icons/linkedin.svg",
 		},
 		"Gopher": {
-			Icon:        "content/icons/gopher.svg",
-			IconForLink: "https://pkg.go.dev",
+			Icon:         "content/icons/gopher.svg",
+			IconForLinks: []string{"https://pkg.go.dev"},
 		},
 		"Go": {
 			Icon:                  "content/icons/go.svg",
@@ -122,20 +122,20 @@ var (
 			Icon:                  "content/icons/rust.svg",
 			Link:                  "https://www.rust-lang.org/",
 			IndexPageFallbackIcon: "content/icons/rust-alt.svg",
-			IconForLink:           "https://docs.rs",
+			IconForLinks:          []string{"https://docs.rs"},
 		},
 		"Cargo": {
-			Icon:        "content/icons/cargo.svg",
-			IconForLink: "https://crates.io",
+			Icon:         "content/icons/cargo.svg",
+			IconForLinks: []string{"https://crates.io"},
 		},
 		"Kotlin": {
-			Icon:        "content/icons/kotlin.svg",
-			Link:        "https://kotlinlang.org/",
-			IconForLink: "https://devlog-kotlin.hermannm.dev",
+			Icon:         "content/icons/kotlin.svg",
+			Link:         "https://kotlinlang.org/",
+			IconForLinks: []string{"https://devlog-kotlin.hermannm.dev"},
 		},
 		"JetBrains": {
-			Icon:        "content/icons/jetbrains.svg",
-			IconForLink: "https://klibs.io",
+			Icon:         "content/icons/jetbrains.svg",
+			IconForLinks: []string{"https://klibs.io", "https://plugins.jetbrains.com"},
 		},
 		"Kotlin+Go+Rust": {
 			IndexPageFallbackIcon: "content/icons/kotlin-go-rust-combined.svg",
@@ -211,6 +211,10 @@ var (
 		"AWS CDK": {
 			Icon: "content/icons/aws.svg",
 			Link: "https://aws.amazon.com/cdk/",
+		},
+		"VSCode": {
+			Icon:         "content/icons/vscode.svg",
+			IconForLinks: []string{"https://marketplace.visualstudio.com"},
 		},
 	}
 )
