@@ -1,12 +1,13 @@
 package sitebuilder
 
 import (
+	"context"
 	"errors"
+	"hermannm.dev/wrap"
 	"html/template"
 	"os"
 
 	"golang.org/x/sync/errgroup"
-	"hermannm.dev/wrap"
 )
 
 type IconMap map[string]*IconConfig
@@ -19,31 +20,25 @@ type IconConfig struct {
 	IconForLinks []string `validate:"omitempty,dive,url"`
 }
 
-func (renderer *PageRenderer) RenderIcons() (err error) {
-	defer func() {
-		if err != nil {
-			renderer.cancel()
-		}
-	}()
-
-	var goroutines errgroup.Group
+func (renderer *PageRenderer) RenderIcons(ctx context.Context) error {
+	group, ctx := errgroup.WithContext(ctx)
 
 	for _, icon := range renderer.icons {
 		// Combined icons, such as "Go+Rust", only define IndexPageFallbackIcon
 		if icon.Icon != "" {
-			goroutines.Go(func() error {
+			group.Go(func() error {
 				return replaceIconWithSVG(&icon.Icon)
 			})
 		}
 
 		if icon.IndexPageFallbackIcon != "" {
-			goroutines.Go(func() error {
+			group.Go(func() error {
 				return replaceIconWithSVG(&icon.IndexPageFallbackIcon)
 			})
 		}
 	}
 
-	if err := goroutines.Wait(); err != nil {
+	if err := group.Wait(); err != nil {
 		return err
 	}
 
@@ -55,7 +50,7 @@ func (renderer *PageRenderer) RenderIcons() (err error) {
 
 	// Signals to other goroutines that icons have finished rendering
 	close(renderer.iconsRendered)
-	return
+	return nil
 }
 
 func replaceIconWithSVG(icon *string) error {

@@ -3,6 +3,7 @@ package sitebuilder
 import (
 	"bytes"
 	"errors"
+	"hermannm.dev/wrap"
 	"image"
 	_ "image/png"
 	"os"
@@ -12,10 +13,9 @@ import (
 	render "github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
-	"hermannm.dev/wrap"
 )
 
-// Custom markdown renderer which:
+// MarkdownRenderer is a markdown renderer which:
 //   - adds class="break-words" to all links, and target="_blank" to all external links
 //   - adds stand-alone images as <figure>, with alt text in a <figcaption>
 //

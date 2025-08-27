@@ -2,11 +2,12 @@ package sitebuilder
 
 import (
 	"bytes"
+	"context"
 	"fmt"
+	"hermannm.dev/wrap"
+	"hermannm.dev/wrap/ctxwrap"
 	"html/template"
 	"time"
-
-	"hermannm.dev/wrap"
 )
 
 type IndexPageBase struct {
@@ -54,16 +55,10 @@ type Image struct {
 	Height int    `yaml:"height" validate:"required"`
 }
 
-func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
-	defer func() {
-		if err != nil {
-			renderer.cancel()
-		}
-	}()
-
-	content, aboutMeText, err := parseIndexPageContent(contentPath)
+func (renderer *PageRenderer) RenderIndexPage(ctx context.Context, contentPath string) (err error) {
+	content, aboutMeText, err := parseIndexPageContent(ctx, contentPath)
 	if err != nil {
-		return wrap.Error(err, "failed to parse index page data")
+		return ctxwrap.Error(ctx, err, "failed to parse index page data")
 	}
 	content.Page.SetCanonicalURL(renderer.commonData.BaseURL)
 
@@ -73,14 +68,14 @@ func (renderer *PageRenderer) RenderIndexPage(contentPath string) (err error) {
 
 	// Waits for icons to finish rendering before using them
 	select {
-	case <-renderer.ctx.Done():
-		return renderer.ctx.Err()
+	case <-ctx.Done():
+		return ctx.Err()
 	case <-renderer.iconsRendered:
 	}
 
 	personalInfo, err := content.PersonalInfo.toTemplateFields(renderer.icons)
 	if err != nil {
-		return wrap.Error(err, "failed to parse personal info from index page content")
+		return ctxwrap.Error(ctx, err, "failed to parse personal info from index page content")
 	}
 
 ProjectLoop:
@@ -88,12 +83,12 @@ ProjectLoop:
 		select {
 		case project := <-renderer.parsedProjects:
 			if err = projectGroups.AddIfIncluded(project); err != nil {
-				return wrap.Errorf(err, "failed to add project '%s' to groups", project.Name)
+				return ctxwrap.Errorf(ctx, err, "failed to add project '%s' to groups", project.Name)
 			}
 			if projectGroups.IsFull() {
 				break ProjectLoop
 			}
-		case <-renderer.ctx.Done():
+		case <-ctx.Done():
 			return nil
 		}
 	}
@@ -114,24 +109,25 @@ ProjectLoop:
 		PersonalInfo:  personalInfo,
 		ProjectGroups: projectGroups.ToSlice(),
 	}
-	if err = renderer.renderPage(pageTemplate.Meta.Page, pageTemplate); err != nil {
-		return wrap.Error(err, "failed to render index page")
+	if err = renderer.renderPage(ctx, pageTemplate.Meta.Page, pageTemplate); err != nil {
+		return ctxwrap.Error(ctx, err, "failed to render index page")
 	}
 
 	return nil
 }
 
 func parseIndexPageContent(
+	ctx context.Context,
 	contentPath string,
 ) (content IndexPageMarkdown, aboutMeText template.HTML, err error) {
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)
-	if err := readMarkdownWithFrontmatter(path, aboutMeBuffer, &content); err != nil {
-		return IndexPageMarkdown{}, "", wrap.Error(err, "failed to read markdown for index page")
+	if err := readMarkdownWithFrontmatter(ctx, path, aboutMeBuffer, &content); err != nil {
+		return IndexPageMarkdown{}, "", ctxwrap.Error(ctx, err, "failed to read markdown for index page")
 	}
 
 	if err := validate.Struct(content); err != nil {
-		return IndexPageMarkdown{}, "", wrap.Error(err, "invalid index page metadata")
+		return IndexPageMarkdown{}, "", ctxwrap.Error(ctx, err, "invalid index page metadata")
 	}
 
 	aboutMeText = removeParagraphTagsAroundHTML(aboutMeBuffer.String())

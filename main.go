@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log/slog"
 	"os"
@@ -12,38 +13,42 @@ import (
 )
 
 func main() {
-	devlog.InitDefaultLogHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug})
+	log.SetDefault(devlog.NewHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug}))
+
+	ctx := context.Background()
 
 	args := parseCommandLineArgs()
 	if args.useDevServer {
 		if err := devserver.ServeAndRebuildOnChange(
+			ctx,
 			contentPaths,
 			inputCSSFileName,
 			args.devServerPort,
 		); err != nil {
-			log.ErrorCause(err, "Dev server stopped")
+			log.Error(ctx, err, "Dev server stopped")
 			os.Exit(1)
 		}
 	} else {
-		log.Info("Building website...")
+		log.Info(ctx, "Building website...")
 		if err := sitebuilder.RenderPages(
+			ctx,
 			contentPaths,
 			commonData,
 			icons,
 			args.invokedByDevServer,
 		); err != nil {
-			log.Error(err)
+			log.Error(ctx, err, "")
 			os.Exit(1)
 		}
-		if err := sitebuilder.FormatRenderedPages(); err != nil {
-			log.ErrorCause(err, "Failed to format rendered pages")
+		if err := sitebuilder.FormatRenderedPages(ctx); err != nil {
+			log.Error(ctx, err, "Failed to format rendered pages")
 			os.Exit(1)
 		}
-		if err := sitebuilder.GenerateTailwindCSS(inputCSSFileName); err != nil {
-			log.ErrorCause(err, "Failed to generate CSS for rendered pages")
+		if err := sitebuilder.GenerateTailwindCSS(ctx, inputCSSFileName); err != nil {
+			log.Error(ctx, err, "Failed to generate CSS for rendered pages")
 			os.Exit(1)
 		}
-		log.Info("Website built successfully!", "outputDirectory", "./"+sitebuilder.BaseOutputDir)
+		log.Info(ctx, "Website built successfully!", "outputDirectory", "./"+sitebuilder.BaseOutputDir)
 	}
 }
 

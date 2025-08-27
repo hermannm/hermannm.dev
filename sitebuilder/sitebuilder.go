@@ -5,6 +5,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"hermannm.dev/wrap"
+	"hermannm.dev/wrap/ctxwrap"
 	"html/template"
 	"io"
 	"io/fs"
@@ -16,11 +18,10 @@ import (
 	"github.com/adrg/frontmatter"
 	"github.com/go-playground/validator/v10"
 	"github.com/yuin/goldmark"
-	"github.com/yuin/goldmark/renderer"
+	markdownrenderer "github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
 	"golang.org/x/sync/errgroup"
-	"hermannm.dev/wrap"
 )
 
 const (
@@ -31,7 +32,7 @@ const (
 	ComponentTemplatesDir = "templates/components"
 )
 
-var validate *validator.Validate = validator.New()
+var validate = validator.New()
 
 type ContentPaths struct {
 	IndexPage   string
@@ -40,16 +41,17 @@ type ContentPaths struct {
 }
 
 func RenderPages(
+	ctx context.Context,
 	contentPaths ContentPaths,
 	commonData CommonPageData,
 	icons IconMap,
 	devMode bool,
 ) error {
 	if err := validate.Struct(commonData); err != nil {
-		return wrap.Errorf(err, "invalid common page data")
+		return ctxwrap.Errorf(ctx, err, "invalid common page data")
 	}
 
-	projectFiles, err := readProjectContentDirs(contentPaths.ProjectDirs)
+	projectFiles, err := readProjectContentDirs(ctx, contentPaths.ProjectDirs)
 	if err != nil {
 		return err
 	}
@@ -66,30 +68,33 @@ func RenderPages(
 		return err
 	}
 
-	var goroutines errgroup.Group
-	goroutines.Go(renderer.RenderIcons)
+	group, ctx := errgroup.WithContext(ctx)
+
+	group.Go(func() error {
+		return renderer.RenderIcons(ctx)
+	})
 
 	for _, projectFile := range projectFiles {
-		goroutines.Go(func() error {
-			return renderer.RenderProjectPage(projectFile)
+		group.Go(func() error {
+			return renderer.RenderProjectPage(ctx, projectFile)
 		})
 	}
 
-	goroutines.Go(func() error {
-		return renderer.RenderIndexPage(contentPaths.IndexPage)
+	group.Go(func() error {
+		return renderer.RenderIndexPage(ctx, contentPaths.IndexPage)
 	})
 
 	for _, basicPage := range contentPaths.BasicPages {
-		goroutines.Go(func() error {
-			return renderer.RenderBasicPage(basicPage)
+		group.Go(func() error {
+			return renderer.RenderBasicPage(ctx, basicPage)
 		})
 	}
 
-	goroutines.Go(func() error {
-		return renderer.BuildSitemap()
+	group.Go(func() error {
+		return renderer.BuildSitemap(ctx)
 	})
 
-	return goroutines.Wait()
+	return group.Wait()
 }
 
 type PageRenderer struct {
@@ -104,9 +109,6 @@ type PageRenderer struct {
 
 	icons         IconMap
 	iconsRendered chan struct{}
-
-	ctx    context.Context
-	cancel func()
 
 	devMode bool
 }
@@ -129,8 +131,6 @@ func NewPageRenderer(
 	pageCount := basicPageCount + projectCount + otherPagesCount
 	pagePaths := make(chan Page, pageCount)
 
-	ctx, cancel := context.WithCancel(context.Background())
-
 	return PageRenderer{
 		commonData:     commonData,
 		templates:      templates,
@@ -140,23 +140,21 @@ func NewPageRenderer(
 		pageCount:      pageCount,
 		icons:          icons,
 		iconsRendered:  make(chan struct{}),
-		ctx:            ctx,
-		cancel:         cancel,
 		devMode:        devMode,
 	}, nil
 }
 
-func FormatRenderedPages() error {
+func FormatRenderedPages(ctx context.Context) error {
 	patternToFormat := fmt.Sprintf("%s/**/*.html", BaseOutputDir)
-	return ExecCommand(false, "npx", "prettier", "--write", patternToFormat)
+	return ExecCommand(ctx, false, "npx", "prettier", "--write", patternToFormat)
 }
 
-func GenerateTailwindCSS(cssFileName string) error {
+func GenerateTailwindCSS(ctx context.Context, cssFileName string) error {
 	outputPath := fmt.Sprintf("%s/%s", BaseOutputDir, cssFileName)
-	return ExecCommand(false, "npx", "tailwindcss", "-i", cssFileName, "-o", outputPath, "--minify")
+	return ExecCommand(ctx, false, "npx", "tailwindcss", "-i", cssFileName, "-o", outputPath, "--minify")
 }
 
-func ExecCommand(printOutput bool, commandName string, args ...string) error {
+func ExecCommand(ctx context.Context, printOutput bool, commandName string, args ...string) error {
 	var displayName string
 	if commandName == "npx" && len(args) != 0 {
 		displayName = args[0]
@@ -164,11 +162,11 @@ func ExecCommand(printOutput bool, commandName string, args ...string) error {
 		displayName = commandName
 	}
 
-	command := exec.Command(commandName, args...)
+	command := exec.CommandContext(ctx, commandName, args...)
 
 	stderr, err := command.StderrPipe()
 	if err != nil {
-		return wrap.Errorf(err, "failed to get pipe to %s's error output", displayName)
+		return ctxwrap.Errorf(ctx, err, "failed to get pipe to %s's error output", displayName)
 	}
 
 	if printOutput {
@@ -177,7 +175,7 @@ func ExecCommand(printOutput bool, commandName string, args ...string) error {
 	}
 
 	if err := command.Start(); err != nil {
-		return wrap.Errorf(err, "failed to run %s", displayName)
+		return ctxwrap.Errorf(ctx, err, "failed to run %s", displayName)
 	}
 
 	errScanner := bufio.NewScanner(stderr)
@@ -194,7 +192,7 @@ func ExecCommand(printOutput bool, commandName string, args ...string) error {
 		if commandErrs.Len() == 0 {
 			return err
 		} else {
-			return wrap.Error(errors.New(commandErrs.String()), err.Error())
+			return ctxwrap.Error(ctx, errors.New(commandErrs.String()), err.Error())
 		}
 	}
 
@@ -221,7 +219,7 @@ func parseTemplates() (*template.Template, error) {
 
 const sitemapFileName = "sitemap.txt"
 
-func (renderer *PageRenderer) BuildSitemap() error {
+func (renderer *PageRenderer) BuildSitemap(ctx context.Context) error {
 	pageURLs := make([]string, 0, renderer.pageCount)
 	for i := 0; i < renderer.pageCount; i++ {
 		select {
@@ -236,7 +234,7 @@ func (renderer *PageRenderer) BuildSitemap() error {
 
 				pageURLs = append(pageURLs, url)
 			}
-		case <-renderer.ctx.Done():
+		case <-ctx.Done():
 			return nil
 		}
 	}
@@ -247,12 +245,12 @@ func (renderer *PageRenderer) BuildSitemap() error {
 
 	sitemapFile, err := os.Create(fmt.Sprintf("%s/%s", BaseOutputDir, sitemapFileName))
 	if err != nil {
-		return wrap.Error(err, "failed to create sitemap file")
+		return ctxwrap.Error(ctx, err, "failed to create sitemap file")
 	}
 	defer sitemapFile.Close()
 
 	if _, err := fmt.Fprintln(sitemapFile, sitemap); err != nil {
-		return wrap.Error(err, "failed to write to sitemap file")
+		return ctxwrap.Error(ctx, err, "failed to write to sitemap file")
 	}
 
 	return nil
@@ -284,27 +282,28 @@ type withPager interface {
 // For more info on how GitHub handles trailing slashes, see
 // https://github.com/slorber/trailing-slash-guide.
 func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
+	ctx context.Context,
 	page Page,
 	data withPager,
 ) error {
 	// If the page path ends with .html, then we only want to render it once.
 	if strings.HasSuffix(page.Path, ".html") {
-		return renderer.renderPage(page, data)
+		return renderer.renderPage(ctx, page, data)
 	}
 
 	if strings.HasSuffix(page.Path, "/") {
 		return fmt.Errorf("expected page path '%s' not to end with trailing slash", page.Path)
 	}
 
-	var goroutines errgroup.Group
+	group, ctx := errgroup.WithContext(ctx)
 
 	// Original page, without trailing slash
-	goroutines.Go(func() error {
-		return renderer.renderPage(page, data)
+	group.Go(func() error {
+		return renderer.renderPage(ctx, page, data)
 	})
 
 	// With trailing slash
-	goroutines.Go(func() error {
+	group.Go(func() error {
 		newPage := page
 		newPage.Path += "/"
 		// In production, we want to redirect pages with trailing slashes to pages without.
@@ -313,15 +312,15 @@ func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
 		if !renderer.devMode {
 			newPage.RedirectPath = page.Path
 		}
-		return renderer.renderPage(newPage, data.withPage(newPage))
+		return renderer.renderPage(ctx, newPage, data.withPage(newPage))
 	})
 
-	return goroutines.Wait()
+	return group.Wait()
 }
 
-func (renderer *PageRenderer) renderPage(page Page, data any) error {
+func (renderer *PageRenderer) renderPage(ctx context.Context, page Page, data any) error {
 	if page.CanonicalURL == "" {
-		return errors.New("Page.CanonicalURL must be set before rendering")
+		return ctxwrap.NewError(ctx, "Page.CanonicalURL must be set before rendering")
 	}
 
 	outputPath, err := getRenderOutputPath(page.Path)
@@ -331,14 +330,14 @@ func (renderer *PageRenderer) renderPage(page Page, data any) error {
 
 	outputFile, err := os.Create(outputPath)
 	if err != nil {
-		return wrap.Errorf(err, "failed to create template output file '%s'", outputPath)
+		return ctxwrap.Errorf(ctx, err, "failed to create template output file '%s'", outputPath)
 	}
 	defer outputFile.Close()
 
 	if err := renderer.templates.ExecuteTemplate(
 		outputFile, page.TemplateName, data,
 	); err != nil {
-		return wrap.Errorf(err, "failed to execute template '%s'", page.TemplateName)
+		return ctxwrap.Errorf(ctx, err, "failed to execute template '%s'", page.TemplateName)
 	}
 
 	return nil
@@ -383,23 +382,24 @@ func getRenderOutputPath(basePath string) (string, error) {
 }
 
 func readMarkdownWithFrontmatter(
+	ctx context.Context,
 	markdownFilePath string,
 	bodyDest io.Writer,
 	frontmatterDest any,
 ) error {
 	markdownFile, err := os.Open(markdownFilePath)
 	if err != nil {
-		return wrap.Errorf(err, "failed to open file '%s'", markdownFilePath)
+		return ctxwrap.Errorf(ctx, err, "failed to open file '%s'", markdownFilePath)
 	}
 	defer markdownFile.Close()
 
 	restOfFile, err := frontmatter.MustParse(markdownFile, frontmatterDest)
 	if err != nil {
-		return wrap.Errorf(err, "failed to parse markdown frontmatter of '%s'", markdownFilePath)
+		return ctxwrap.Errorf(ctx, err, "failed to parse markdown frontmatter of '%s'", markdownFilePath)
 	}
 
 	if err := newMarkdownParser().Convert(restOfFile, bodyDest); err != nil {
-		return wrap.Errorf(err, "failed to parse body of markdown file '%s'", markdownFilePath)
+		return ctxwrap.Errorf(ctx, err, "failed to parse body of markdown file '%s'", markdownFilePath)
 	}
 
 	return nil
@@ -408,7 +408,7 @@ func readMarkdownWithFrontmatter(
 func newMarkdownParser() goldmark.Markdown {
 	markdownOptions := goldmark.WithRendererOptions(
 		html.WithUnsafe(),
-		renderer.WithNodeRenderers(util.Prioritized(NewMarkdownRenderer(), 1)),
+		markdownrenderer.WithNodeRenderers(util.Prioritized(NewMarkdownRenderer(), 1)),
 	)
 
 	return goldmark.New(markdownOptions)

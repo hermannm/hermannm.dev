@@ -2,13 +2,13 @@ package sitebuilder
 
 import (
 	"bytes"
+	"context"
 	"fmt"
+	"hermannm.dev/wrap/ctxwrap"
 	"html/template"
 	"io/fs"
 	"os"
 	"strings"
-
-	"hermannm.dev/wrap"
 )
 
 type ProjectProfile struct {
@@ -76,16 +76,10 @@ type ProjectContentFile struct {
 	directory string
 }
 
-func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) (err error) {
-	defer func() {
-		if err != nil {
-			renderer.cancel()
-		}
-	}()
-
-	var project ParsedProject
-	if project, err = renderer.parseProject(projectFile); err != nil {
-		return wrap.Errorf(err, "failed to parse project '%s'", projectFile.name)
+func (renderer *PageRenderer) RenderProjectPage(ctx context.Context, projectFile ProjectContentFile) error {
+	project, err := renderer.parseProject(ctx, projectFile)
+	if err != nil {
+		return ctxwrap.Errorf(ctx, err, "failed to parse project '%s'", projectFile.name)
 	}
 
 	renderer.parsedPages <- project.Page
@@ -99,24 +93,25 @@ func (renderer *PageRenderer) RenderProjectPage(projectFile ProjectContentFile) 
 		Project: project.ProjectTemplate,
 	}
 
-	if err = renderer.renderPageWithAndWithoutTrailingSlash(
+	if err := renderer.renderPageWithAndWithoutTrailingSlash(
+		ctx,
 		projectPage.Meta.Page,
 		projectPage,
 	); err != nil {
-		return wrap.Errorf(err, "failed to render page for project '%s'", project.Name)
+		return ctxwrap.Errorf(ctx, err, "failed to render page for project '%s'", project.Name)
 	}
 
 	return nil
 }
 
-func readProjectContentDirs(contentDirNames []string) ([]ProjectContentFile, error) {
+func readProjectContentDirs(ctx context.Context, contentDirNames []string) ([]ProjectContentFile, error) {
 	var files []ProjectContentFile
 	baseContentDir := os.DirFS(BaseContentDir)
 
 	for _, dirName := range contentDirNames {
 		entries, err := fs.ReadDir(baseContentDir, dirName)
 		if err != nil {
-			return nil, wrap.Errorf(err, "failed to read project content directory '%s'", dirName)
+			return nil, ctxwrap.Errorf(ctx, err, "failed to read project content directory '%s'", dirName)
 		}
 
 		for _, dirEntry := range entries {
@@ -135,15 +130,15 @@ const (
 	DefaultTechStackTitle   = "Built with"
 )
 
-func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (ParsedProject, error) {
+func (renderer *PageRenderer) parseProject(ctx context.Context, projectFile ProjectContentFile) (ParsedProject, error) {
 	markdownFilePath := fmt.Sprintf(
 		"%s/%s/%s", BaseContentDir, projectFile.directory, projectFile.name,
 	)
 
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
-	if err := readMarkdownWithFrontmatter(markdownFilePath, descriptionBuffer, &project); err != nil {
-		return ParsedProject{}, wrap.Error(err, "failed to read markdown for project")
+	if err := readMarkdownWithFrontmatter(ctx, markdownFilePath, descriptionBuffer, &project); err != nil {
+		return ParsedProject{}, ctxwrap.Error(ctx, err, "failed to read markdown for project")
 	}
 
 	project.Page.Title = fmt.Sprintf("%s%s", renderer.commonData.SiteName, project.Page.Path)
@@ -154,13 +149,13 @@ func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (Pars
 	}
 
 	if err := validate.Struct(project); err != nil {
-		return ParsedProject{}, wrap.Error(err, "invalid project metadata")
+		return ParsedProject{}, ctxwrap.Error(ctx, err, "invalid project metadata")
 	}
 
 	if project.Footnote != "" {
 		var builder strings.Builder
 		if err := newMarkdownParser().Convert([]byte(project.Footnote), &builder); err != nil {
-			return ParsedProject{}, wrap.Errorf(
+			return ParsedProject{}, ctxwrap.Errorf(ctx,
 				err,
 				"failed to parse footnote for project '%s' as markdown",
 				project.Name,
@@ -171,18 +166,18 @@ func (renderer *PageRenderer) parseProject(projectFile ProjectContentFile) (Pars
 
 	// Waits for icons to finish rendering before using them
 	select {
-	case <-renderer.ctx.Done():
-		return ParsedProject{}, renderer.ctx.Err()
+	case <-ctx.Done():
+		return ParsedProject{}, ctx.Err()
 	case <-renderer.iconsRendered:
 	}
 
 	if err := populateLinkTextAndIcons(project.Links, renderer.icons); err != nil {
-		return ParsedProject{}, wrap.Error(err, "failed to set link icons")
+		return ParsedProject{}, ctxwrap.Error(ctx, err, "failed to set link icons")
 	}
 
 	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, renderer.icons)
 	if err != nil {
-		return ParsedProject{}, wrap.Errorf(
+		return ParsedProject{}, ctxwrap.Errorf(ctx,
 			err,
 			"failed to parse tech stack for project '%s'",
 			project.Name,
