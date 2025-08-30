@@ -40,9 +40,10 @@ projectGroups:
     contentDir: libraries
     projectPaths:
       - /devlog
-      - /condqueue
       - /wrap
+      - /condqueue
       - /opt
+      - /errclose
       - /enumnames
       - /set
       - /ipfinder
