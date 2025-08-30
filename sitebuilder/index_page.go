@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"hermannm.dev/wrap"
-	"hermannm.dev/wrap/ctxwrap"
 	"html/template"
 	"time"
+
+	"hermannm.dev/wrap"
+	"hermannm.dev/wrap/ctxwrap"
 )
 
 type IndexPageBase struct {
@@ -16,8 +17,8 @@ type IndexPageBase struct {
 }
 
 type IndexPageMarkdown struct {
-	IndexPageBase `                       yaml:",inline"`
-	Page          `                       yaml:",inline"`
+	IndexPageBase `yaml:",inline"`
+	Page          `yaml:",inline"`
 	PersonalInfo  PersonalInfoMarkdown   `yaml:"personalInfo"`
 	ProjectGroups []ProjectGroupMarkdown `yaml:"projectGroups,flow" validate:"required,dive"`
 }
@@ -79,11 +80,16 @@ func (renderer *PageRenderer) RenderIndexPage(ctx context.Context, contentPath s
 	}
 
 ProjectLoop:
-	for i := 0; i < renderer.projectCount; i++ {
+	for range renderer.projectCount {
 		select {
 		case project := <-renderer.parsedProjects:
 			if err = projectGroups.AddIfIncluded(project); err != nil {
-				return ctxwrap.Errorf(ctx, err, "failed to add project '%s' to groups", project.Name)
+				return ctxwrap.Errorf(
+					ctx,
+					err,
+					"failed to add project '%s' to groups",
+					project.Name,
+				)
 			}
 			if projectGroups.IsFull() {
 				break ProjectLoop
@@ -123,7 +129,11 @@ func parseIndexPageContent(
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)
 	if err := readMarkdownWithFrontmatter(ctx, path, aboutMeBuffer, &content); err != nil {
-		return IndexPageMarkdown{}, "", ctxwrap.Error(ctx, err, "failed to read markdown for index page")
+		return IndexPageMarkdown{}, "", ctxwrap.Error(
+			ctx,
+			err,
+			"failed to read markdown for index page",
+		)
 	}
 
 	if err := validate.Struct(content); err != nil {
@@ -141,6 +151,7 @@ func (personalInfo PersonalInfoMarkdown) toTemplateFields(icons IconMap) ([]Link
 		return nil, wrap.Errorf(err, "failed to parse birthday field '%s'", personalInfo.Birthday)
 	}
 
+	//nolint:exhaustruct
 	fields := []LinkItem{
 		{LinkText: fmt.Sprintf("%d years old", ageFromBirthday(birthday))},
 		{LinkText: personalInfo.Location},

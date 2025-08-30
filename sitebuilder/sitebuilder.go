@@ -5,8 +5,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"hermannm.dev/wrap"
-	"hermannm.dev/wrap/ctxwrap"
 	"html/template"
 	"io"
 	"io/fs"
@@ -14,6 +12,9 @@ import (
 	"os/exec"
 	"slices"
 	"strings"
+
+	"hermannm.dev/wrap"
+	"hermannm.dev/wrap/ctxwrap"
 
 	"github.com/adrg/frontmatter"
 	"github.com/go-playground/validator/v10"
@@ -70,29 +71,35 @@ func RenderPages(
 
 	group, ctx := errgroup.WithContext(ctx)
 
-	group.Go(func() error {
-		return renderer.RenderIcons(ctx)
-	})
+	group.Go(renderer.RenderIcons)
 
 	for _, projectFile := range projectFiles {
-		group.Go(func() error {
-			return renderer.RenderProjectPage(ctx, projectFile)
-		})
+		group.Go(
+			func() error {
+				return renderer.RenderProjectPage(ctx, projectFile)
+			},
+		)
 	}
 
-	group.Go(func() error {
-		return renderer.RenderIndexPage(ctx, contentPaths.IndexPage)
-	})
+	group.Go(
+		func() error {
+			return renderer.RenderIndexPage(ctx, contentPaths.IndexPage)
+		},
+	)
 
 	for _, basicPage := range contentPaths.BasicPages {
-		group.Go(func() error {
-			return renderer.RenderBasicPage(ctx, basicPage)
-		})
+		group.Go(
+			func() error {
+				return renderer.RenderBasicPage(ctx, basicPage)
+			},
+		)
 	}
 
-	group.Go(func() error {
-		return renderer.BuildSitemap(ctx)
-	})
+	group.Go(
+		func() error {
+			return renderer.BuildSitemap(ctx)
+		},
+	)
 
 	return group.Wait()
 }
@@ -151,7 +158,17 @@ func FormatRenderedPages(ctx context.Context) error {
 
 func GenerateTailwindCSS(ctx context.Context, cssFileName string) error {
 	outputPath := fmt.Sprintf("%s/%s", BaseOutputDir, cssFileName)
-	return ExecCommand(ctx, false, "npx", "tailwindcss", "-i", cssFileName, "-o", outputPath, "--minify")
+	return ExecCommand(
+		ctx,
+		false,
+		"npx",
+		"tailwindcss",
+		"-i",
+		cssFileName,
+		"-o",
+		outputPath,
+		"--minify",
+	)
 }
 
 func ExecCommand(ctx context.Context, printOutput bool, commandName string, args ...string) error {
@@ -221,7 +238,7 @@ const sitemapFileName = "sitemap.txt"
 
 func (renderer *PageRenderer) BuildSitemap(ctx context.Context) error {
 	pageURLs := make([]string, 0, renderer.pageCount)
-	for i := 0; i < renderer.pageCount; i++ {
+	for range renderer.pageCount {
 		select {
 		case page := <-renderer.parsedPages:
 			if page.Path != "/404.html" && page.RedirectPath == "" {
@@ -298,22 +315,26 @@ func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
 	group, ctx := errgroup.WithContext(ctx)
 
 	// Original page, without trailing slash
-	group.Go(func() error {
-		return renderer.renderPage(ctx, page, data)
-	})
+	group.Go(
+		func() error {
+			return renderer.renderPage(ctx, page, data)
+		},
+	)
 
 	// With trailing slash
-	group.Go(func() error {
-		newPage := page
-		newPage.Path += "/"
-		// In production, we want to redirect pages with trailing slashes to pages without.
-		// But in dev, we use the live-server npm package for the dev server, which only works with
-		// trailing slashes. So we disable redirect if we're in dev mode.
-		if !renderer.devMode {
-			newPage.RedirectPath = page.Path
-		}
-		return renderer.renderPage(ctx, newPage, data.withPage(newPage))
-	})
+	group.Go(
+		func() error {
+			newPage := page
+			newPage.Path += "/"
+			// In production, we want to redirect pages with trailing slashes to pages without. But
+			// in dev, we use the live-server npm package for the dev server, which only works with
+			// trailing slashes. So we disable redirect if we're in dev mode.
+			if !renderer.devMode {
+				newPage.RedirectPath = page.Path
+			}
+			return renderer.renderPage(ctx, newPage, data.withPage(newPage))
+		},
+	)
 
 	return group.Wait()
 }
@@ -395,11 +416,21 @@ func readMarkdownWithFrontmatter(
 
 	restOfFile, err := frontmatter.MustParse(markdownFile, frontmatterDest)
 	if err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to parse markdown frontmatter of '%s'", markdownFilePath)
+		return ctxwrap.Errorf(
+			ctx,
+			err,
+			"failed to parse markdown frontmatter of '%s'",
+			markdownFilePath,
+		)
 	}
 
 	if err := newMarkdownParser().Convert(restOfFile, bodyDest); err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to parse body of markdown file '%s'", markdownFilePath)
+		return ctxwrap.Errorf(
+			ctx,
+			err,
+			"failed to parse body of markdown file '%s'",
+			markdownFilePath,
+		)
 	}
 
 	return nil

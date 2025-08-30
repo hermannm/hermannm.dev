@@ -8,6 +8,7 @@ import (
 
 	"hermannm.dev/devlog"
 	"hermannm.dev/devlog/log"
+
 	"hermannm.dev/personal-website/devserver"
 	"hermannm.dev/personal-website/sitebuilder"
 )
@@ -48,7 +49,12 @@ func main() {
 			log.Error(ctx, err, "Failed to generate CSS for rendered pages")
 			os.Exit(1)
 		}
-		log.Info(ctx, "Website built successfully!", "outputDirectory", "./"+sitebuilder.BaseOutputDir)
+		log.Info(
+			ctx,
+			"Website built successfully!",
+			"outputDirectory",
+			"./"+sitebuilder.BaseOutputDir,
+		)
 	}
 }
 

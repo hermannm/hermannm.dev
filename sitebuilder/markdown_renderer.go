@@ -3,11 +3,13 @@ package sitebuilder
 import (
 	"bytes"
 	"errors"
-	"hermannm.dev/wrap"
+	"fmt"
 	"image"
 	_ "image/png"
 	"os"
 	"strconv"
+
+	"hermannm.dev/wrap"
 
 	"github.com/yuin/goldmark/ast"
 	render "github.com/yuin/goldmark/renderer"
@@ -43,13 +45,17 @@ func (renderer MarkdownRenderer) RegisterFuncs(registerer render.NodeRendererFun
 	registerer.Register(ast.KindImage, renderer.RenderImage)
 }
 
+//goland:noinspection GoUnusedParameter
 func (renderer MarkdownRenderer) RenderLink(
 	writer util.BufWriter,
 	source []byte,
 	node ast.Node,
 	entering bool,
 ) (ast.WalkStatus, error) {
-	link := node.(*ast.Link)
+	link, ok := node.(*ast.Link)
+	if !ok {
+		return ast.WalkStop, fmt.Errorf("node was not ast.Link: %v", node)
+	}
 
 	link.SetAttribute([]byte("class"), []byte("break-words"))
 	if bytes.HasPrefix(link.Destination, []byte("http")) {
@@ -57,27 +63,28 @@ func (renderer MarkdownRenderer) RenderLink(
 	}
 
 	if entering {
-		writer.WriteString(`<a href="`)
+		_, _ = writer.WriteString(`<a href="`)
 		if renderer.Unsafe || !html.IsDangerousURL(link.Destination) {
-			writer.Write(util.EscapeHTML(util.URLEscape(link.Destination, true)))
+			_, _ = writer.Write(util.EscapeHTML(util.URLEscape(link.Destination, true)))
 		}
-		writer.WriteByte('"')
+		_ = writer.WriteByte('"')
 		if link.Title != nil {
-			writer.WriteString(` title="`)
+			_, _ = writer.WriteString(` title="`)
 			renderer.Writer.Write(writer, link.Title)
-			writer.WriteByte('"')
+			_ = writer.WriteByte('"')
 		}
 		if link.Attributes() != nil {
 			html.RenderAttributes(writer, link, html.LinkAttributeFilter)
 		}
-		writer.WriteByte('>')
+		_ = writer.WriteByte('>')
 	} else {
-		writer.WriteString("</a>")
+		_, _ = writer.WriteString("</a>")
 	}
 
 	return ast.WalkContinue, nil
 }
 
+//goland:noinspection GoUnusedParameter
 func (renderer MarkdownRenderer) RenderParagraph(
 	writer util.BufWriter,
 	source []byte,
@@ -86,19 +93,19 @@ func (renderer MarkdownRenderer) RenderParagraph(
 ) (ast.WalkStatus, error) {
 	if entering {
 		if node.ChildCount() == 1 && node.FirstChild().Kind() == ast.KindImage {
-			writer.WriteString(`<figure class="flex flex-col gap-2 items-center">`)
+			_, _ = writer.WriteString(`<figure class="flex flex-col gap-2 items-center">`)
 		} else if node.Attributes() != nil {
-			writer.WriteString("<p")
+			_, _ = writer.WriteString("<p")
 			html.RenderAttributes(writer, node, html.ParagraphAttributeFilter)
-			writer.WriteByte('>')
+			_ = writer.WriteByte('>')
 		} else {
-			writer.WriteString("<p>")
+			_, _ = writer.WriteString("<p>")
 		}
 	} else {
 		if node.ChildCount() == 1 && node.FirstChild().Kind() == ast.KindImage {
-			writer.WriteString("</figure>\n")
+			_, _ = writer.WriteString("</figure>\n")
 		} else {
-			writer.WriteString("</p>\n")
+			_, _ = writer.WriteString("</p>\n")
 		}
 	}
 
@@ -115,69 +122,72 @@ func (renderer MarkdownRenderer) RenderImage(
 		return ast.WalkContinue, nil
 	}
 
-	image := node.(*ast.Image)
+	img, ok := node.(*ast.Image)
+	if !ok {
+		return ast.WalkStop, fmt.Errorf("node was not ast.Image: %v", node)
+	}
 
-	image.SetAttribute(
+	img.SetAttribute(
 		[]byte("class"),
 		[]byte("rounded-lg border-2 border-solid border-gruvbox-bg2"),
 	)
 
-	if !renderer.Unsafe && html.IsDangerousURL(image.Destination) {
+	if !renderer.Unsafe && html.IsDangerousURL(img.Destination) {
 		return ast.WalkContinue, nil
 	}
 
-	destination := util.EscapeHTML(util.URLEscape(image.Destination, true))
+	destination := util.EscapeHTML(util.URLEscape(img.Destination, true))
 
 	width, height, err := getImageDimensions(BaseOutputDir + string(destination))
 	if err != nil {
 		return ast.WalkStop, wrap.Errorf(
 			err,
-			"failed to get dimensions for image '%s'",
+			"failed to get dimensions for img '%s'",
 			string(destination),
 		)
 	}
 
-	writer.WriteString(`<a href="`)
-	writer.Write(destination)
-	writer.WriteString(`">`)
+	_, _ = writer.WriteString(`<a href="`)
+	_, _ = writer.Write(destination)
+	_, _ = writer.WriteString(`">`)
 
-	writer.WriteString(`<img src="`)
-	writer.Write(destination)
+	_, _ = writer.WriteString(`<img src="`)
+	_, _ = writer.Write(destination)
 
-	writer.WriteString(`" width="`)
-	writer.WriteString(strconv.Itoa(width))
-	writer.WriteString(`" height="`)
-	writer.WriteString(strconv.Itoa(height))
+	_, _ = writer.WriteString(`" width="`)
+	_, _ = writer.WriteString(strconv.Itoa(width))
+	_, _ = writer.WriteString(`" height="`)
+	_, _ = writer.WriteString(strconv.Itoa(height))
 
 	// Set empty alt attribute, since we set figcaption below
 	// Rationale: https://stackoverflow.com/a/58468470
-	writer.WriteString(`" alt=""`)
+	_, _ = writer.WriteString(`" alt=""`)
 
-	if image.Title != nil {
-		writer.WriteString(` title="`)
-		renderer.Writer.Write(writer, image.Title)
-		writer.WriteByte('"')
+	if img.Title != nil {
+		_, _ = writer.WriteString(` title="`)
+		renderer.Writer.Write(writer, img.Title)
+		_ = writer.WriteByte('"')
 	}
 
-	if image.Attributes() != nil {
-		html.RenderAttributes(writer, image, html.ImageAttributeFilter)
+	if img.Attributes() != nil {
+		html.RenderAttributes(writer, img, html.ImageAttributeFilter)
 	}
 
 	if renderer.XHTML {
-		writer.WriteString(" />")
+		_, _ = writer.WriteString(" />")
 	} else {
-		writer.WriteString(">")
+		_, _ = writer.WriteString(">")
 	}
-	writer.WriteString("</a>")
+	_, _ = writer.WriteString("</a>")
 
-	altText := nodeToHTMLText(image, source)
+	altText := nodeToHTMLText(img, source)
 	if len(altText) == 0 {
-		return ast.WalkStop, errors.New("missing alt text for image")
+		return ast.WalkStop, errors.New("missing alt text for img")
 	}
 
-	writer.WriteString(`<figcaption class="italic text-center mb-1">`)
-	writer.Write(altText)
-	writer.WriteString("</p>")
+	_, _ = writer.WriteString(`<figcaption class="italic text-center mb-1">`)
+	_, _ = writer.Write(altText)
+	_, _ = writer.WriteString("</p>")
 
 	return ast.WalkSkipChildren, nil
 }
@@ -186,9 +196,9 @@ func nodeToHTMLText(n ast.Node, source []byte) []byte {
 	var buf bytes.Buffer
 	for c := n.FirstChild(); c != nil; c = c.NextSibling() {
 		if s, ok := c.(*ast.String); ok && s.IsCode() {
-			buf.Write(s.Text(source))
-		} else if !c.HasChildren() {
-			buf.Write(util.EscapeHTML(c.Text(source)))
+			buf.Write(s.Value)
+		} else if t, ok := c.(*ast.Text); ok {
+			buf.Write(util.EscapeHTML(t.Value(source)))
 		} else {
 			buf.Write(nodeToHTMLText(c, source))
 		}

@@ -10,8 +10,8 @@ type LinkItem struct {
 	// Text to display for the link. Optional - defaults to Link but with https:// stripped, or
 	// https://github.com/ stripped if it's a GitHub link.
 	LinkText string        `yaml:"linkText"`
-	Link     string        `yaml:"link" validate:"omitempty,url"`
-	Icon     template.HTML `yaml:"icon" validate:"omitempty,filepath"`
+	Link     string        `yaml:"link"     validate:"omitempty,url"`
+	Icon     template.HTML `yaml:"icon"     validate:"omitempty,filepath"`
 	// We use this in our HTML templates to not use bold text for sublink titles.
 	IsSublink bool `yaml:"-"`
 }

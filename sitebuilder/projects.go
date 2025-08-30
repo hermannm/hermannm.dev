@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"hermannm.dev/wrap/ctxwrap"
 	"html/template"
 	"io/fs"
 	"os"
 	"strings"
+
+	"hermannm.dev/wrap/ctxwrap"
 )
 
 type ProjectProfile struct {
@@ -17,7 +18,7 @@ type ProjectProfile struct {
 	TagLine string `yaml:"tagLine" validate:"required"`
 	// Optional if not included in index page.
 	Logo struct {
-		Path    string `yaml:"path" validate:"omitempty,filepath"`
+		Path    string `yaml:"path"    validate:"omitempty,filepath"`
 		AltText string `yaml:"altText"`
 	} `yaml:"logo"`
 	IndexPageFallbackIcon template.HTML
@@ -38,7 +39,7 @@ type TopLevelLink struct {
 }
 
 type ProjectMarkdown struct {
-	ProjectBase `                        yaml:",inline"`
+	ProjectBase `yaml:",inline"`
 	TechStack   []TechStackItemMarkdown `yaml:"techStack,flow"` // Optional.
 }
 
@@ -76,7 +77,10 @@ type ProjectContentFile struct {
 	directory string
 }
 
-func (renderer *PageRenderer) RenderProjectPage(ctx context.Context, projectFile ProjectContentFile) error {
+func (renderer *PageRenderer) RenderProjectPage(
+	ctx context.Context,
+	projectFile ProjectContentFile,
+) error {
 	project, err := renderer.parseProject(ctx, projectFile)
 	if err != nil {
 		return ctxwrap.Errorf(ctx, err, "failed to parse project '%s'", projectFile.name)
@@ -104,14 +108,22 @@ func (renderer *PageRenderer) RenderProjectPage(ctx context.Context, projectFile
 	return nil
 }
 
-func readProjectContentDirs(ctx context.Context, contentDirNames []string) ([]ProjectContentFile, error) {
+func readProjectContentDirs(ctx context.Context, contentDirNames []string) (
+	[]ProjectContentFile,
+	error,
+) {
 	var files []ProjectContentFile
 	baseContentDir := os.DirFS(BaseContentDir)
 
 	for _, dirName := range contentDirNames {
 		entries, err := fs.ReadDir(baseContentDir, dirName)
 		if err != nil {
-			return nil, ctxwrap.Errorf(ctx, err, "failed to read project content directory '%s'", dirName)
+			return nil, ctxwrap.Errorf(
+				ctx,
+				err,
+				"failed to read project content directory '%s'",
+				dirName,
+			)
 		}
 
 		for _, dirEntry := range entries {
@@ -130,14 +142,22 @@ const (
 	DefaultTechStackTitle   = "Built with"
 )
 
-func (renderer *PageRenderer) parseProject(ctx context.Context, projectFile ProjectContentFile) (ParsedProject, error) {
+func (renderer *PageRenderer) parseProject(
+	ctx context.Context,
+	projectFile ProjectContentFile,
+) (ParsedProject, error) {
 	markdownFilePath := fmt.Sprintf(
 		"%s/%s/%s", BaseContentDir, projectFile.directory, projectFile.name,
 	)
 
 	descriptionBuffer := new(bytes.Buffer)
 	var project ProjectMarkdown
-	if err := readMarkdownWithFrontmatter(ctx, markdownFilePath, descriptionBuffer, &project); err != nil {
+	if err := readMarkdownWithFrontmatter(
+		ctx,
+		markdownFilePath,
+		descriptionBuffer,
+		&project,
+	); err != nil {
 		return ParsedProject{}, ctxwrap.Error(ctx, err, "failed to read markdown for project")
 	}
 
@@ -155,7 +175,8 @@ func (renderer *PageRenderer) parseProject(ctx context.Context, projectFile Proj
 	if project.Footnote != "" {
 		var builder strings.Builder
 		if err := newMarkdownParser().Convert([]byte(project.Footnote), &builder); err != nil {
-			return ParsedProject{}, ctxwrap.Errorf(ctx,
+			return ParsedProject{}, ctxwrap.Errorf(
+				ctx,
 				err,
 				"failed to parse footnote for project '%s' as markdown",
 				project.Name,
@@ -177,7 +198,8 @@ func (renderer *PageRenderer) parseProject(ctx context.Context, projectFile Proj
 
 	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, renderer.icons)
 	if err != nil {
-		return ParsedProject{}, ctxwrap.Errorf(ctx,
+		return ParsedProject{}, ctxwrap.Errorf(
+			ctx,
 			err,
 			"failed to parse tech stack for project '%s'",
 			project.Name,
@@ -257,6 +279,7 @@ func getTechIcon(
 		)
 	}
 
+	//nolint:exhaustruct
 	return LinkItem{
 		LinkText: techName,
 		Link:     techIcon.Link,

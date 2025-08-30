@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"hermannm.dev/wrap/ctxwrap"
 	"html/template"
+
+	"hermannm.dev/wrap/ctxwrap"
 )
 
 const BasicPageTemplateName = "basic_page.html.tmpl"
