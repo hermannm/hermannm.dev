@@ -13,6 +13,7 @@ import (
 	"slices"
 	"strings"
 
+	"hermannm.dev/errclose"
 	"hermannm.dev/wrap"
 	"hermannm.dev/wrap/ctxwrap"
 
@@ -236,7 +237,7 @@ func parseTemplates() (*template.Template, error) {
 
 const sitemapFileName = "sitemap.txt"
 
-func (renderer *PageRenderer) BuildSitemap(ctx context.Context) error {
+func (renderer *PageRenderer) BuildSitemap(ctx context.Context) (returnedErr error) {
 	pageURLs := make([]string, 0, renderer.pageCount)
 	for range renderer.pageCount {
 		select {
@@ -264,7 +265,7 @@ func (renderer *PageRenderer) BuildSitemap(ctx context.Context) error {
 	if err != nil {
 		return ctxwrap.Error(ctx, err, "failed to create sitemap file")
 	}
-	defer sitemapFile.Close()
+	defer errclose.Close(sitemapFile, &returnedErr, "sitemap file")
 
 	if _, err := fmt.Fprintln(sitemapFile, sitemap); err != nil {
 		return ctxwrap.Error(ctx, err, "failed to write to sitemap file")
@@ -339,7 +340,11 @@ func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
 	return group.Wait()
 }
 
-func (renderer *PageRenderer) renderPage(ctx context.Context, page Page, data any) error {
+func (renderer *PageRenderer) renderPage(
+	ctx context.Context,
+	page Page,
+	data any,
+) (returnedErr error) {
 	if page.CanonicalURL == "" {
 		return ctxwrap.NewError(ctx, "Page.CanonicalURL must be set before rendering")
 	}
@@ -353,7 +358,7 @@ func (renderer *PageRenderer) renderPage(ctx context.Context, page Page, data an
 	if err != nil {
 		return ctxwrap.Errorf(ctx, err, "failed to create template output file '%s'", outputPath)
 	}
-	defer outputFile.Close()
+	defer errclose.Closef(outputFile, &returnedErr, "template output file %s", outputPath)
 
 	if err := renderer.templates.ExecuteTemplate(
 		outputFile, page.TemplateName, data,
@@ -407,12 +412,12 @@ func readMarkdownWithFrontmatter(
 	markdownFilePath string,
 	bodyDest io.Writer,
 	frontmatterDest any,
-) error {
+) (returnedErr error) {
 	markdownFile, err := os.Open(markdownFilePath)
 	if err != nil {
 		return ctxwrap.Errorf(ctx, err, "failed to open file '%s'", markdownFilePath)
 	}
-	defer markdownFile.Close()
+	defer errclose.Closef(markdownFile, &returnedErr, "file '%s'", markdownFilePath)
 
 	restOfFile, err := frontmatter.MustParse(markdownFile, frontmatterDest)
 	if err != nil {

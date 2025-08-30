@@ -77,5 +77,7 @@ gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 hermannm.dev/devlog v0.6.0 h1:zCrbqxVoHqjoD/45wxYTqSViwWgXoueEWZLYL6TWnbM=
 hermannm.dev/devlog v0.6.0/go.mod h1:gtP4RIgFZ89JP0QASWQqZjOKgpcQNG0JolwmbbIPa2M=
+hermannm.dev/errclose v0.1.1 h1:0yoQ9bfYZY5jrahNEz0i15lEzXtesMaxNx0SsJeR5xc=
+hermannm.dev/errclose v0.1.1/go.mod h1:d37zQVc6Cw438AaKn1s5b29HjeTMBIAjBXcRApwUVCE=
 hermannm.dev/wrap v0.4.0 h1:bN6gjXpxIeHZhuARgrkfLBI5kEgkYawcDsqw4VWBj3w=
 hermannm.dev/wrap v0.4.0/go.mod h1:W2PoHmpfK1VpZF01eZfAZ2lj02BL+3PAAQT/tP1aEt0=

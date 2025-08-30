@@ -11,6 +11,7 @@ require (
 	github.com/yuin/goldmark v1.7.13
 	golang.org/x/sync v0.16.0
 	hermannm.dev/devlog v0.6.0
+	hermannm.dev/errclose v0.1.1
 	hermannm.dev/wrap v0.4.0
 )
 

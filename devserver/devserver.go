@@ -8,6 +8,7 @@ import (
 
 	"github.com/fsnotify/fsnotify"
 	"hermannm.dev/devlog/log"
+	"hermannm.dev/errclose"
 	"hermannm.dev/wrap/ctxwrap"
 
 	"hermannm.dev/personal-website/sitebuilder"
@@ -18,7 +19,7 @@ func ServeAndRebuildOnChange(
 	contentPaths sitebuilder.ContentPaths,
 	cssFileName string,
 	port string,
-) error {
+) (returnedErr error) {
 	buildSite := func() {
 		err := sitebuilder.ExecCommand(
 			ctx,
@@ -40,7 +41,7 @@ func ServeAndRebuildOnChange(
 	if err != nil {
 		return ctxwrap.Error(ctx, err, "failed to create file system watcher")
 	}
-	defer watcher.Close()
+	defer errclose.Close(watcher, &returnedErr, "file system watcher")
 
 	go func() {
 		var lastEvent fsnotify.Event
