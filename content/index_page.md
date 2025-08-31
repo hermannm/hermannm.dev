@@ -45,6 +45,7 @@ projectGroups:
     projectPaths:
       - /devlog
       - /wrap
+      - /release-from-changelog
       - /condqueue
       - /errclose
       - /enumnames
