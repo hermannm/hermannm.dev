@@ -42,10 +42,10 @@ projectGroups:
       - /devlog
       - /wrap
       - /condqueue
-      - /opt
       - /errclose
       - /enumnames
       - /set
+      - /opt
       - /ipfinder
 ---
 
