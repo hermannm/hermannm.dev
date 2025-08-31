@@ -100,7 +100,7 @@ var (
 
 	contentPaths = sitebuilder.ContentPaths{
 		IndexPage:   "index_page.md",
-		ProjectDirs: []string{"projects", "companies", "libraries"},
+		ProjectDirs: []string{"projects", "companies", "libraries-and-tools"},
 		BasicPages:  []string{"404_page.md"},
 	}
 

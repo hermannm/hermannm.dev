@@ -36,8 +36,12 @@ projectGroups:
     projectPaths:
       - /liflig
       - /ignite
-  - title: Libraries I've built
-    contentDir: libraries
+  - title: Libraries & tools I've built
+    contentDir: libraries-and-tools
+    introText: >
+      Through my years of programming, I've created a few libraries and tools, and open-sourced them
+      for others to enjoy. Most of these are small utility libraries for Go, but some (namely
+      [devlog](/devlog)) are bigger in scope.
     projectPaths:
       - /devlog
       - /wrap

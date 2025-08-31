@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"strings"
 	"time"
 
 	"hermannm.dev/wrap"
@@ -40,13 +41,15 @@ type IndexPageTemplate struct {
 
 type ProjectGroupMarkdown struct {
 	Title        string   `yaml:"title"             validate:"required"`
-	ProjectPaths []string `yaml:"projectPaths,flow" validate:"required,dive"`
 	ContentDir   string   `yaml:"contentDir"        validate:"required"`
+	IntroText    string   `yaml:"introText"` // Optional.
+	ProjectPaths []string `yaml:"projectPaths,flow" validate:"required,dive"`
 }
 
 type ProjectGroupTemplate struct {
-	Title    string
-	Projects []ProjectProfile
+	Title     string
+	IntroText template.HTML // May be blank.
+	Projects  []ProjectProfile
 }
 
 type Image struct {
@@ -63,7 +66,10 @@ func (renderer *PageRenderer) RenderIndexPage(ctx context.Context, contentPath s
 	}
 	content.Page.SetCanonicalURL(renderer.commonData.BaseURL)
 
-	projectGroups := parseProjectGroups(content.ProjectGroups)
+	projectGroups, err := parseProjectGroups(content.ProjectGroups)
+	if err != nil {
+		return ctxwrap.Error(ctx, err, "failed to parse project groups")
+	}
 
 	renderer.parsedPages <- content.Page
 
@@ -183,7 +189,7 @@ func ageFromBirthday(birthday time.Time) int {
 	return age
 }
 
-func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
+func parseProjectGroups(groups []ProjectGroupMarkdown) (ParsedProjectGroups, error) {
 	parsedGroups := make([]ParsedProjectGroup, len(groups))
 	targetNumberOfProjects := 0
 
@@ -196,10 +202,24 @@ func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
 			targetNumberOfProjects++
 		}
 
+		var introText template.HTML
+		if group.IntroText != "" {
+			var builder strings.Builder
+			if err := newMarkdownParser().Convert([]byte(group.IntroText), &builder); err != nil {
+				return ParsedProjectGroups{}, wrap.Errorf(
+					err,
+					"failed to parse intro text for project '%s' as Markdown",
+					group.Title,
+				)
+			}
+			introText = removeParagraphTagsAroundHTML(builder.String())
+		}
+
 		parsedGroups[i] = ParsedProjectGroup{
 			ProjectGroupTemplate: ProjectGroupTemplate{
-				Title:    group.Title,
-				Projects: make([]ProjectProfile, projectsLength),
+				Title:     group.Title,
+				IntroText: introText,
+				Projects:  make([]ProjectProfile, projectsLength),
 			},
 			projectIndiciesByPath: projectIndicesBySlug,
 			contentDir:            group.ContentDir,
@@ -210,7 +230,7 @@ func parseProjectGroups(groups []ProjectGroupMarkdown) ParsedProjectGroups {
 		list:                   parsedGroups,
 		numberOfProjects:       0,
 		targetNumberOfProjects: targetNumberOfProjects,
-	}
+	}, nil
 }
 
 type ParsedProjectGroups struct {

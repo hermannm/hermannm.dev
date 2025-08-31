@@ -1,108 +1,114 @@
 <!doctype html>
 <html lang="en-US">
-  {{- template "head.html.tmpl" .Meta -}}
-  <body
+{{ template "head.html.tmpl" .Meta -}}
+<body
     class="mb-4 mx-auto px-2 mt-4 flex min-h-[var(--page-height)] max-w-[var(--index-page-width)] flex-col gap-4 bg-gruvbox-bg0 text-gruvbox-fg"
+>
+<div class="flex flex-col items-center gap-4 xs:flex-row">
+  <div
+      class="flex flex-col gap-4 xs:min-w-[var(--xs-to-sm-about-me-width)] xs:max-w-[var(--xs-to-sm-about-me-width)] sm:min-w-0 sm:max-w-none"
   >
-    <div class="flex flex-col items-center gap-4 xs:flex-row">
-      <div
-        class="flex flex-col gap-4 xs:min-w-[var(--xs-to-sm-about-me-width)] xs:max-w-[var(--xs-to-sm-about-me-width)] sm:min-w-0 sm:max-w-none"
-      >
-        <h1 class="m-0 flex flex-row justify-center text-3xl font-bold">{{ .Meta.Page.Title }}</h1>
-        <p class="mb-0 mt-0 pl-1 pr-1">
-          {{ .AboutMe }}
-        </p>
-        <ul
-          class="mb-0 mt-0 grid list-none grid-cols-2 place-items-center gap-4 pl-0 md:grid-cols-4"
-        >
-          {{- range $infoField := .PersonalInfo }}
-            {{- if $infoField.Link }}
-              <li>
-                <a class="flex items-center gap-2" href="{{ $infoField.Link }}" target="_blank">
-                  <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">
-                    {{- $infoField.Icon -}}
-                  </div>
-                  <div class="w-min text-center">
-                    {{ personalInfoTextWrapping $infoField.LinkText }}
-                  </div>
-                </a>
-              </li>
-            {{- else }}
-              <li class="flex items-center gap-2">
-                <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">
-                  {{- $infoField.Icon -}}
-                </div>
-                <div class="w-min text-center">
-                  {{ personalInfoTextWrapping $infoField.LinkText }}
-                </div>
-              </li>
-            {{- end -}}
-          {{ end }}
-        </ul>
-      </div>
-      <div>
-        <picture>
-          <source
-            media="(max-width: 479px)"
-            width="{{ .ProfilePictureMobile.Width }}"
-            height="{{ .ProfilePictureMobile.Height }}"
-            srcset="{{ .ProfilePictureMobile.Path }}"
-          />
-          <source
-            media="(min-width: 480px)"
-            width="{{ .ProfilePictureDesktop.Width }}"
-            height="{{ .ProfilePictureDesktop.Height }}"
-            srcset="{{ .ProfilePictureDesktop.Path }}"
-          />
-          <img
-            class="h-full w-full rounded-lg border-2 border-solid border-gruvbox-bg2 xs:h-[var(--profile-pic-size)] xs:max-w-full xs:object-cover sm:w-[var(--profile-pic-size)] sm:max-w-none"
-            src="{{ .ProfilePictureDesktop.Path }}"
-            alt="{{ .ProfilePictureDesktop.Alt }}"
-          />
-        </picture>
-      </div>
-    </div>
-
-    <div class="flex flex-col gap-8">
-      {{ range $projectGroup := .ProjectGroups }}
-        <div class="flex flex-col gap-4">
-          <h2 class="text-center text-xl font-bold">{{ $projectGroup.Title }}</h2>
-
-          <ul class="m-0 flex list-none flex-wrap justify-center gap-6 pl-0">
-            {{- range $project := $projectGroup.Projects }}
-              <li
-                class="md-lg:basis-[calc(100%/3-1rem)] basis-full rounded-lg border-2 border-solid border-gruvbox-bg2 duration-100 lift-on-hover sm:basis-[calc(50%-0.75rem)]"
-              >
-                <a class="flex h-full flex-col items-center no-underline" href="{{ $project.Path }}">
-                  <div class="half-border-background w-full pb-1 pt-1">
-                    {{ if $project.Logo.Path }}
-                      <img
-                        class="mx-auto max-w-[60px] rounded-lg"
-                        width="60"
-                        height="60"
-                        src="{{ $project.Logo.Path }}"
-                        alt="{{ $project.Logo.AltText }}"
-                      />
-                    {{ else }}
-                      <div class="mx-auto h-[40px] flex justify-center">
-                        {{ $project.IndexPageFallbackIcon }}
-                      </div>
-                    {{ end }}
-                  </div>
-                  <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
-                    <h3 class="text-lg font-bold">{{ $project.Name }}</h3>
-                    <p class="flex min-h-[3rem] grow items-center no-underline">
-                      {{ $project.TagLine }}
-                    </p>
-                  </div>
-                </a>
-              </li>
-            {{- end }}
-          </ul>
-        </div>
+    <h1 class="m-0 flex flex-row justify-center text-3xl font-bold">{{ .Meta.Page.Title }}</h1>
+    <p class="mb-0 mt-0 pl-1 pr-1">
+      {{ .AboutMe }}
+    </p>
+    <ul
+        class="mb-0 mt-0 grid list-none grid-cols-2 place-items-center gap-4 pl-0 md:grid-cols-4"
+    >
+      {{- range $infoField := .PersonalInfo }}
+        {{- if $infoField.Link }}
+          <li>
+            <a class="flex items-center gap-2" href="{{ $infoField.Link }}" target="_blank">
+              <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">
+                {{ $infoField.Icon }}
+              </div>
+              <div class="w-min text-center">
+                {{ personalInfoTextWrapping $infoField.LinkText }}
+              </div>
+            </a>
+          </li>
+        {{- else }}
+          <li class="flex items-center gap-2">
+            <div class="flex h-4 w-4 items-center justify-center" aria-hidden="true">
+              {{ $infoField.Icon }}
+            </div>
+            <div class="w-min text-center">
+              {{ personalInfoTextWrapping $infoField.LinkText }}
+            </div>
+          </li>
+        {{ end -}}
       {{ end }}
-    <div>
+    </ul>
+  </div>
+  <div>
+    <picture>
+      <source
+          media="(max-width: 479px)"
+          width="{{ .ProfilePictureMobile.Width }}"
+          height="{{ .ProfilePictureMobile.Height }}"
+          srcset="{{ .ProfilePictureMobile.Path }}"
+      />
+      <source
+          media="(min-width: 480px)"
+          width="{{ .ProfilePictureDesktop.Width }}"
+          height="{{ .ProfilePictureDesktop.Height }}"
+          srcset="{{ .ProfilePictureDesktop.Path }}"
+      />
+      <img
+          class="h-full w-full rounded-lg border-2 border-solid border-gruvbox-bg2 xs:h-[var(--profile-pic-size)] xs:max-w-full xs:object-cover sm:w-[var(--profile-pic-size)] sm:max-w-none"
+          src="{{ .ProfilePictureDesktop.Path }}"
+          alt="{{ .ProfilePictureDesktop.Alt }}"
+      />
+    </picture>
+  </div>
+</div>
 
-    {{ template "footer.html.tmpl" .Meta.Common }}
-  </body>
+<div class="flex flex-col gap-8">
+  {{ range $projectGroup := .ProjectGroups }}
+    <div class="flex flex-col gap-4">
+      <h2 class="text-center text-xl font-bold">{{ $projectGroup.Title }}</h2>
+
+      {{ if $projectGroup.IntroText -}}
+        <div class="flex justify-center mb-2">
+          <p class="max-w-[51rem] text-center">{{ $projectGroup.IntroText }}</p>
+        </div>
+      {{- end }}
+
+      <ul class="m-0 flex list-none flex-wrap justify-center gap-6 pl-0">
+        {{- range $project := $projectGroup.Projects }}
+          <li
+              class="md-lg:basis-[calc(100%/3-1rem)] basis-full rounded-lg border-2 border-solid border-gruvbox-bg2 duration-100 lift-on-hover sm:basis-[calc(50%-0.75rem)]"
+          >
+            <a class="flex h-full flex-col items-center no-underline" href="{{ $project.Path }}">
+              <div class="half-border-background w-full pb-1 pt-1">
+                {{ if $project.Logo.Path }}
+                  <img
+                      class="mx-auto max-w-[60px] rounded-lg"
+                      width="60"
+                      height="60"
+                      src="{{ $project.Logo.Path }}"
+                      alt="{{ $project.Logo.AltText }}"
+                  />
+                {{ else }}
+                  <div class="mx-auto h-[40px] flex justify-center">
+                    {{ $project.IndexPageFallbackIcon }}
+                  </div>
+                {{ end }}
+              </div>
+              <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
+                <h3 class="text-lg font-bold">{{ $project.Name }}</h3>
+                <p class="flex min-h-[3rem] grow items-center no-underline">
+                  {{ $project.TagLine }}
+                </p>
+              </div>
+            </a>
+          </li>
+        {{- end }}
+      </ul>
+    </div>
+  {{ end }}
+</div>
+
+{{ template "footer.html.tmpl" .Meta.Common }}
+</body>
 </html>
