@@ -84,8 +84,7 @@
     {{ end -}}
   {{ else if eq $usedWithLength 1 -}}
     {{ $usedWith := index .UsedWith 0 -}}
-    (
-    {{ if .UsedFor -}}
+    ({{ if .UsedFor -}}
       {{ .UsedFor }},
       {{ " " }}
     {{ end -}}
@@ -95,8 +94,7 @@
       )
     </div>
   {{ else -}}
-    (
-    {{ if .UsedFor -}}
+    ({{ if .UsedFor -}}
       {{ .UsedFor }},
       {{ " " }}
     {{ end -}}
