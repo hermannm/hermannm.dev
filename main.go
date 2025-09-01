@@ -227,5 +227,9 @@ var (
 			Icon:         "content/icons/vscode.svg",
 			IconForLinks: []string{"https://marketplace.visualstudio.com"},
 		},
+		"NTNU": {
+			Icon:         "content/icons/ntnu.svg",
+			IconForLinks: []string{"https://ntnuopen.ntnu.no"},
+		},
 	}
 )
