@@ -11,6 +11,8 @@ techStack:
 links:
   - title: Code
     link: https://github.com/hermannm/gadd
+  - title: Published on
+    link: https://crates.io/crates/gadd
 footnote:
   Git logo adapted from [Jason Long](https://git-scm.com/downloads/logos) (licensed under [CC BY
   3.0](https://creativecommons.org/licenses/by/3.0/))
