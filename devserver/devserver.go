@@ -75,7 +75,6 @@ func ServeAndRebuildOnChange(
 	dirsToWatch := []string{
 		"main.go",
 		"sitebuilder",
-		"tailwind.config.js",
 		cssFileName,
 		sitebuilder.PageTemplatesDir,
 		sitebuilder.ComponentTemplatesDir,

@@ -163,7 +163,7 @@ func GenerateTailwindCSS(ctx context.Context, cssFileName string) error {
 		ctx,
 		false,
 		"npx",
-		"tailwindcss",
+		"@tailwindcss/cli",
 		"-i",
 		cssFileName,
 		"-o",

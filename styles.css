@@ -1,136 +1,166 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@source './static/**/*.html';
+
+@theme {
+    --breakpoint-*: initial;
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 624px;
+    --breakpoint-md: 768px;
+    --breakpoint-md-lg: 896px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+
+    --color-gruvbox-fg: #ebdbb2;
+    --color-gruvbox-bg0: #282828;
+    --color-gruvbox-bg2: #504945;
+    --color-gruvbox-bg3: #665c54;
+    --color-gruvbox-gray: #928374;
+}
 
 :root {
-  --index-page-width: 64rem;
-  --profile-pic-size: 16rem;
-  --sm-breakpoint: 624px;
-  --xs-to-sm-about-me-width: calc(var(--sm-breakpoint) - var(--profile-pic-size) - 3rem);
+    --index-page-width: 64rem;
+    --profile-pic-size: 16rem;
+    --sm-breakpoint: 624px;
+    --xs-to-sm-about-me-width: calc(var(--sm-breakpoint) - var(--profile-pic-size) - 3rem);
 
-  --background-color: #282828;
-  --border-color: #504945;
-  --scrollbar-thumb-color: #928374;
+    --background-color: #282828;
+    --border-color: #504945;
+    --scrollbar-thumb-color: #928374;
 
-  /* Fallback for browsers without dvh support */
-  --page-height: calc(100vh - 2 * 1rem);
-  --page-height: calc(100dvh - 2 * 1rem);
+    /* Fallback for browsers without dvh support */
+    /*noinspection CssOverwrittenProperties*/
+    --page-height: calc(100vh - 2 * 1rem);
+    /*noinspection CssOverwrittenProperties*/
+    --page-height: calc(100dvh - 2 * 1rem);
 }
 
 @font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/open-sans/open-sans-regular.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
+    font-family: "Open Sans";
+    src: url("/fonts/open-sans/open-sans-regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
 }
+
 @font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/open-sans/open-sans-bold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
+    font-family: "Open Sans";
+    src: url("/fonts/open-sans/open-sans-bold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
 }
+
 @font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/open-sans/open-sans-italic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
+    font-family: "Open Sans";
+    src: url("/fonts/open-sans/open-sans-italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
 }
+
 @font-face {
-  font-family: "Roboto Mono";
-  src: url("/fonts/roboto-mono/roboto-mono-regular.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
+    font-family: "Roboto Mono";
+    src: url("/fonts/roboto-mono/roboto-mono-regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
 }
+
 @font-face {
-  font-family: "Roboto Mono";
-  src: url("/fonts/roboto-mono/roboto-mono-bold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
+    font-family: "Roboto Mono";
+    src: url("/fonts/roboto-mono/roboto-mono-bold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
 }
+
 @font-face {
-  font-family: "Roboto Mono";
-  src: url("/fonts/roboto-mono/roboto-mono-italic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
+    font-family: "Roboto Mono";
+    src: url("/fonts/roboto-mono/roboto-mono-italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
 }
 
-* {
-  /*
-  Includes padding + border in an element's width/height values,
-  see https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing to read more
-  */
-  box-sizing: border-box;
-}
+@layer base {
+    * {
+        /*
+        Includes padding + border in an element's width/height values,
+        see https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing to read more
+        */
+        box-sizing: border-box;
+    }
 
-body {
-  font-family: "Open Sans", sans-serif;
+    body {
+        font-family: "Open Sans", sans-serif;
 
-  /* Scrollbar customization in Firefox - Chrome/Safari use -webkit-scrollbar below */
-  scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
-  scrollbar-width: 0.5rem;
-}
-body::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
-}
-body::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb-color);
-}
-body::-webkit-scrollbar-track {
-  background: var(--background-color);
-}
+        /* Scrollbar customization in Firefox - Chrome/Safari use -webkit-scrollbar below */
+        scrollbar-color: var(--scrollbar-thumb-color) var(--background-color);
+    }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-code {
-  font-family: "Roboto Mono", "Consolas", "Courier New", sans-serif;
-}
+    body::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
 
-a {
-  text-decoration: underline;
-}
+    body::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb-color);
+    }
 
-ul {
-  @apply list-disc pl-6;
-}
-ol {
-  @apply list-decimal pl-6;
-}
-ul ul,
-ol ul {
-  @apply list-[circle] pl-8;
-}
-ol ol,
-ul ol {
-  @apply list-[lower-latin] pl-8;
-}
+    body::-webkit-scrollbar-track {
+        background: var(--background-color);
+    }
 
-svg {
-  max-width: 100%;
-  max-height: 100%;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    code {
+        font-family: "Roboto Mono", "Consolas", "Courier New", sans-serif;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    ul {
+        @apply list-disc pl-6;
+    }
+
+    ol {
+        @apply list-decimal pl-6;
+    }
+
+    ul ul,
+    ol ul {
+        @apply list-[circle] pl-8;
+    }
+
+    ol ol,
+    ul ol {
+        @apply list-[lower-latin] pl-8;
+    }
+
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    p {
+        /*
+        Disables Font Boosting in Chrome for Android, for consistent font sizes.
+        Suggested workaround from WebKit ticket: https://bugs.webkit.org/show_bug.cgi?id=84186#c17
+        */
+        max-height: 1000000px;
+    }
 }
 
 .half-border-background {
-  background: linear-gradient(180deg, var(--border-color) 67%, var(--background-color) 33%);
+    background: linear-gradient(180deg, var(--border-color) 67%, var(--background-color) 33%);
 }
 
 .lift-on-hover:hover {
-  transform: translateY(-4px);
-}
-
-p {
-  /*
-  Disables Font Boosting in Chrome for Android, for consistent font sizes.
-  Suggested workaround from WebKit ticket: https://bugs.webkit.org/show_bug.cgi?id=84186#c17
-  */
-  max-height: 1000000px;
+    transform: translateY(-4px);
 }

@@ -2,11 +2,11 @@
 <html lang="en-US">
 {{ template "head.html.tmpl" .Meta -}}
 <body
-    class="mb-4 mx-auto px-2 mt-4 flex min-h-[var(--page-height)] max-w-[var(--index-page-width)] flex-col gap-4 bg-gruvbox-bg0 text-gruvbox-fg"
+    class="mb-4 mx-auto px-2 mt-4 flex min-h-(--page-height) max-w-(--index-page-width) flex-col gap-4 bg-gruvbox-bg0 text-gruvbox-fg"
 >
 <div class="flex flex-col items-center gap-4 xs:flex-row">
   <div
-      class="flex flex-col gap-4 xs:min-w-[var(--xs-to-sm-about-me-width)] xs:max-w-[var(--xs-to-sm-about-me-width)] sm:min-w-0 sm:max-w-none"
+      class="flex flex-col gap-4 xs:min-w-(--xs-to-sm-about-me-width) xs:max-w-(--xs-to-sm-about-me-width) sm:min-w-0 sm:max-w-none"
   >
     <h1 class="m-0 flex flex-row justify-center text-3xl font-bold">{{ .Meta.Page.Title }}</h1>
     <p class="mb-0 mt-0 pl-1 pr-1">
@@ -55,7 +55,7 @@
           srcset="{{ .ProfilePictureDesktop.Path }}"
       />
       <img
-          class="h-full w-full rounded-lg border-2 border-solid border-gruvbox-bg2 xs:h-[var(--profile-pic-size)] xs:max-w-full xs:object-cover sm:w-[var(--profile-pic-size)] sm:max-w-none"
+          class="h-full w-full rounded-lg border-2 border-solid border-gruvbox-bg2 xs:h-(--profile-pic-size) xs:max-w-full xs:object-cover sm:w-(--profile-pic-size) sm:max-w-none"
           src="{{ .ProfilePictureDesktop.Path }}"
           alt="{{ .ProfilePictureDesktop.Alt }}"
       />
@@ -70,7 +70,7 @@
 
       {{ if $projectGroup.IntroText -}}
         <div class="flex justify-center mb-2">
-          <p class="max-w-[51rem] text-center">{{ $projectGroup.IntroText }}</p>
+          <p class="max-w-204 text-center">{{ $projectGroup.IntroText }}</p>
         </div>
       {{- end }}
 
@@ -97,7 +97,7 @@
               </div>
               <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
                 <h3 class="text-lg font-bold">{{ $project.Name }}</h3>
-                <p class="flex min-h-[3rem] grow items-center no-underline">
+                <p class="flex min-h-12 grow items-center no-underline">
                   {{ $project.TagLine }}
                 </p>
               </div>
