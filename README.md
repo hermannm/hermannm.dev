@@ -12,7 +12,7 @@ Markdown parser and [Tailwind CSS](https://tailwindcss.com/).
 4. Run `go run . -dev` to serve and rebuild the site every time content/templates/sitebuilder files
    change
 
-# Image minifying
+## Image minifying
 
 - See "Rendered size" of image in `<img>` tag in Chrome
 - Scale image down to 2x rendered size
