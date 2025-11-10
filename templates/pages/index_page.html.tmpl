@@ -9,7 +9,8 @@
       class="flex flex-col gap-4 xs:min-w-(--xs-to-sm-about-me-width) xs:max-w-(--xs-to-sm-about-me-width) sm:min-w-0 sm:max-w-none"
   >
     <h1 class="m-0 flex flex-row justify-center text-3xl font-bold">{{ .Meta.Page.Title }}</h1>
-    <p class="mb-0 mt-0 pl-1 pr-1">
+    <!-- Extensive media queries to get desired line breaks at certain widths -->
+    <p class="mb-0 mt-0 pl-1 xs:pr-1 min-[1006px]:pr-2 min-[1010px]:pr-3 min-[1014px]:pr-4 min-[1018px]:pr-6">
       {{ .AboutMe }}
     </p>
     <ul
