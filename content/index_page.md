@@ -29,7 +29,6 @@ projectGroups:
       - /corona-defense
       - /rov-sim
       - /export-control
-      - /minesweeper
       - /gruvboxplain
   - title: Companies I've worked for
     contentDir: companies
