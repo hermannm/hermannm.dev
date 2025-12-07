@@ -26,16 +26,18 @@ battle, and I've played it a lot with friends and family. A couple friends of mi
 fans of the game, so in the fall of 2021, we started developing a digital edition of it as a hobby
 project. Thus, _Casus Belli_ was born.
 
-We decided to build the digital edition as a proper online multiplayer game. I wrote the server in
-Go, finding its native concurrency support suitable for the parallel nature of the game. My friends
-and I collaborated on the client, where we initially used the Unity game engine. During this time,
-one of my friends also founded [Immerse NTNU](https://immersentnu.no/), a student organization for
-game development. We continued the project under that organization, and so we also got great
-contributions from new members there.
-
-In the fall of 2023, the company behind Unity decided to
+We decided to build the digital edition as a full-fledged online multiplayer game. I wrote the
+server in Go, finding its native concurrency support suitable for the parallel nature of the game.
+My friends and I collaborated on the client, where we initially used the Unity game engine. But in
+the fall of 2023, the company behind Unity decided to
 [upend the terms for developers using their game engine](https://blog.unity.com/news/plan-pricing-and-packaging-updates).
-Although this change likely would not affect our project, I found Unity's practices here quite
-abhorrent, and it gave me a distaste for using the engine further. Since we were developing this
-game as an open-source project, it felt more appropriate to also use open-source tools for it. Thus,
-we decided to make the switch over to Godot, an open-source game engine.
+I found Unity's practices here quite distasteful, and so we decided to switch the client over to the
+open-source Godot game engine.
+
+Once I started working full-time in 2024, progress on the game stalled, as it was difficult to find
+energy for it in my spare time while I was programming all day at work. I still want to finish the
+game at some point though. The implementation of the server is basically finished, and work on the
+client is well on its way. Hopefully, I'll be able to finish the game some time in the next couple
+of years, and release it to the public.
+
+![The digital edition of the Casus Belli board](/img/screenshots/casus-belli.png)
