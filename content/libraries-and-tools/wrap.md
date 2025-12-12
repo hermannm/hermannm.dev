@@ -1,7 +1,7 @@
 ---
 name: wrap
 path: /wrap
-tagLine: Utility for wrapping error messages with extra context.
+tagLine: Utility for wrapping errors with extra context.
 goPackage:
   rootName: hermannm.dev/wrap
   githubURL: https://github.com/hermannm/wrap
