@@ -1,4 +1,11 @@
-<svg baseProfile="tiny" x="0px" y="0px" viewBox="0 0 320 320" overflow="visible">
+<svg
+  baseProfile="tiny"
+  x="0px"
+  y="0px"
+  viewBox="0 0 320 320"
+  overflow="visible"
+  xmlns="http://www.w3.org/2000/svg"
+>
   <g id="black_bg" display="none">
     <rect display="inline" width="320" height="320" />
   </g>

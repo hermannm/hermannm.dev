@@ -4,13 +4,14 @@
   y="0px"
   style="enable-background: new 0 0 2500 2500"
   viewBox="150 250 2100 2000"
+  xmlns="http://www.w3.org/2000/svg"
 >
   <g>
     <defs>
       <circle id="elastic-shape1" cx="1250" cy="1250" r="1000" />
     </defs>
     <clipPath id="elastic-clip1">
-      <use xlink:href="#elastic-shape1" style="overflow: visible" />
+      <use href="#elastic-shape1" style="overflow: visible" />
     </clipPath>
     <path
       fill="#f0bf1a"
@@ -23,7 +24,7 @@
       <circle id="elastic-shape2" cx="1250" cy="1250" r="1000" />
     </defs>
     <clipPath id="elastic-clip2">
-      <use xlink:href="#elastic-shape2" style="overflow: visible" />
+      <use href="#elastic-shape2" style="overflow: visible" />
     </clipPath>
     <path
       fill="#3ebeb0"
@@ -37,7 +38,7 @@
         <circle id="elastic-shape3" cx="1250" cy="1250" r="1000" />
       </defs>
       <clipPath id="elastic-clip3">
-        <use xlink:href="#elastic-shape3" style="overflow: visible" />
+        <use href="#elastic-shape3" style="overflow: visible" />
       </clipPath>
       <path
         fill="#07a5de"
@@ -52,7 +53,7 @@
         <circle id="elastic-shape4" cx="1250" cy="1250" r="1000" />
       </defs>
       <clipPath id="elastic-clip4">
-        <use xlink:href="#elastic-shape4" style="overflow: visible" />
+        <use href="#elastic-shape4" style="overflow: visible" />
       </clipPath>
       <path
         fill="#231f20"
