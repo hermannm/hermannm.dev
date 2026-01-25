@@ -13,8 +13,10 @@ techStack:
     usedFor: frontend
     usedWith:
       - React
-  - tech: AWS CDK
-    usedFor: infrastructure-as-code
+  - tech: PostgreSQL
+    usedFor: database
+  - tech: AWS
+    usedFor: cloud provider
 links:
   - title: More about Liflig
     link: https://liflig.no

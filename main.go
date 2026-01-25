@@ -183,6 +183,10 @@ var (
 			Icon: "content/icons/django.svg",
 			Link: "https://www.djangoproject.com/",
 		},
+		"PostgreSQL": {
+			Icon: "content/icons/postgres.svg",
+			Link: "https://www.postgresql.org/",
+		},
 		"Godot": {
 			Icon: "content/icons/godot.svg",
 			Link: "https://godotengine.org/",
@@ -219,9 +223,13 @@ var (
 			Icon: "content/icons/elasticsearch.svg",
 			Link: "https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html",
 		},
-		"AWS CDK": {
+		"AWS": {
 			Icon: "content/icons/aws.svg",
 			Link: "https://aws.amazon.com/cdk/",
+		},
+		"Azure": {
+			Icon: "content/icons/azure.svg",
+			Link: "https://azure.microsoft.com/",
 		},
 		"VSCode": {
 			Icon:         "content/icons/vscode.svg",

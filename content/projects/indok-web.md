@@ -16,6 +16,9 @@ techStack:
       - React
       - Next.js
   - tech: GraphQL
+    usedFor: API protocol
+  - tech: PostgreSQL
+    usedFor: database
 links:
   - title: Code
     sublinks:

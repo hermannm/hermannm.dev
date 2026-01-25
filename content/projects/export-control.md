@@ -7,8 +7,13 @@ logo:
   altText: Safetec company logo
 techStack:
   - tech: Python
+    usedFor: full-stack
     usedWith:
       - Django
+  - tech: PostgreSQL
+    usedFor: database
+  - tech: Azure
+    usedFor: cloud provider
 links:
   - title: Code
     link: https://github.com/cdp-group4/export-control

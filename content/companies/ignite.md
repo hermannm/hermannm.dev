@@ -14,7 +14,11 @@ techStack:
     usedWith:
       - React
   - tech: gRPC
+    usedFor: backend API protocol
   - tech: GraphQL
+    usedFor: frontend API protocol
+  - tech: PostgreSQL
+    usedFor: database
 links:
   - title: More about Ignite
     link: https://ignite.no
