@@ -2,7 +2,7 @@
 <html lang="en-US">
 {{ template "head.html.tmpl" .Meta -}}
 <body
-    class="mx-auto mb-4 mt-4 flex min-h-(--page-height) max-w-3xl flex-col gap-3 bg-gruvbox-bg0 px-2 text-gruvbox-fg"
+    class="mx-auto mb-4 mt-4 flex min-h-(--page-height) max-w-3xl flex-col gap-3 bg-gruvbox-bg0 px-(--page-padding-x) text-gruvbox-fg"
 >
 <header class="flex flex-col gap-4">
   <h1 class="flex justify-center text-2xl font-bold">
@@ -20,7 +20,7 @@
           alt="{{ .Project.Logo.AltText }}"
       />
     {{ end -}}
-    <h2 class="text-xl first:ml-1">{{ .Project.Name }}</h2>
+    <h2 class="text-xl font-mono first:ml-1">{{ .Project.Name }}</h2>
   </div>
 </header>
 

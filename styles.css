@@ -2,43 +2,6 @@
 
 @source './static/**/*.html';
 
-@theme {
-    --breakpoint-*: initial;
-    --breakpoint-xs: 480px;
-    --breakpoint-sm: 624px;
-    --breakpoint-md: 768px;
-    --breakpoint-md-lg: 896px;
-    --breakpoint-lg: 1024px;
-    --breakpoint-xl: 1280px;
-
-    --color-gruvbox-fg: #ebdbb2;
-    --color-gruvbox-bg0: #282828;
-    --color-gruvbox-bg2: #504945;
-    --color-gruvbox-bg3: #665c54;
-    --color-gruvbox-gray: #928374;
-}
-
-:root {
-    --index-page-width: 64rem;
-    --profile-pic-size: 16rem;
-    --sm-breakpoint: 624px;
-    --xs-to-sm-about-me-width: calc(var(--sm-breakpoint) - var(--profile-pic-size) - 3rem);
-
-    --background-color: #282828;
-    --border-color: #504945;
-    --scrollbar-thumb-color: #928374;
-
-    /* Fallback for browsers without dvh support */
-    /*noinspection CssOverwrittenProperties*/
-    --page-height: calc(100vh - 2 * 1rem);
-    /*noinspection CssOverwrittenProperties*/
-    --page-height: calc(100dvh - 2 * 1rem);
-
-    --tab-gap: 16px;
-    --tab-border-width: 2px;
-    --tab-border-radius: calc(var(--tab-gap) / 2 + var(--tab-border-width));
-}
-
 @font-face {
     font-family: "Open Sans";
     src: url("/fonts/open-sans/open-sans-regular.woff2") format("woff2");
@@ -87,6 +50,58 @@
     font-display: swap;
 }
 
+@theme {
+    --breakpoint-*: initial;
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 624px;
+    --breakpoint-md: 768px;
+    --breakpoint-md-lg: 896px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+
+    --color-gruvbox-fg: #ebdbb2;
+    --color-gruvbox-bg0: #282828;
+    --color-gruvbox-bg2: #504945;
+    --color-gruvbox-bg3: #665c54;
+    --color-gruvbox-gray: #928374;
+
+    --font-mono: "Roboto Mono", "Consolas", "Courier New", sans-serif;
+}
+
+:root {
+    --index-page-width: 64rem;
+    --profile-pic-size: 16rem;
+    --sm-breakpoint: 624px;
+    --xs-to-sm-about-me-width: calc(var(--sm-breakpoint) - var(--profile-pic-size) - 3rem);
+
+    --background-color: #282828;
+    --border-color: #504945;
+    --scrollbar-thumb-color: #928374;
+
+    /* Fallback for browsers without dvh support */
+    /*noinspection CssOverwrittenProperties*/
+    --page-height: calc(100vh - 2 * 1rem);
+    /*noinspection CssOverwrittenProperties*/
+    --page-height: calc(100dvh - 2 * 1rem);
+
+    --page-padding-x: 0.5rem;
+
+    --tab-gap: 16px;
+    --tab-border-width: 2px;
+    --tab-border-radius: calc(var(--tab-gap) / 2 + var(--tab-border-width));
+    --tab-padding-y: 0.25rem;
+    /*
+     * We use synthetic :before and :after elements for the rounded corner effect on the active tab,
+     * and these need z-index to display on top of each other in the correct order.
+     */
+    --tab-z-index-low: 1;
+    --tab-z-index-mid: 2;
+    --tab-z-index-high: 3;
+
+    /* #282828 in RGB (need this for the rgba funcion for fade-in effect). */
+    --bg0-rgb: 40, 40, 40;
+}
+
 @layer base {
     * {
         /*
@@ -119,15 +134,6 @@
 
     body::-webkit-scrollbar-track {
         background: var(--background-color);
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    code {
-        font-family: "Roboto Mono", "Consolas", "Courier New", sans-serif;
     }
 
     a {
@@ -174,25 +180,43 @@
     transform: translateY(-4px);
 }
 
+nav {
+    border-bottom: 3px solid var(--border-color);
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    display: flex;
+}
+
 /* Inspired by: https://css-tricks.com/tabs-with-round-out-borders/ */
 .tabs {
+    float: left;
     display: flex;
     gap: var(--tab-gap);
-    justify-content: center;
     font-size: var(--text-lg);
-    border-bottom: 3px solid var(--border-color);
     padding: 0;
     list-style-type: none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tabs li {
     position: relative;
-    z-index: 3;
+    z-index: var(--tab-z-index-high);
+}
+
+.tabs li:first-child {
+    margin-left: var(--tab-gap);
+}
+
+.tabs li:last-child {
+    margin-right: var(--tab-gap);
 }
 
 .tabs a {
-    padding: 0.25rem 1rem 0.25rem 1rem;
-    width: 116px;
+    /* We want all tabs be have equal width. This value is the width of the widest tab. */
+    width: 7.25rem;
+    padding: var(--tab-padding-y) 1rem var(--tab-padding-y) 1rem;
 
     display: block;
 
@@ -206,6 +230,9 @@
 
     border-top-left-radius: var(--tab-gap);
     border-top-right-radius: var(--tab-gap);
+
+    /* Show focus outline on top of border, to avoid the outline being cut off. */
+    outline-offset: calc(-1 * var(--tab-border-width));
 }
 
 .tabs a[aria-selected="true"] {
@@ -224,7 +251,7 @@
 
 .tabs li:has(> a[aria-selected="true"]):before,
 .tabs li:has(> a[aria-selected="true"]):after {
-    z-index: 1;
+    z-index: var(--tab-z-index-low);
     width: var(--tab-border-radius);
     height: var(--tab-border-radius);
     background: var(--border-color);
@@ -239,7 +266,7 @@
 }
 
 .tabs a[aria-selected="true"]:after, .tabs a[aria-selected="true"]:before {
-    z-index: 2;
+    z-index: var(--tab-z-index-mid);
     width: var(--tab-gap);
     height: var(--tab-gap);
     border-radius: calc(var(--tab-gap) / 2);
@@ -252,4 +279,52 @@
 
 .tabs a[aria-selected="true"]:after {
     right: calc(-1 * var(--tab-gap));
+}
+
+.fade-in-left, .fade-in-right {
+    position: absolute;
+    /*
+     * We want fade-in elements to have same height as the tabs, so that the fade covers the tabs
+     * vertically. We get the height as follows:
+     * - Tabs use font size `text-lg`
+     * - Multiply with line height (1.5) to get the height of the text
+     * - Add vertical tab padding (x2 for top + bottom)
+     * - Add tab border width (x1: tabs only have top border - nav element handles bottom border)
+     */
+    height: calc(var(--text-lg) * 1.5 + var(--tab-padding-y) * 2 + var(--tab-border-width));
+    /* To allow the tabs to still be scrolled behind the fade effect. */
+    pointer-events: none;
+    fill: var(--color-gruvbox-gray);
+    /* Higher z-index than tabs. */
+    z-index: calc(var(--tab-z-index-high) + 1);
+    display: flex;
+    align-items: stretch;
+}
+
+.fade-in-left button, .fade-in-right button {
+    pointer-events: all;
+}
+
+.fade-in-left {
+    left: var(--page-padding-x);
+    padding-right: 2rem;
+    background: linear-gradient(
+        270deg,
+        rgba(var(--bg0-rgb), 0) 0%,
+        rgba(var(--bg0-rgb), 0.75) 25%,
+        rgba(var(--bg0-rgb), 0.9) 50%,
+        rgba(var(--bg0-rgb), 1) 75%
+    );
+}
+
+.fade-in-right {
+    right: var(--page-padding-x);
+    padding-left: 2rem;
+    background: linear-gradient(
+        90deg,
+        rgba(var(--bg0-rgb), 0) 0%,
+        rgba(var(--bg0-rgb), 0.75) 25%,
+        rgba(var(--bg0-rgb), 0.9) 50%,
+        rgba(var(--bg0-rgb), 1) 75%
+    );
 }
