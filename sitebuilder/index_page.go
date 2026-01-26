@@ -41,6 +41,7 @@ type IndexPageTemplate struct {
 
 type ProjectGroupMarkdown struct {
 	Title        string   `yaml:"title"             validate:"required"`
+	Slug         string   `yaml:"slug"              validate:"required"`
 	ContentDir   string   `yaml:"contentDir"        validate:"required"`
 	IntroText    string   `yaml:"introText"` // Optional.
 	ProjectPaths []string `yaml:"projectPaths,flow" validate:"required,dive"`
@@ -48,6 +49,7 @@ type ProjectGroupMarkdown struct {
 
 type ProjectGroupTemplate struct {
 	Title     string
+	Slug      string
 	IntroText template.HTML // May be blank.
 	Projects  []ProjectProfile
 }
@@ -218,6 +220,7 @@ func parseProjectGroups(groups []ProjectGroupMarkdown) (ParsedProjectGroups, err
 		parsedGroups[i] = ParsedProjectGroup{
 			ProjectGroupTemplate: ProjectGroupTemplate{
 				Title:     group.Title,
+				Slug:      group.Slug,
 				IntroText: introText,
 				Projects:  make([]ProjectProfile, projectsLength),
 			},

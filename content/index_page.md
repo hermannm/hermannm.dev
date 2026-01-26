@@ -18,7 +18,8 @@ profilePictureDesktop:
   width: 240
   height: 240
 projectGroups:
-  - title: Projects I've contributed to
+  - title: Projects
+    slug: projects
     contentDir: projects
     projectPaths:
       - /indok-web
@@ -30,12 +31,14 @@ projectGroups:
       - /rov-sim
       - /export-control
       - /gruvboxplain
-  - title: Companies I've worked for
+  - title: Work
+    slug: work
     contentDir: companies
     projectPaths:
       - /liflig
       - /ignite
-  - title: Libraries & tools I've built
+  - title: Libraries
+    slug: libraries
     contentDir: libraries-and-tools
     introText: >
       Through my years of programming, I've developed a few libraries and tools, and open-sourced

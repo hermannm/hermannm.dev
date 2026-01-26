@@ -92,6 +92,11 @@
         box-sizing: border-box;
     }
 
+    html {
+        /* Always show scrollbar (to avoid layout shifts when changing tabs) */
+        overflow-y: scroll;
+    }
+
     body {
         font-family: "Open Sans", sans-serif;
 
@@ -163,4 +168,81 @@
 
 .lift-on-hover:hover {
     transform: translateY(-4px);
+}
+
+/* Inspired by: https://css-tricks.com/tabs-with-round-out-borders/ */
+.tabs {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    font-size: var(--text-lg);
+    border-bottom: 3px solid var(--border-color);
+    padding: 0;
+    list-style-type: none;
+}
+
+.tabs li {
+    position: relative;
+    z-index: 3;
+}
+
+.tabs a {
+    padding: 0.25rem 1rem 0.25rem 1rem;
+    width: 116px;
+
+    display: block;
+
+    text-align: center;
+    text-decoration: none;
+
+    border-left-width: 2px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-color: var(--border-color);
+
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.tabs .active a {
+    font-weight: bold;
+    background: var(--border-color);
+}
+
+.tabs .active:before, .tabs .active:after,
+.tabs .active a:before, .tabs .active a:after {
+    position: absolute;
+    bottom: 0;
+    content: "";
+}
+
+.tabs .active:before, .tabs .active:after {
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    background: var(--border-color);
+}
+
+.tabs .active:before {
+    left: -10px;
+}
+
+.tabs .active:after {
+    right: -10px;
+}
+
+.tabs .active a:after, .tabs .active a:before {
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background: var(--color-gruvbox-bg0);
+}
+
+.tabs .active a:before {
+    left: -16px;
+}
+
+.tabs .active a:after {
+    right: -16px;
 }
