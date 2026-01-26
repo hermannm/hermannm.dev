@@ -70,8 +70,8 @@
 
 <nav class="mt-2 md-lg:mt-0">
   <div id="tabs-scroll-left" class="fade-in-left" hidden>
-    <button aria-label="Scroll left" class="w-6 h-full">
-      <span aria-hidden="true" class="w-full h-6">
+    <button aria-label="Scroll left">
+      <span aria-hidden="true">
         {{ $arrowLeft := index .Icons "arrow-left" }}
         {{ $arrowLeft.RenderedIcon }}
       </span>
@@ -95,8 +95,8 @@
   </ul>
 
   <div id="tabs-scroll-right" class="fade-in-right" hidden>
-    <button aria-label="Scroll right" class="w-8 h-full flex justify-end items-center">
-      <span aria-hidden="true" class="w-6 h-6 block">
+    <button aria-label="Scroll right">
+      <span aria-hidden="true">
         {{ $arrowRight := index .Icons "arrow-right" }}
         {{ $arrowRight.RenderedIcon }}
       </span>

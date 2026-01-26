@@ -306,7 +306,7 @@ nav {
 }
 
 .fade-in-left {
-    left: var(--page-padding-x);
+    left: 0;
     padding-right: 2rem;
     background: linear-gradient(
         270deg,
@@ -318,7 +318,7 @@ nav {
 }
 
 .fade-in-right {
-    right: var(--page-padding-x);
+    right: 0;
     padding-left: 2rem;
     background: linear-gradient(
         90deg,
@@ -327,4 +327,30 @@ nav {
         rgba(var(--bg0-rgb), 0.9) 50%,
         rgba(var(--bg0-rgb), 1) 75%
     );
+}
+
+.fade-in-left button, .fade-in-right button {
+    height: 100%;
+    width: calc(2rem + var(--page-padding-x));
+    display: flex;
+    align-items: center;
+}
+
+.fade-in-left button {
+    /** Add button padding = page padding, so users can click scroll button on edge of screen. */
+    padding-left: var(--page-padding-x);
+    justify-content: start;
+}
+
+.fade-in-right button {
+    /** Add button padding = page padding, so users can click scroll button on edge of screen. */
+    padding-right: var(--page-padding-x);
+    justify-content: end;
+}
+
+/* Arrow icons inside scroll buttons. */
+.fade-in-left button > *, .fade-in-right button > * {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
 }
