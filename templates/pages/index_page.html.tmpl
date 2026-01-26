@@ -69,7 +69,7 @@
 {{ $defaultProjectGroup := index .ProjectGroups 0 }}
 
 <nav class="mt-2 md-lg:mt-0">
-  <div id="tabs-scroll-left" class="fade-in-left">
+  <div id="tabs-scroll-left" class="fade-in-left" hidden>
     <button aria-label="Scroll left" class="w-6 h-full">
       <span aria-hidden="true" class="w-full h-6">
         {{ $arrowLeft := index .Icons "arrow-left" }}
@@ -94,7 +94,7 @@
     {{ end }}
   </ul>
 
-  <div id="tabs-scroll-right" class="fade-in-right">
+  <div id="tabs-scroll-right" class="fade-in-right" hidden>
     <button aria-label="Scroll right" class="w-8 h-full flex justify-end items-center">
       <span aria-hidden="true" class="w-6 h-6 block">
         {{ $arrowRight := index .Icons "arrow-right" }}
@@ -194,17 +194,23 @@
       newTab.ariaSelected = "true";
       newTabPanel.removeAttribute("hidden");
       currentTab.ariaSelected = "false";
-      currentTabPanel.setAttribute("hidden", "true");
+      currentTabPanel.setAttribute("hidden", "");
     }
   }
 
+  // We use horizontal tabs for index page navigation, which may overflow on mobile.
+  // If the tabs overflow, we show buttons for scrolling to the start/end of the tab list.
   const navElement = document.querySelector("nav");
   const tabsScrollLeftElement = document.getElementById("tabs-scroll-left");
   const tabsScrollRightElement = document.getElementById("tabs-scroll-right");
 
   showOrHideTabScrollButtons();
-  navElement.addEventListener("scroll", showOrHideTabScrollButtons);
-  window.addEventListener("resize", showOrHideTabScrollButtons);
+
+  // Throttle scroll event listener to run at most every 100ms, since these events can cause lag
+  const throttledScrollHandler = throttle(showOrHideTabScrollButtons, 100);
+  navElement.addEventListener("scroll", throttledScrollHandler);
+  // Also listen for "resize" events, as it can affect tab scroll area
+  window.addEventListener("resize", throttledScrollHandler);
 
   tabsScrollLeftElement.querySelector("button").addEventListener("click", scrollToLeftEnd);
   tabsScrollRightElement.querySelector("button").addEventListener("click", scrollToRightEnd);
@@ -215,13 +221,11 @@
     const canScroll = scrollWidth > elementWidth;
     const scrollLeft = navElement.scrollLeft;
 
-    console.log({ scrollWidth, elementWidth, scrollLeft });
-
     if (canScroll && scrollLeft !== 0) {
       tabsScrollLeftElement.removeAttribute("hidden");
     } else {
       if (!tabsScrollLeftElement.hasAttribute("hidden")) {
-        tabsScrollLeftElement.setAttribute("hidden", "true");
+        tabsScrollLeftElement.setAttribute("hidden", "");
       }
     }
 
@@ -229,7 +233,7 @@
       tabsScrollRightElement.removeAttribute("hidden");
     } else {
       if (!tabsScrollRightElement.hasAttribute("hidden")) {
-        tabsScrollRightElement.setAttribute("hidden", "true");
+        tabsScrollRightElement.setAttribute("hidden", "");
       }
     }
   }
@@ -240,6 +244,34 @@
 
   function scrollToRightEnd() {
     navElement.scrollLeft = (navElement.scrollWidth - navElement.offsetWidth);
+  }
+
+  /**
+   * Returns a function that runs the given {@link func} at most every {@link intervalMillis}.
+   *
+   * Inspired by: https://stackoverflow.com/a/52868150
+   *
+   * @param {() => void} func
+   * @param {number} intervalMillis
+   * @return {() => void}
+   */
+  function throttle(func, intervalMillis) {
+    /** @type {number | undefined} */
+    let throttleTimeout = undefined;
+
+    return () => {
+      if (!throttleTimeout) {
+        throttleTimeout = setTimeout(() => {
+          try {
+            // We run the function here after the timeout has completed, since we want to react to
+            // the final state of the throttled event (in our case, scroll events).
+            func();
+          } finally {
+            throttleTimeout = undefined;
+          }
+        }, intervalMillis);
+      }
+    };
   }
 </script>
 </body>
