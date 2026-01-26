@@ -37,6 +37,10 @@ type IndexPageTemplate struct {
 	AboutMe       template.HTML
 	PersonalInfo  []LinkItem // May omit Link field.
 	ProjectGroups []ProjectGroupTemplate
+	// Index page expects the following icons to be present in the map:
+	// - "arrow-left"
+	// - "arrow-right"
+	Icons IconMap
 }
 
 type ProjectGroupMarkdown struct {
@@ -82,6 +86,10 @@ func (renderer *PageRenderer) RenderIndexPage(ctx context.Context, contentPath s
 	case <-renderer.iconsRendered:
 	}
 
+	if err := validateIconsExpectedByIndexPage(renderer.icons); err != nil {
+		return ctxwrap.Error(ctx, err, "icon map was missing icons required by index page")
+	}
+
 	personalInfo, err := content.PersonalInfo.toTemplateFields(renderer.icons)
 	if err != nil {
 		return ctxwrap.Error(ctx, err, "failed to parse personal info from index page content")
@@ -122,6 +130,7 @@ ProjectLoop:
 		AboutMe:       aboutMeText,
 		PersonalInfo:  personalInfo,
 		ProjectGroups: projectGroups.ToSlice(),
+		Icons:         renderer.icons,
 	}
 	if err = renderer.renderPage(ctx, pageTemplate.Meta.Page, pageTemplate); err != nil {
 		return ctxwrap.Error(ctx, err, "failed to render index page")
@@ -161,22 +170,42 @@ func (personalInfo PersonalInfoMarkdown) toTemplateFields(icons IconMap) ([]Link
 
 	//nolint:exhaustruct
 	fields := []LinkItem{
-		{LinkText: fmt.Sprintf("%d years old", ageFromBirthday(birthday))},
-		{LinkText: personalInfo.Location},
-		{LinkText: "GitHub", Link: personalInfo.GitHubURL},
-		{LinkText: "LinkedIn", Link: personalInfo.LinkedInURL},
+		{
+			LinkText: fmt.Sprintf("%d years old", ageFromBirthday(birthday)),
+			IconName: "person",
+		},
+		{
+			LinkText: personalInfo.Location,
+			IconName: "map-marker",
+		},
+		{
+			LinkText: "GitHub", Link: personalInfo.GitHubURL,
+			IconName: "GitHub",
+		},
+		{
+			LinkText: "LinkedIn",
+			Link:     personalInfo.LinkedInURL,
+			IconName: "LinkedIn",
+		},
 	}
 
-	for i, iconName := range [4]string{"person", "map-marker", "GitHub", "LinkedIn"} {
-		icon, ok := icons[iconName]
-		if !ok {
-			return nil, fmt.Errorf("expected '%s' icon in icon map, but found none", iconName)
+	for i := range fields {
+		if err := populateLinkIcon(&fields[i], icons, nil); err != nil {
+			return nil, err
 		}
-
-		fields[i].Icon = template.HTML(icon.Icon)
 	}
 
 	return fields, nil
+}
+
+func validateIconsExpectedByIndexPage(icons IconMap) error {
+	expectedIcons := [...]string{"arrow-left", "arrow-right"}
+	for _, iconName := range expectedIcons {
+		if _, err := icons.getRenderedIcon(iconName); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func ageFromBirthday(birthday time.Time) int {

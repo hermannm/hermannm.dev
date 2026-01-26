@@ -108,135 +108,141 @@ var (
 
 	icons = sitebuilder.IconMap{
 		"person": {
-			Icon: "content/icons/person.svg",
+			Path: "content/icons/person.svg",
 		},
 		"map-marker": {
-			Icon: "content/icons/map-marker.svg",
+			Path: "content/icons/map-marker.svg",
+		},
+		"arrow-left": {
+			Path: "content/icons/arrow-left.svg",
+		},
+		"arrow-right": {
+			Path: "content/icons/arrow-right.svg",
 		},
 		"GitHub": {
-			Icon:         "content/icons/github.svg",
+			Path:         "content/icons/github.svg",
 			IconForLinks: []string{"https://github.com"},
 		},
 		"LinkedIn": {
-			Icon: "content/icons/linkedin.svg",
+			Path: "content/icons/linkedin.svg",
 		},
 		"Gopher": {
-			Icon:         "content/icons/gopher.svg",
+			Path:         "content/icons/gopher.svg",
 			IconForLinks: []string{"https://pkg.go.dev"},
 		},
 		"Go": {
-			Icon:                  "content/icons/go.svg",
+			Path:                  "content/icons/go.svg",
 			Link:                  "https://go.dev/",
-			IndexPageFallbackIcon: "content/icons/go-alt.svg",
+			IndexPageFallbackPath: "content/icons/go-alt.svg",
 		},
 		"Rust": {
-			Icon:                  "content/icons/rust.svg",
+			Path:                  "content/icons/rust.svg",
 			Link:                  "https://www.rust-lang.org/",
-			IndexPageFallbackIcon: "content/icons/rust-alt.svg",
+			IndexPageFallbackPath: "content/icons/rust-alt.svg",
 			IconForLinks:          []string{"https://docs.rs"},
 		},
 		"Cargo": {
-			Icon:         "content/icons/cargo.svg",
+			Path:         "content/icons/cargo.svg",
 			IconForLinks: []string{"https://crates.io"},
 		},
 		"Kotlin": {
-			Icon:         "content/icons/kotlin.svg",
+			Path:         "content/icons/kotlin.svg",
 			Link:         "https://kotlinlang.org/",
 			IconForLinks: []string{"https://devlog-kotlin.hermannm.dev"},
 		},
 		"JetBrains": {
-			Icon:         "content/icons/jetbrains.svg",
+			Path:         "content/icons/jetbrains.svg",
 			IconForLinks: []string{"https://klibs.io", "https://plugins.jetbrains.com"},
 		},
 		"Kotlin+Go+Rust": {
-			IndexPageFallbackIcon: "content/icons/kotlin-go-rust-combined.svg",
+			IndexPageFallbackPath: "content/icons/kotlin-go-rust-combined.svg",
 		},
 		"TypeScript": {
-			Icon: "content/icons/typescript.svg",
+			Path: "content/icons/typescript.svg",
 			Link: "https://www.typescriptlang.org/",
 		},
 		"JavaScript": {
-			Icon: "content/icons/javascript.svg",
+			Path: "content/icons/javascript.svg",
 			Link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
 		},
 		"C#": {
-			Icon: "content/icons/csharp.svg",
+			Path: "content/icons/csharp.svg",
 			Link: "https://dotnet.microsoft.com/en-us/languages/csharp",
 		},
 		"Java": {
-			Icon: "content/icons/java.svg",
+			Path: "content/icons/java.svg",
 			Link: "https://www.java.com/en/download/help/whatis_java.html",
 		},
 		"Python": {
-			Icon: "content/icons/python.svg",
+			Path: "content/icons/python.svg",
 			Link: "https://www.python.org/",
 		},
 		"React": {
-			Icon: "content/icons/react.svg",
+			Path: "content/icons/react.svg",
 			Link: "https://reactjs.org/",
 		},
 		"Next.js": {
-			Icon: "content/icons/next-js.svg",
+			Path: "content/icons/next-js.svg",
 			Link: "https://nextjs.org/",
 		},
 		"Django": {
-			Icon: "content/icons/django.svg",
+			Path: "content/icons/django.svg",
 			Link: "https://www.djangoproject.com/",
 		},
 		"PostgreSQL": {
-			Icon: "content/icons/postgres.svg",
+			Path: "content/icons/postgres.svg",
 			Link: "https://www.postgresql.org/",
 		},
 		"Godot": {
-			Icon: "content/icons/godot.svg",
+			Path: "content/icons/godot.svg",
 			Link: "https://godotengine.org/",
 		},
 		"Unity": {
-			Icon: "content/icons/unity.svg",
+			Path: "content/icons/unity.svg",
 			Link: "https://unity.com/",
 		},
 		"libGDX": {
-			Icon: "content/icons/libgdx.svg",
+			Path: "content/icons/libgdx.svg",
 			Link: "https://libgdx.com/",
 		},
 		"gRPC": {
-			Icon: "content/icons/grpc.svg",
+			Path: "content/icons/grpc.svg",
 			Link: "https://grpc.io/",
 		},
 		"GraphQL": {
-			Icon: "content/icons/graphql.svg",
+			Path: "content/icons/graphql.svg",
 			Link: "https://graphql.org/",
 		},
 		"WebRTC": {
-			Icon: "content/icons/webrtc.svg",
+			Path: "content/icons/webrtc.svg",
 			Link: "https://webrtc.org/",
 		},
 		"MQTT": {
-			Icon: "content/icons/mqtt.svg",
+			Path: "content/icons/mqtt.svg",
 			Link: "https://mqtt.org/",
 		},
 		"ClickHouse": {
-			Icon: "content/icons/clickhouse.svg",
+			Path: "content/icons/clickhouse.svg",
 			Link: "https://clickhouse.com/docs/en/intro",
 		},
 		"Elasticsearch": {
-			Icon: "content/icons/elasticsearch.svg",
+			Path: "content/icons/elasticsearch.svg",
 			Link: "https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html",
 		},
 		"AWS": {
-			Icon: "content/icons/aws.svg",
+			Path: "content/icons/aws.svg",
 			Link: "https://aws.amazon.com/cdk/",
 		},
 		"Azure": {
-			Icon: "content/icons/azure.svg",
+			Path: "content/icons/azure.svg",
 			Link: "https://azure.microsoft.com/",
 		},
 		"VSCode": {
-			Icon:         "content/icons/vscode.svg",
+			Path:         "content/icons/vscode.svg",
 			IconForLinks: []string{"https://marketplace.visualstudio.com"},
 		},
 		"NTNU": {
-			Icon:         "content/icons/ntnu.svg",
+			Path:         "content/icons/ntnu.svg",
 			IconForLinks: []string{"https://ntnuopen.ntnu.no"},
 		},
 	}

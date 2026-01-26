@@ -261,7 +261,7 @@ func parseTechStack(
 	}
 
 	if combinedTechIcon, ok := icons[combinedTechNames.String()]; ok {
-		indexPageFallbackIcon = template.HTML(combinedTechIcon.IndexPageFallbackIcon)
+		indexPageFallbackIcon = combinedTechIcon.RenderedIndexPageFallbackIcon
 	}
 
 	return parsed, indexPageFallbackIcon, nil
@@ -278,13 +278,16 @@ func getTechIcon(
 			techName,
 		)
 	}
+	if techIcon.RenderedIcon == "" {
+		return LinkItem{}, "", fmt.Errorf("tech icon '%s' was not rendered", techName)
+	}
 
 	//nolint:exhaustruct
 	return LinkItem{
 		LinkText: techName,
 		Link:     techIcon.Link,
-		Icon:     template.HTML(techIcon.Icon),
-	}, template.HTML(techIcon.IndexPageFallbackIcon), nil
+		Icon:     techIcon.RenderedIcon,
+	}, techIcon.RenderedIndexPageFallbackIcon, nil
 }
 
 func populateLinkTextAndIcons(links []TopLevelLink, icons IconMap) error {
@@ -315,23 +318,18 @@ func populateLinkTextAndIcons(links []TopLevelLink, icons IconMap) error {
 }
 
 func populateLinkIcon(link *LinkItem, icons IconMap, knownIcons []IconConfig) error {
-	if link.Icon != "" {
-		renderedIcon, ok := icons[string(link.Icon)]
-		if !ok {
-			return fmt.Errorf(
-				"icon '%s' not found in icon map for link '%s'",
-				link.Icon,
-				link.LinkText,
-			)
+	if link.IconName != "" {
+		renderedIcon, err := icons.getRenderedIcon(link.IconName)
+		if err != nil {
+			return err
 		}
-
-		link.Icon = template.HTML(renderedIcon.Icon)
+		link.Icon = renderedIcon
 	} else {
 	Outer:
 		for _, knownIcon := range knownIcons {
 			for _, knownIconLink := range knownIcon.IconForLinks {
 				if strings.HasPrefix(link.Link, knownIconLink) {
-					link.Icon = template.HTML(knownIcon.Icon)
+					link.Icon = knownIcon.RenderedIcon
 					break Outer
 				}
 			}

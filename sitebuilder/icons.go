@@ -1,7 +1,7 @@
 package sitebuilder
 
 import (
-	"errors"
+	"fmt"
 	"html/template"
 	"os"
 
@@ -12,30 +12,48 @@ import (
 type IconMap map[string]*IconConfig
 
 type IconConfig struct {
-	Icon                  string `validate:"required,filepath"`
+	Path string `validate:"required,filepath"`
+	// Populated after [PageRenderer.RenderIcons] finishes.
+	RenderedIcon          template.HTML
 	Link                  string `validate:"omitempty,url"`
-	IndexPageFallbackIcon string `validate:"omitempty,filepath"`
+	IndexPageFallbackPath string `validate:"omitempty,filepath"`
+	// Blank if there was no index page fallback icon for this entry.
+	RenderedIndexPageFallbackIcon template.HTML
 	// Base URL of links that this icon should be used for.
 	IconForLinks []string `validate:"omitempty,dive,url"`
+}
+
+func (icons IconMap) getRenderedIcon(name string) (template.HTML, error) {
+	icon, ok := icons[name]
+	if !ok {
+		return "", fmt.Errorf("failed to find expected icon '%s' in icon map", name)
+	}
+	if icon.RenderedIcon == "" {
+		return "", fmt.Errorf("icon '%s' was not rendered", name)
+	}
+	return icon.RenderedIcon, nil
 }
 
 func (renderer *PageRenderer) RenderIcons() error {
 	var group errgroup.Group
 
 	for _, icon := range renderer.icons {
-		// Combined icons, such as "Go+Rust", only define IndexPageFallbackIcon
-		if icon.Icon != "" {
+		// Combined icons, such as "Go+Rust", only define IndexPageFallbackPath
+		if icon.Path != "" {
 			group.Go(
 				func() error {
-					return replaceIconWithSVG(&icon.Icon)
+					return readIconFile(icon.Path, &icon.RenderedIcon)
 				},
 			)
 		}
 
-		if icon.IndexPageFallbackIcon != "" {
+		if icon.IndexPageFallbackPath != "" {
 			group.Go(
 				func() error {
-					return replaceIconWithSVG(&icon.IndexPageFallbackIcon)
+					return readIconFile(
+						icon.IndexPageFallbackPath,
+						&icon.RenderedIndexPageFallbackIcon,
+					)
 				},
 			)
 		}
@@ -45,23 +63,23 @@ func (renderer *PageRenderer) RenderIcons() error {
 		return err
 	}
 
-	githubIcon, ok := renderer.icons["GitHub"]
-	if !ok {
-		return errors.New("expected icon map to have entry for 'GitHub'")
+	githubIcon, err := renderer.icons.getRenderedIcon("GitHub")
+	if err != nil {
+		return err
 	}
-	renderer.commonData.githubIcon = template.HTML(githubIcon.Icon)
+	renderer.commonData.githubIcon = githubIcon
 
 	// Signals to other goroutines that icons have finished rendering
 	close(renderer.iconsRendered)
 	return nil
 }
 
-func replaceIconWithSVG(icon *string) error {
-	svgBytes, err := os.ReadFile(*icon)
+func readIconFile(path string, out *template.HTML) error {
+	svgBytes, err := os.ReadFile(path)
 	if err != nil {
-		return wrap.Errorf(err, "failed to read svg file for icon '%s'", *icon)
+		return wrap.Errorf(err, "failed to read svg file for icon at path '%s'", path)
 	}
 
-	*icon = string(svgBytes)
+	*out = template.HTML(svgBytes)
 	return nil
 }
