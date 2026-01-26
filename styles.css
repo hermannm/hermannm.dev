@@ -33,6 +33,10 @@
     --page-height: calc(100vh - 2 * 1rem);
     /*noinspection CssOverwrittenProperties*/
     --page-height: calc(100dvh - 2 * 1rem);
+
+    --tab-gap: 16px;
+    --tab-border-width: 2px;
+    --tab-border-radius: calc(var(--tab-gap) / 2 + var(--tab-border-width));
 }
 
 @font-face {
@@ -173,7 +177,7 @@
 /* Inspired by: https://css-tricks.com/tabs-with-round-out-borders/ */
 .tabs {
     display: flex;
-    gap: 16px;
+    gap: var(--tab-gap);
     justify-content: center;
     font-size: var(--text-lg);
     border-bottom: 3px solid var(--border-color);
@@ -195,13 +199,13 @@
     text-align: center;
     text-decoration: none;
 
-    border-left-width: 2px;
-    border-top-width: 2px;
-    border-right-width: 2px;
+    border-left-width: var(--tab-border-width);
+    border-top-width: var(--tab-border-width);
+    border-right-width: var(--tab-border-width);
     border-color: var(--border-color);
 
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
+    border-top-left-radius: var(--tab-gap);
+    border-top-right-radius: var(--tab-gap);
 }
 
 .tabs a[aria-selected="true"] {
@@ -221,31 +225,31 @@
 .tabs li:has(> a[aria-selected="true"]):before,
 .tabs li:has(> a[aria-selected="true"]):after {
     z-index: 1;
-    width: 10px;
-    height: 10px;
+    width: var(--tab-border-radius);
+    height: var(--tab-border-radius);
     background: var(--border-color);
 }
 
 .tabs li:has(> a[aria-selected="true"]):before {
-    left: -10px;
+    left: calc(-1 * var(--tab-border-radius));
 }
 
 .tabs li:has(> a[aria-selected="true"]):after {
-    right: -10px;
+    right: calc(-1 * var(--tab-border-radius));
 }
 
 .tabs a[aria-selected="true"]:after, .tabs a[aria-selected="true"]:before {
     z-index: 2;
-    width: 16px;
-    height: 16px;
-    border-radius: 8px;
+    width: var(--tab-gap);
+    height: var(--tab-gap);
+    border-radius: calc(var(--tab-gap) / 2);
     background: var(--color-gruvbox-bg0);
 }
 
 .tabs a[aria-selected="true"]:before {
-    left: -16px;
+    left: calc(-1 * var(--tab-gap));
 }
 
 .tabs a[aria-selected="true"]:after {
-    right: -16px;
+    right: calc(-1 * var(--tab-gap));
 }
