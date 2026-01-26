@@ -204,34 +204,37 @@
     border-top-right-radius: 16px;
 }
 
-.tabs .active a {
+.tabs a[aria-selected="true"] {
     font-weight: bold;
     background: var(--border-color);
 }
 
-.tabs .active:before, .tabs .active:after,
-.tabs .active a:before, .tabs .active a:after {
+.tabs li:has(> a[aria-selected="true"]):before,
+.tabs li:has(> a[aria-selected="true"]):after,
+.tabs a[aria-selected="true"]:before,
+.tabs a[aria-selected="true"]:after {
     position: absolute;
     bottom: 0;
     content: "";
 }
 
-.tabs .active:before, .tabs .active:after {
+.tabs li:has(> a[aria-selected="true"]):before,
+.tabs li:has(> a[aria-selected="true"]):after {
     z-index: 1;
     width: 10px;
     height: 10px;
     background: var(--border-color);
 }
 
-.tabs .active:before {
+.tabs li:has(> a[aria-selected="true"]):before {
     left: -10px;
 }
 
-.tabs .active:after {
+.tabs li:has(> a[aria-selected="true"]):after {
     right: -10px;
 }
 
-.tabs .active a:after, .tabs .active a:before {
+.tabs a[aria-selected="true"]:after, .tabs a[aria-selected="true"]:before {
     z-index: 2;
     width: 16px;
     height: 16px;
@@ -239,10 +242,10 @@
     background: var(--color-gruvbox-bg0);
 }
 
-.tabs .active a:before {
+.tabs a[aria-selected="true"]:before {
     left: -16px;
 }
 
-.tabs .active a:after {
+.tabs a[aria-selected="true"]:after {
     right: -16px;
 }

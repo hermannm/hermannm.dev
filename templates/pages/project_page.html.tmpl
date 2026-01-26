@@ -2,13 +2,12 @@
 <html lang="en-US">
 {{ template "head.html.tmpl" .Meta -}}
 <body
-    class="mx-auto mb-4 mt-4 flex min-h-(--page-height) max-w-3xl flex-col gap-4 bg-gruvbox-bg0 px-2 text-gruvbox-fg"
+    class="mx-auto mb-4 mt-4 flex min-h-(--page-height) max-w-3xl flex-col gap-3 bg-gruvbox-bg0 px-2 text-gruvbox-fg"
 >
-<h1 class="flex justify-center text-2xl font-bold">
-  <a href="/">{{ .Meta.Common.SiteName }}</a>
-</h1>
-
-<div class="flex flex-col gap-3">
+<header class="flex flex-col gap-4">
+  <h1 class="flex justify-center text-2xl font-bold">
+    <a href="/">{{ .Meta.Common.SiteName }}</a>
+  </h1>
   <div
       class="flex h-[calc(2*6px+60px)] items-center gap-3 rounded-lg border-[6px] border-solid border-gruvbox-bg2 bg-gruvbox-bg2 font-bold"
   >
@@ -23,53 +22,53 @@
     {{ end -}}
     <h2 class="text-xl first:ml-1">{{ .Project.Name }}</h2>
   </div>
+</header>
 
-  <div class="flex flex-col gap-4 pl-1 pr-1">
-    {{ $techStackLength := len .Project.TechStack -}}
-    {{ if ge $techStackLength 2 -}}
-      <div class="flex flex-col gap-1 leading-[normal]">
-        <strong>{{ .Project.TechStackTitle }}:</strong>
-        <ul class="flex list-none flex-col gap-1 pl-0">
-          {{- range $technology := .Project.TechStack }}
-            <li class="flex flex-wrap gap-x-2 gap-y-1">
-              {{- template "techStackItem" $technology }}
-            </li>
-          {{- end }}
-        </ul>
-      </div>
-    {{- else if eq $techStackLength 1 }}
-      {{ $technology := index .Project.TechStack 0 -}}
-      <div class="flex flex-wrap gap-2">
-        <strong>{{ .Project.TechStackTitle }}:</strong>
-        {{ template "techStackItem" $technology -}}
-      </div>
-    {{- end }}
-
-    {{ .Project.Description }}
-
-    {{ if ge (len .Project.Links) 1 }}
-      <ul class="flex list-none flex-col gap-3 pl-0">
-        {{- range $link := .Project.Links }}
-          <li class="flex flex-col gap-1">
-            {{ template "linkItem" $link.LinkItem -}}
-
-            {{ if ge (len .Sublinks) 1 }}
-              <ul class="flex list-disc flex-col gap-1">
-                {{ range $sublink := $link.Sublinks }}
-                  <li class="list-item">{{ template "linkItem" $sublink -}}</li>
-                {{ end }}
-              </ul>
-            {{ end }}
+<main class="flex flex-col gap-4 pl-1 pr-1">
+  {{ $techStackLength := len .Project.TechStack -}}
+  {{ if ge $techStackLength 2 -}}
+    <div class="flex flex-col gap-1 leading-[normal]">
+      <strong>{{ .Project.TechStackTitle }}:</strong>
+      <ul class="flex list-none flex-col gap-1 pl-0">
+        {{- range $technology := .Project.TechStack }}
+          <li class="flex flex-wrap gap-x-2 gap-y-1">
+            {{- template "techStackItem" $technology }}
           </li>
-        {{ end -}}
+        {{- end }}
       </ul>
-    {{ end }}
+    </div>
+  {{- else if eq $techStackLength 1 }}
+    {{ $technology := index .Project.TechStack 0 -}}
+    <div class="flex flex-wrap gap-2">
+      <strong>{{ .Project.TechStackTitle }}:</strong>
+      {{ template "techStackItem" $technology -}}
+    </div>
+  {{- end }}
 
-    {{ if .Project.Footnote }}
-      <em>{{ .Project.Footnote }}</em>
-    {{ end }}
-  </div>
-</div>
+  {{ .Project.Description }}
+
+  {{ if ge (len .Project.Links) 1 }}
+    <ul class="flex list-none flex-col gap-3 pl-0">
+      {{- range $link := .Project.Links }}
+        <li class="flex flex-col gap-1">
+          {{ template "linkItem" $link.LinkItem -}}
+
+          {{ if ge (len .Sublinks) 1 }}
+            <ul class="flex list-disc flex-col gap-1">
+              {{ range $sublink := $link.Sublinks }}
+                <li class="list-item">{{ template "linkItem" $sublink -}}</li>
+              {{ end }}
+            </ul>
+          {{ end }}
+        </li>
+      {{ end -}}
+    </ul>
+  {{ end }}
+
+  {{ if .Project.Footnote }}
+    <em>{{ .Project.Footnote }}</em>
+  {{ end }}
+</main>
 
 {{ template "footer.html.tmpl" .Meta.Common }}
 </body>

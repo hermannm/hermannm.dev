@@ -4,7 +4,7 @@
 <body
     class="mb-4 mx-auto px-2 mt-4 flex min-h-(--page-height) max-w-(--index-page-width) flex-col gap-4 bg-gruvbox-bg0 text-gruvbox-fg"
 >
-<div class="flex flex-col items-center gap-4 xs:flex-row">
+<header class="flex flex-col items-center gap-4 xs:flex-row">
   <div
       class="flex flex-col gap-4 xs:min-w-(--xs-to-sm-about-me-width) xs:max-w-(--xs-to-sm-about-me-width) sm:min-w-0 sm:max-w-none"
   >
@@ -62,63 +62,77 @@
       />
     </picture>
   </div>
-</div>
+</header>
 
 {{ $defaultProjectGroup := index .ProjectGroups 0 }}
 
-<ul class="tabs">
-  {{ range $projectGroup := .ProjectGroups }}
-    <li
-        id="{{ $projectGroup.Slug }}-tab"
-        class="{{ if eq $projectGroup.Slug $defaultProjectGroup.Slug }}active{{ end }}"
-    >
-      <a href="{{ if eq $projectGroup.Slug $defaultProjectGroup.Slug }}#{{ else }}#{{ $projectGroup.Slug }}{{ end }}">{{ $projectGroup.Title }}</a>
-    </li>
-  {{ end }}
-</ul>
-
-{{ range $projectGroup := .ProjectGroups }}
-  <div id="{{ $projectGroup.Slug }}-content"
-       class="flex flex-col gap-4 {{ if ne $projectGroup.Slug $defaultProjectGroup.Slug }}hidden{{ end }} {{ if not $projectGroup.IntroText }}mt-3{{ end }}">
-    {{ if $projectGroup.IntroText -}}
-      <div class="flex justify-center mb-2">
-        <p class="max-w-204 text-center">{{ $projectGroup.IntroText }}</p>
-      </div>
-    {{- end }}
-
-    <ul class="m-0 flex list-none flex-wrap justify-center gap-6 pl-0">
-      {{- range $project := $projectGroup.Projects }}
-        <li
-            class="md-lg:basis-[calc(100%/3-1rem)] basis-full rounded-lg border-2 border-solid border-gruvbox-bg2 duration-100 lift-on-hover sm:basis-[calc(50%-0.75rem)]"
+<nav>
+  <ul class="tabs" role="tablist">
+    {{ range $projectGroup := .ProjectGroups }}
+      {{ $isDefault := eq $projectGroup.Slug $defaultProjectGroup.Slug }}
+      <li>
+        <a
+            id="{{ $projectGroup.Slug }}-tab"
+            role="tab"
+            aria-controls="{{ $projectGroup.Slug }}-tabpanel"
+            aria-selected="{{ if $isDefault }}true{{ else }}false{{ end }}"
+            href="{{ if $isDefault }}#{{ else }}#{{ $projectGroup.Slug }}{{ end }}"
         >
-          <a class="flex h-full flex-col items-center no-underline" href="{{ $project.Path }}">
-            <div class="half-border-background w-full pb-1 pt-1">
-              {{ if $project.Logo.Path }}
-                <img
-                    class="mx-auto max-w-[60px] rounded-lg"
-                    width="60"
-                    height="60"
-                    src="{{ $project.Logo.Path }}"
-                    alt="{{ $project.Logo.AltText }}"
-                />
-              {{ else }}
-                <div class="mx-auto h-[40px] flex justify-center">
-                  {{ $project.IndexPageFallbackIcon }}
-                </div>
-              {{ end }}
-            </div>
-            <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
-              <h3 class="text-lg font-bold">{{ $project.Name }}</h3>
-              <p class="flex min-h-12 grow items-center no-underline">
-                {{ $project.TagLine }}
-              </p>
-            </div>
-          </a>
-        </li>
+          {{ $projectGroup.Title }}
+        </a>
+      </li>
+    {{ end }}
+  </ul>
+</nav>
+
+<main>
+  {{ range $projectGroup := .ProjectGroups }}
+    <div id="{{ $projectGroup.Slug }}-tabpanel"
+         role="tabpanel"
+         aria-labelledby="{{ $projectGroup.Slug }}-tab"
+         {{ if ne $projectGroup.Slug $defaultProjectGroup.Slug }}hidden{{ end }}
+         class="flex flex-col gap-4 {{ if not $projectGroup.IntroText }}mt-3{{ end }}"
+    >
+      {{ if $projectGroup.IntroText -}}
+        <div class="flex justify-center mb-2">
+          <p class="max-w-204 text-center">{{ $projectGroup.IntroText }}</p>
+        </div>
       {{- end }}
-    </ul>
-  </div>
-{{ end }}
+
+      <ul class="m-0 flex list-none flex-wrap justify-center gap-6 pl-0">
+        {{- range $project := $projectGroup.Projects }}
+          <li
+              class="md-lg:basis-[calc(100%/3-1rem)] basis-full rounded-lg border-2 border-solid border-gruvbox-bg2 duration-100 lift-on-hover sm:basis-[calc(50%-0.75rem)]"
+          >
+            <a class="flex h-full flex-col items-center no-underline" href="{{ $project.Path }}">
+              <div class="half-border-background w-full pb-1 pt-1">
+                {{ if $project.Logo.Path }}
+                  <img
+                      class="mx-auto max-w-[60px] rounded-lg"
+                      width="60"
+                      height="60"
+                      src="{{ $project.Logo.Path }}"
+                      alt="{{ $project.Logo.AltText }}"
+                  />
+                {{ else }}
+                  <div class="mx-auto h-[40px] flex justify-center">
+                    {{ $project.IndexPageFallbackIcon }}
+                  </div>
+                {{ end }}
+              </div>
+              <div class="flex grow flex-col items-center gap-1 pb-2 pl-2 pr-2 text-center">
+                <h3 class="text-lg font-bold">{{ $project.Name }}</h3>
+                <p class="flex min-h-12 grow items-center no-underline">
+                  {{ $project.TagLine }}
+                </p>
+              </div>
+            </a>
+          </li>
+        {{- end }}
+      </ul>
+    </div>
+  {{ end }}
+</main>
 
 {{ template "footer.html.tmpl" .Meta.Common }}
 
@@ -159,13 +173,13 @@
 
     const oldTab = document.getElementById(`${oldHash}-tab`);
     const newTab = document.getElementById(`${newHash}-tab`);
-    const oldContent = document.getElementById(`${oldHash}-content`);
-    const newContent = document.getElementById(`${newHash}-content`);
+    const oldTabPanel = document.getElementById(`${oldHash}-tabpanel`);
+    const newTabPanel = document.getElementById(`${newHash}-tabpanel`);
 
-    newTab.classList.add("active");
-    oldTab.classList.remove("active");
-    newContent.classList.remove("hidden");
-    oldContent.classList.add("hidden");
+    newTab.ariaSelected = "true";
+    oldTab.ariaSelected = "false";
+    newTabPanel.removeAttribute("hidden");
+    oldTabPanel.setAttribute("hidden", "true");
   }
 </script>
 </body>
