@@ -109,12 +109,17 @@ type PageRenderer struct {
 	commonData CommonPageData
 	templates  *template.Template
 
+	// Will be nil until projectGroupsParsed channel is closed.
+	parsedProjectGroups []ParsedProjectGroup
+	projectGroupsParsed chan struct{}
+
 	parsedProjects chan ParsedProject
 	projectCount   int
 
 	parsedPages chan Page
 	pageCount   int
 
+	// Icons in this map are not rendered before iconsRendered channel is closed.
 	icons         IconMap
 	iconsRendered chan struct{}
 
@@ -140,15 +145,17 @@ func NewPageRenderer(
 	pagePaths := make(chan Page, pageCount)
 
 	return PageRenderer{
-		commonData:     commonData,
-		templates:      templates,
-		parsedProjects: parsedProjects,
-		projectCount:   projectCount,
-		parsedPages:    pagePaths,
-		pageCount:      pageCount,
-		icons:          icons,
-		iconsRendered:  make(chan struct{}),
-		devMode:        devMode,
+		commonData:          commonData,
+		templates:           templates,
+		parsedProjectGroups: nil,
+		projectGroupsParsed: make(chan struct{}),
+		parsedProjects:      parsedProjects,
+		projectCount:        projectCount,
+		parsedPages:         pagePaths,
+		pageCount:           pageCount,
+		icons:               icons,
+		iconsRendered:       make(chan struct{}),
+		devMode:             devMode,
 	}, nil
 }
 

@@ -77,6 +77,10 @@ func (renderer *PageRenderer) RenderIndexPage(ctx context.Context, contentPath s
 		return ctxwrap.Error(ctx, err, "failed to parse project groups")
 	}
 
+	renderer.parsedProjectGroups = projectGroups.list
+	// Signals to other goroutines that project groups have been parsed
+	close(renderer.projectGroupsParsed)
+
 	renderer.parsedPages <- content.Page
 
 	// Waits for icons to finish rendering before using them

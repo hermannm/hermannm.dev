@@ -47,6 +47,15 @@ type ProjectTemplate struct {
 	ProjectBase
 	Description template.HTML
 	TechStack   []TechStackItemTemplate
+	// At the top of each project page, we have a link back to the index page. We want this link to
+	// lead to the correct tab on the index page (so a library page links to the "Libraries" tab,
+	// and a work experience page links to the "Work" tab).
+	//
+	// We can link directly to a tab using fragments (#) in the URL (see script at bottom of
+	// index_page.html.tmpl), using the slug of the project group ("projects"/"work"/"libraries").
+	// These slugs are defined by the index page, so we wait for the index page goroutine to parse
+	// its project groups, before using them to find the correct group slug for each project.
+	IndexPageLink string
 }
 
 type TechStackItemMarkdown struct {
@@ -185,6 +194,23 @@ func (renderer *PageRenderer) parseProject(
 		project.Footnote = removeParagraphTagsAroundHTML(builder.String())
 	}
 
+	// Waits for index page goroutine to finish parsing project groups
+	select {
+	case <-ctx.Done():
+		return ParsedProject{}, ctx.Err()
+	case <-renderer.projectGroupsParsed:
+	}
+
+	indexPageLink, err := getIndexPageLink(renderer.parsedProjectGroups, projectFile.directory)
+	if err != nil {
+		return ParsedProject{}, ctxwrap.Errorf(
+			ctx,
+			err,
+			"failed to get index page link for project '%s'",
+			project.Name,
+		)
+	}
+
 	// Waits for icons to finish rendering before using them
 	select {
 	case <-ctx.Done():
@@ -210,13 +236,29 @@ func (renderer *PageRenderer) parseProject(
 
 	return ParsedProject{
 		ProjectTemplate: ProjectTemplate{
-			ProjectBase: project.ProjectBase,
-			Description: template.HTML(descriptionBuffer.String()),
-			TechStack:   techStack,
+			ProjectBase:   project.ProjectBase,
+			Description:   template.HTML(descriptionBuffer.String()),
+			TechStack:     techStack,
+			IndexPageLink: indexPageLink,
 		},
 		Page:       project.Page,
 		ContentDir: projectFile.directory,
 	}, nil
+}
+
+// See [ProjectTemplate.IndexPageLink].
+func getIndexPageLink(projectGroups []ParsedProjectGroup, contentDir string) (string, error) {
+	for i, group := range projectGroups {
+		if group.contentDir == contentDir {
+			isDefault := i == 0 // First project group is default
+			if isDefault {
+				return "/", nil
+			} else {
+				return "/#" + group.Slug, nil
+			}
+		}
+	}
+	return "", fmt.Errorf("no project group found for content dir '%s'", contentDir)
 }
 
 func parseTechStack(
