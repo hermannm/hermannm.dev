@@ -1,9 +1,9 @@
 {
     "devDependencies": {
-        "tailwindcss": "4.1.17",
-        "@tailwindcss/cli": "4.1.17",
+        "tailwindcss": "4.1.18",
+        "@tailwindcss/cli": "4.1.18",
         "live-server": "1.2.2",
-        "prettier": "3.7.4",
+        "prettier": "3.8.1",
         "prettier-plugin-tailwindcss": "0.7.2",
         "prettier-plugin-go-template": "0.0.15"
     }
