@@ -235,37 +235,37 @@ nav {
     outline-offset: calc(-1 * var(--tab-border-width));
 }
 
-.tabs a[aria-selected="true"] {
+.tabs li[aria-selected="true"] a {
     font-weight: bold;
     background: var(--border-color);
 }
 
-.tabs li:has(> a[aria-selected="true"]):before,
-.tabs li:has(> a[aria-selected="true"]):after,
-.tabs a[aria-selected="true"]:before,
-.tabs a[aria-selected="true"]:after {
+.tabs li[aria-selected="true"]:before,
+.tabs li[aria-selected="true"]:after,
+.tabs li[aria-selected="true"] a:before,
+.tabs li[aria-selected="true"] a:after {
     position: absolute;
     bottom: 0;
     content: "";
 }
 
-.tabs li:has(> a[aria-selected="true"]):before,
-.tabs li:has(> a[aria-selected="true"]):after {
+.tabs li[aria-selected="true"]:before,
+.tabs li[aria-selected="true"]:after {
     z-index: var(--tab-z-index-low);
     width: var(--tab-border-radius);
     height: var(--tab-border-radius);
     background: var(--border-color);
 }
 
-.tabs li:has(> a[aria-selected="true"]):before {
+.tabs li[aria-selected="true"]:before {
     left: calc(-1 * var(--tab-border-radius));
 }
 
-.tabs li:has(> a[aria-selected="true"]):after {
+.tabs li[aria-selected="true"]:after {
     right: calc(-1 * var(--tab-border-radius));
 }
 
-.tabs a[aria-selected="true"]:after, .tabs a[aria-selected="true"]:before {
+.tabs li[aria-selected="true"] a:after, .tabs li[aria-selected="true"] a:before {
     z-index: var(--tab-z-index-mid);
     width: var(--tab-gap);
     height: var(--tab-gap);
@@ -273,11 +273,11 @@ nav {
     background: var(--color-gruvbox-bg0);
 }
 
-.tabs a[aria-selected="true"]:before {
+.tabs li[aria-selected="true"] a:before {
     left: calc(-1 * var(--tab-gap));
 }
 
-.tabs a[aria-selected="true"]:after {
+.tabs li[aria-selected="true"] a:after {
     right: calc(-1 * var(--tab-gap));
 }
 

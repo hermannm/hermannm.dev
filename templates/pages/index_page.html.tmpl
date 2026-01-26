@@ -81,14 +81,13 @@
   <ul class="tabs" role="tablist">
     {{ range $projectGroup := .ProjectGroups }}
       {{ $isDefault := eq $projectGroup.Slug $defaultProjectGroup.Slug }}
-      <li>
-        <a
-            id="{{ $projectGroup.Slug }}-tab"
-            role="tab"
-            aria-controls="{{ $projectGroup.Slug }}-tabpanel"
-            aria-selected="{{ if $isDefault }}true{{ else }}false{{ end }}"
-            href="{{ if $isDefault }}#{{ else }}#{{ $projectGroup.Slug }}{{ end }}"
-        >
+      <li
+          id="{{ $projectGroup.Slug }}-tab"
+          role="tab"
+          aria-controls="{{ $projectGroup.Slug }}-tabpanel"
+          aria-selected="{{ if $isDefault }}true{{ else }}false{{ end }}"
+      >
+        <a href="{{ if $isDefault }}#{{ else }}#{{ $projectGroup.Slug }}{{ end }}">
           <h2>{{- $projectGroup.Title -}}</h2>
         </a>
       </li>
