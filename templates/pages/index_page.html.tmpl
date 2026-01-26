@@ -168,7 +168,7 @@
 
     selectTabFromURLHash(newHash || defaultProjectGroupHash);
 
-    // The default tab will have hash '#', but we don't want to show that in the URL
+    // We don't want to show the hash of the default tab in the URL
     if (newHash === defaultProjectGroupHash) {
       window.history.replaceState({}, "", event.newURL.replace(newURL.hash, ""));
     }
