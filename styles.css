@@ -301,10 +301,6 @@ nav {
     align-items: stretch;
 }
 
-.fade-in-left button, .fade-in-right button {
-    pointer-events: all;
-}
-
 .fade-in-left {
     left: 0;
     padding-right: 2rem;
@@ -330,6 +326,8 @@ nav {
 }
 
 .fade-in-left button, .fade-in-right button {
+    /* Override pointer-events: none from fade-in-left/fade-in-right */
+    pointer-events: all;
     height: 100%;
     width: calc(2rem + var(--page-padding-x));
     display: flex;
