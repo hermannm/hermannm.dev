@@ -231,7 +231,7 @@ var (
 		},
 		"AWS": {
 			Path: "content/icons/aws.svg",
-			Link: "https://aws.amazon.com/cdk/",
+			Link: "https://aws.amazon.com/",
 		},
 		"Azure": {
 			Path: "content/icons/azure.svg",
