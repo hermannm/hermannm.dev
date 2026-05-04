@@ -177,6 +177,10 @@ var (
 			Path: "content/icons/python.svg",
 			Link: "https://www.python.org/",
 		},
+		"Node.js": {
+			Path: "content/icons/nodejs.svg",
+			Link: "https://nodejs.org/",
+		},
 		"React": {
 			Path: "content/icons/react.svg",
 			Link: "https://reactjs.org/",
@@ -232,6 +236,10 @@ var (
 		"AWS": {
 			Path: "content/icons/aws.svg",
 			Link: "https://aws.amazon.com/",
+		},
+		"Google Cloud Platform": {
+			Path: "content/icons/gcp.svg",
+			Link: "https://cloud.google.com/",
 		},
 		"Azure": {
 			Path: "content/icons/azure.svg",

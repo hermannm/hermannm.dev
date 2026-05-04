@@ -35,6 +35,7 @@ projectGroups:
     slug: work
     contentDir: companies
     projectPaths:
+      - /birdsview
       - /liflig
       - /ignite
   - title: Libraries

@@ -4,8 +4,8 @@ path: /liflig
 tagLine: Software development firm, with a robust delivery platform.
 logo:
   path: /img/logos/liflig.png
-  altText: "Liflig company logo"
-techStackTitle: "Technologies I'm working with"
+  altText: Liflig company logo
+techStackTitle: Technologies I worked with
 techStack:
   - tech: Kotlin
     usedFor: backend
