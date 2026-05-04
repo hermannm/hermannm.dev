@@ -10,8 +10,8 @@ techStack:
   - tech: TypeScript
     usedFor: full-stack
     usedWith:
-      - React
       - Node.js
+      - React
   - tech: PostgreSQL
     usedFor: database
   - tech: Google Cloud Platform
