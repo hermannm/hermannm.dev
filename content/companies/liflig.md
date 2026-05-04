@@ -16,7 +16,7 @@ techStack:
   - tech: PostgreSQL
     usedFor: database
   - tech: AWS
-    usedFor: cloud provider
+    usedFor: infrastructure
 links:
   - title: More about Liflig
     link: https://liflig.no
