@@ -21,9 +21,9 @@ links:
     link: https://birdsview.ai
 ---
 
-Birdsview is a tech startup in the construction business, that's building a scanner device for
-assessing buildings made out of concrete. In May 2026, I started working as a full-stack developer
-here, primarily working on:
+Birdsview is a tech startup in the construction business, developing a scanner device for assessing
+buildings made out of concrete. In May 2026, I started working as a full-stack developer here,
+primarily working on:
 
 - The backend system that binds together all the various components of the system (inputs from the
   scanner + post-processing by an analysis module)

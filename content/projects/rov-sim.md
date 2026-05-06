@@ -23,7 +23,7 @@ controls and the main menu.
 
 In the research phase of the project, we contacted several different companies producing ROVs, to
 gain a better understanding of how to build a realistic simulator. We were quite overwhelmed by the
-responses — all our questions were answered by every company, and many of them provided additional
+responses – all our questions were answered by every company, and many of them provided additional
 resources for further research. _Blueye Robotics_, a drone company headquartered in Trondheim, went
 even further: they invited us to their office, to test a real ROV! This was a great experience, and
 helped us a lot to improve the realism of the simulator.

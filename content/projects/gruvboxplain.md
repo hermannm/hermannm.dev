@@ -16,7 +16,7 @@ links:
 
 One of the things I enjoy is setting up my development environment to look just the way I like it.
 When looking around for a good color theme for my editor, I found
-[`gruvbox`](https://github.com/morhetz/gruvbox#readme), and quite liked it — but the theme's
+[`gruvbox`](https://github.com/morhetz/gruvbox#readme), and quite liked it – but the theme's
 contrasts were a bit too sharp for my taste. So I decided to make my own, plainer variant:
 _`gruvbox-plain`_!
 

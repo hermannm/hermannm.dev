@@ -32,7 +32,7 @@ staging files to Git.
 I wanted to program more in Rust after
 [using it for Advent of Code](https://github.com/hermannm/advent-of-rust), and found it suitable for
 a terminal application like this. To interact with Git, I used Rust bindings for
-[`libgit2`](https://libgit2.org/). This taught me a lot about how Git works under the hood ⁠— as is
+[`libgit2`](https://libgit2.org/). This taught me a lot about how Git works under the hood – as is
 often the case, it is more complex than it looks on the surface!
 
 Now I use _`gadd`_ almost every day, and quite enjoy it. There's something quite satisfying about

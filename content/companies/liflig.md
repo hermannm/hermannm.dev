@@ -1,7 +1,7 @@
 ---
 name: Liflig
 path: /liflig
-tagLine: Software development firm, with a robust delivery platform.
+tagLine: Building tailor-made software for clients.
 logo:
   path: /img/logos/liflig.png
   altText: Liflig company logo
@@ -35,7 +35,7 @@ links:
 ---
 
 Liflig is a firm that delivers tailor-made software projects for clients, taking responsibility for
-the full lifecycle of a project - architecture, design, development, maintenance and operations.
+the full lifecycle of a project – architecture, design, development, maintenance and operations.
 
 My work at Liflig started with an internship in the summer of 2023. Our team of interns were tasked
 with building a backend system and admin UI for [IDTag](https://www.idtagtech.com/), an exciting
@@ -56,7 +56,7 @@ Liflig. For the next two years, I mainly worked with
 live production system, and how to design such a system for robustness and observability, which
 really matters when the system is handling real money.
 
-In addition to my work with Tomra, I also contributed quite a bit to common libraries that we used
+In addition to my work at Tomra, I also contributed quite a bit to common libraries that we used
 across projects in Liflig (see the list below). This taught me about API design, how to build
 intuitive abstractions to reduce the risk of errors, and how to maintain backwards compatibility.
 

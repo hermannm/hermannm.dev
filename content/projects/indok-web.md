@@ -26,11 +26,11 @@ links:
       - link: https://github.com/rubberdok/webdev-demo
 ---
 
-In the fall of 2020, _Rubberdøk_ was founded, a student organization tasked with developing
+In the fall of 2020, _Rubberdøk_ was founded: a student organization tasked with developing
 [indokntnu.no](https://indokntnu.no/), a new website for the study program I was studying at the
-time. For the following two years, I worked 8 hours/week alongside 10 other student developers,
-using the technologies listed above. It's hard to overstate how much I learned from this project —
-it gave me the foundation for my current understanding of modern web development.
+time. For the next two years, I worked 8 hours/week alongside 10 other student developers, using the
+technologies listed above. It's hard to overstate how much I learned from this project – it gave me
+the foundation for my current understanding of modern web development.
 
 One year after our founding, I became project manager of _Rubberdøk_ alongside Lars, another member.
 In this role, I coordinated our continued work on the website, and also dealt with feature requests
