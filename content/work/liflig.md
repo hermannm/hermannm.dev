@@ -17,6 +17,8 @@ techStack:
     usedFor: database
   - tech: AWS
     usedFor: infrastructure
+    usedWith:
+      - AWS CDK
 links:
   - title: Open-source Liflig libraries I contributed to
     sublinks:

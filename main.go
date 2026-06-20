@@ -237,6 +237,10 @@ var (
 			Path: "content/icons/aws.svg",
 			Link: "https://aws.amazon.com/",
 		},
+		"AWS CDK": {
+			Path: "content/icons/aws-cdk.svg",
+			Link: "https://docs.aws.amazon.com/cdk/v2/guide/home.html",
+		},
 		"Google Cloud Platform": {
 			Path: "content/icons/gcp.svg",
 			Link: "https://cloud.google.com/",
@@ -244,6 +248,10 @@ var (
 		"Azure": {
 			Path: "content/icons/azure.svg",
 			Link: "https://azure.microsoft.com/",
+		},
+		"Pulumi IaC": {
+			Path: "content/icons/pulumi.svg",
+			Link: "https://www.pulumi.com/docs/get-started/",
 		},
 		"VSCode": {
 			Path:         "content/icons/vscode.svg",

@@ -16,6 +16,8 @@ techStack:
     usedFor: database
   - tech: Google Cloud Platform
     usedFor: infrastructure
+    usedWith:
+      - Pulumi IaC
 links:
   - title: More about Birdsview
     link: https://birdsview.ai
