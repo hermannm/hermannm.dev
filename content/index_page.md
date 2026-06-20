@@ -33,7 +33,7 @@ projectGroups:
       - /gruvboxplain
   - title: Work
     slug: work
-    contentDir: companies
+    contentDir: work
     projectPaths:
       - /birdsview
       - /liflig
