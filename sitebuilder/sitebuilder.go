@@ -13,10 +13,6 @@ import (
 	"slices"
 	"strings"
 
-	"hermannm.dev/errclose"
-	"hermannm.dev/wrap"
-	"hermannm.dev/wrap/ctxwrap"
-
 	"github.com/adrg/frontmatter"
 	"github.com/go-playground/validator/v10"
 	"github.com/yuin/goldmark"
@@ -24,6 +20,9 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
 	"golang.org/x/sync/errgroup"
+	"hermannm.dev/devlog/ctxlog"
+	"hermannm.dev/errclose"
+	"hermannm.dev/wrap"
 )
 
 const (
@@ -50,7 +49,7 @@ func RenderPages(
 	devMode bool,
 ) error {
 	if err := validate.Struct(commonData); err != nil {
-		return ctxwrap.Errorf(ctx, err, "invalid common page data")
+		return wrap.ErrorContext(ctx, err, "invalid common page data")
 	}
 
 	projectFiles, err := readProjectContentDirs(ctx, contentPaths.ProjectDirs)
@@ -191,7 +190,7 @@ func ExecCommand(ctx context.Context, printOutput bool, commandName string, args
 
 	stderr, err := command.StderrPipe()
 	if err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to get pipe to %s's error output", displayName)
+		return wrap.Errorf(err, "failed to get pipe to %s's error output", displayName)
 	}
 
 	if printOutput {
@@ -200,7 +199,7 @@ func ExecCommand(ctx context.Context, printOutput bool, commandName string, args
 	}
 
 	if err := command.Start(); err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to run %s", displayName)
+		return wrap.Errorf(err, "failed to run %s", displayName)
 	}
 
 	errScanner := bufio.NewScanner(stderr)
@@ -217,7 +216,7 @@ func ExecCommand(ctx context.Context, printOutput bool, commandName string, args
 		if commandErrs.Len() == 0 {
 			return err
 		} else {
-			return ctxwrap.Error(ctx, errors.New(commandErrs.String()), err.Error())
+			return wrap.Error(errors.New(commandErrs.String()), err.Error())
 		}
 	}
 
@@ -270,12 +269,12 @@ func (renderer *PageRenderer) BuildSitemap(ctx context.Context) (returnedErr err
 
 	sitemapFile, err := os.Create(fmt.Sprintf("%s/%s", BaseOutputDir, sitemapFileName))
 	if err != nil {
-		return ctxwrap.Error(ctx, err, "failed to create sitemap file")
+		return wrap.Error(err, "failed to create sitemap file")
 	}
 	defer errclose.Close(sitemapFile, &returnedErr, "sitemap file")
 
 	if _, err := fmt.Fprintln(sitemapFile, sitemap); err != nil {
-		return ctxwrap.Error(ctx, err, "failed to write to sitemap file")
+		return wrap.Error(err, "failed to write to sitemap file")
 	}
 
 	return nil
@@ -353,7 +352,7 @@ func (renderer *PageRenderer) renderPage(
 	data any,
 ) (returnedErr error) {
 	if page.CanonicalURL == "" {
-		return ctxwrap.NewError(ctx, "Page.CanonicalURL must be set before rendering")
+		return errors.New("Page.CanonicalURL must be set before rendering")
 	}
 
 	outputPath, err := getRenderOutputPath(page.Path)
@@ -363,14 +362,14 @@ func (renderer *PageRenderer) renderPage(
 
 	outputFile, err := os.Create(outputPath)
 	if err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to create template output file '%s'", outputPath)
+		return wrap.Errorf(err, "failed to create template output file '%s'", outputPath)
 	}
 	defer errclose.Closef(outputFile, &returnedErr, "template output file %s", outputPath)
 
 	if err := renderer.templates.ExecuteTemplate(
 		outputFile, page.TemplateName, data,
 	); err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to execute template '%s'", page.TemplateName)
+		return wrap.Errorf(err, "failed to execute template '%s'", page.TemplateName)
 	}
 
 	return nil
@@ -420,29 +419,21 @@ func readMarkdownWithFrontmatter(
 	bodyDest io.Writer,
 	frontmatterDest any,
 ) (returnedErr error) {
+	ctx = ctxlog.WithAttrs(ctx, "markdownFile", markdownFilePath)
+
 	markdownFile, err := os.Open(markdownFilePath)
 	if err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to open file '%s'", markdownFilePath)
+		return wrap.ErrorContext(ctx, err, "failed to open markdown file")
 	}
 	defer errclose.Closef(markdownFile, &returnedErr, "file '%s'", markdownFilePath)
 
 	restOfFile, err := frontmatter.MustParse(markdownFile, frontmatterDest)
 	if err != nil {
-		return ctxwrap.Errorf(
-			ctx,
-			err,
-			"failed to parse markdown frontmatter of '%s'",
-			markdownFilePath,
-		)
+		return wrap.ErrorContext(ctx, err, "failed to parse markdown frontmatter")
 	}
 
 	if err := newMarkdownParser().Convert(restOfFile, bodyDest); err != nil {
-		return ctxwrap.Errorf(
-			ctx,
-			err,
-			"failed to parse body of markdown file '%s'",
-			markdownFilePath,
-		)
+		return wrap.ErrorContext(ctx, err, "failed to parse body of markdown file")
 	}
 
 	return nil

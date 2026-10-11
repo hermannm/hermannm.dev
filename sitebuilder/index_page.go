@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"hermannm.dev/wrap"
-	"hermannm.dev/wrap/ctxwrap"
 )
 
 type IndexPageBase struct {
@@ -68,13 +67,13 @@ type Image struct {
 func (renderer *PageRenderer) RenderIndexPage(ctx context.Context, contentPath string) (err error) {
 	content, aboutMeText, err := parseIndexPageContent(ctx, contentPath)
 	if err != nil {
-		return ctxwrap.Error(ctx, err, "failed to parse index page data")
+		return wrap.Error(err, "failed to parse index page data")
 	}
 	content.Page.SetCanonicalURL(renderer.commonData.BaseURL)
 
 	projectGroups, err := parseProjectGroups(content.ProjectGroups)
 	if err != nil {
-		return ctxwrap.Error(ctx, err, "failed to parse project groups")
+		return wrap.Error(err, "failed to parse project groups for index page")
 	}
 
 	renderer.parsedProjectGroups = projectGroups.list
@@ -91,12 +90,12 @@ func (renderer *PageRenderer) RenderIndexPage(ctx context.Context, contentPath s
 	}
 
 	if err := validateIconsExpectedByIndexPage(renderer.icons); err != nil {
-		return ctxwrap.Error(ctx, err, "icon map was missing icons required by index page")
+		return wrap.Error(err, "icon map was missing icons required by index page")
 	}
 
 	personalInfo, err := content.PersonalInfo.toTemplateFields(renderer.icons)
 	if err != nil {
-		return ctxwrap.Error(ctx, err, "failed to parse personal info from index page content")
+		return wrap.Error(err, "failed to parse personal info from index page content")
 	}
 
 ProjectLoop:
@@ -104,11 +103,10 @@ ProjectLoop:
 		select {
 		case project := <-renderer.parsedProjects:
 			if err = projectGroups.AddIfIncluded(project); err != nil {
-				return ctxwrap.Errorf(
-					ctx,
+				return wrap.ErrorWithAttrs(
 					err,
-					"failed to add project '%s' to groups",
-					project.Name,
+					"failed to add project to groups",
+					"project", project.Name,
 				)
 			}
 			if projectGroups.IsFull() {
@@ -137,7 +135,7 @@ ProjectLoop:
 		Icons:         renderer.icons,
 	}
 	if err = renderer.renderPage(ctx, pageTemplate.Meta.Page, pageTemplate); err != nil {
-		return ctxwrap.Error(ctx, err, "failed to render index page")
+		return wrap.Error(err, "failed to render index page")
 	}
 
 	return nil
@@ -150,15 +148,14 @@ func parseIndexPageContent(
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	aboutMeBuffer := new(bytes.Buffer)
 	if err := readMarkdownWithFrontmatter(ctx, path, aboutMeBuffer, &content); err != nil {
-		return IndexPageMarkdown{}, "", ctxwrap.Error(
-			ctx,
+		return IndexPageMarkdown{}, "", wrap.Error(
 			err,
 			"failed to read markdown for index page",
 		)
 	}
 
 	if err := validate.Struct(content); err != nil {
-		return IndexPageMarkdown{}, "", ctxwrap.Error(ctx, err, "invalid index page metadata")
+		return IndexPageMarkdown{}, "", wrap.Error(err, "invalid index page metadata")
 	}
 
 	aboutMeText = removeParagraphTagsAroundHTML(aboutMeBuffer.String())

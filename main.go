@@ -7,14 +7,17 @@ import (
 	"os"
 
 	"hermannm.dev/devlog"
-	"hermannm.dev/devlog/log"
+	"hermannm.dev/devlog/errlog"
+	"hermannm.dev/devlog/sloginit"
 
 	"hermannm.dev/personal-website/devserver"
 	"hermannm.dev/personal-website/sitebuilder"
 )
 
 func main() {
-	log.SetDefault(devlog.NewHandler(os.Stdout, &devlog.Options{Level: slog.LevelDebug}))
+	sloginit.InitPrettyLogHandler(
+		os.Stdout, &devlog.Options{RenameErrorAttrKey: "cause", Level: slog.LevelDebug},
+	)
 
 	ctx := context.Background()
 
@@ -26,11 +29,11 @@ func main() {
 			inputCSSFileName,
 			args.devServerPort,
 		); err != nil {
-			log.Error(ctx, err, "Dev server stopped")
+			slog.ErrorContext(ctx, "Dev server stopped", errlog.Cause(err))
 			os.Exit(1)
 		}
 	} else {
-		log.Info(ctx, "Building website...")
+		slog.InfoContext(ctx, "Building website...")
 		if err := sitebuilder.RenderPages(
 			ctx,
 			contentPaths,
@@ -38,18 +41,18 @@ func main() {
 			icons,
 			args.invokedByDevServer,
 		); err != nil {
-			log.Error(ctx, err, "")
+			slog.ErrorContext(ctx, "", errlog.Cause(err))
 			os.Exit(1)
 		}
 		if err := sitebuilder.FormatRenderedPages(ctx); err != nil {
-			log.Error(ctx, err, "Failed to format rendered pages")
+			slog.ErrorContext(ctx, "Failed to format rendered pages", errlog.Cause(err))
 			os.Exit(1)
 		}
 		if err := sitebuilder.GenerateTailwindCSS(ctx, inputCSSFileName); err != nil {
-			log.Error(ctx, err, "Failed to generate CSS for rendered pages")
+			slog.ErrorContext(ctx, "Failed to generate CSS for rendered pages", errlog.Cause(err))
 			os.Exit(1)
 		}
-		log.Info(
+		slog.InfoContext(
 			ctx,
 			"Website built successfully!",
 			"outputDirectory",

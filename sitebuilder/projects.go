@@ -9,7 +9,8 @@ import (
 	"os"
 	"strings"
 
-	"hermannm.dev/wrap/ctxwrap"
+	"hermannm.dev/devlog/ctxlog"
+	"hermannm.dev/wrap"
 )
 
 type ProjectProfile struct {
@@ -90,9 +91,11 @@ func (renderer *PageRenderer) RenderProjectPage(
 	ctx context.Context,
 	projectFile ProjectContentFile,
 ) error {
+	ctx = ctxlog.WithAttrs(ctx, "project", projectFile.name)
+
 	project, err := renderer.parseProject(ctx, projectFile)
 	if err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to parse project '%s'", projectFile.name)
+		return wrap.ErrorContext(ctx, err, "failed to parse project")
 	}
 
 	renderer.parsedPages <- project.Page
@@ -111,7 +114,7 @@ func (renderer *PageRenderer) RenderProjectPage(
 		projectPage.Meta.Page,
 		projectPage,
 	); err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to render page for project '%s'", project.Name)
+		return wrap.ErrorContext(ctx, err, "failed to render page for project")
 	}
 
 	return nil
@@ -127,7 +130,7 @@ func readProjectContentDirs(ctx context.Context, contentDirNames []string) (
 	for _, dirName := range contentDirNames {
 		entries, err := fs.ReadDir(baseContentDir, dirName)
 		if err != nil {
-			return nil, ctxwrap.Errorf(
+			return nil, wrap.ErrorfContext(
 				ctx,
 				err,
 				"failed to read project content directory '%s'",
@@ -167,7 +170,7 @@ func (renderer *PageRenderer) parseProject(
 		descriptionBuffer,
 		&project,
 	); err != nil {
-		return ParsedProject{}, ctxwrap.Error(ctx, err, "failed to read markdown for project")
+		return ParsedProject{}, wrap.ErrorContext(ctx, err, "failed to read markdown for project")
 	}
 
 	project.Page.Title = fmt.Sprintf("%s%s", renderer.commonData.SiteName, project.Page.Path)
@@ -178,17 +181,16 @@ func (renderer *PageRenderer) parseProject(
 	}
 
 	if err := validate.Struct(project); err != nil {
-		return ParsedProject{}, ctxwrap.Error(ctx, err, "invalid project metadata")
+		return ParsedProject{}, wrap.ErrorContext(ctx, err, "invalid project metadata")
 	}
 
 	if project.Footnote != "" {
 		var builder strings.Builder
 		if err := newMarkdownParser().Convert([]byte(project.Footnote), &builder); err != nil {
-			return ParsedProject{}, ctxwrap.Errorf(
+			return ParsedProject{}, wrap.ErrorContext(
 				ctx,
 				err,
-				"failed to parse footnote for project '%s' as markdown",
-				project.Name,
+				"failed to parse footnote for project",
 			)
 		}
 		project.Footnote = removeParagraphTagsAroundHTML(builder.String())
@@ -203,11 +205,10 @@ func (renderer *PageRenderer) parseProject(
 
 	indexPageLink, err := getIndexPageLink(renderer.parsedProjectGroups, projectFile.directory)
 	if err != nil {
-		return ParsedProject{}, ctxwrap.Errorf(
+		return ParsedProject{}, wrap.ErrorContext(
 			ctx,
 			err,
-			"failed to get index page link for project '%s'",
-			project.Name,
+			"failed to get index page link for project",
 		)
 	}
 
@@ -219,16 +220,15 @@ func (renderer *PageRenderer) parseProject(
 	}
 
 	if err := populateLinkTextAndIcons(project.Links, renderer.icons); err != nil {
-		return ParsedProject{}, ctxwrap.Error(ctx, err, "failed to set link icons")
+		return ParsedProject{}, wrap.ErrorContext(ctx, err, "failed to set link icons")
 	}
 
 	techStack, indexPageFallbackIcon, err := parseTechStack(project.TechStack, renderer.icons)
 	if err != nil {
-		return ParsedProject{}, ctxwrap.Errorf(
+		return ParsedProject{}, wrap.ErrorContext(
 			ctx,
 			err,
-			"failed to parse tech stack for project '%s'",
-			project.Name,
+			"failed to parse tech stack for project",
 		)
 	}
 

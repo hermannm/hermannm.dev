@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"html/template"
 
-	"hermannm.dev/wrap/ctxwrap"
+	"hermannm.dev/devlog/ctxlog"
+	"hermannm.dev/wrap"
 )
 
 const BasicPageTemplateName = "basic_page.html.tmpl"
@@ -21,18 +22,20 @@ type BasicPageTemplate struct {
 }
 
 func (renderer *PageRenderer) RenderBasicPage(ctx context.Context, contentPath string) (err error) {
+	ctx = ctxlog.WithAttrs(ctx, "page", contentPath)
+
 	path := fmt.Sprintf("%s/%s", BaseContentDir, contentPath)
 	body := new(bytes.Buffer)
 	var metadata BasicPageMarkdown
 	if err = readMarkdownWithFrontmatter(ctx, path, body, &metadata); err != nil {
-		return ctxwrap.Error(ctx, err, "failed to read markdown for page")
+		return wrap.ErrorContext(ctx, err, "failed to read markdown for page")
 	}
 
 	metadata.Page.TemplateName = BasicPageTemplateName
 	metadata.Page.SetCanonicalURL(renderer.commonData.BaseURL)
 
 	if err = validate.Struct(metadata); err != nil {
-		return ctxwrap.Errorf(ctx, err, "invalid metadata for page '%s'", contentPath)
+		return wrap.ErrorContext(ctx, err, "invalid metadata for page")
 	}
 
 	renderer.parsedPages <- metadata.Page
@@ -49,7 +52,7 @@ func (renderer *PageRenderer) RenderBasicPage(ctx context.Context, contentPath s
 		pageTemplate.Meta.Page,
 		pageTemplate,
 	); err != nil {
-		return ctxwrap.Errorf(ctx, err, "failed to render page '%s'", pageTemplate.Meta.Page.Path)
+		return wrap.ErrorContext(ctx, err, "failed to render page")
 	}
 
 	return nil
