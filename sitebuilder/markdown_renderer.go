@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 
+	"hermannm.dev/errclose"
 	"hermannm.dev/wrap"
 
 	"github.com/yuin/goldmark/ast"
@@ -211,6 +212,7 @@ func getImageDimensions(path string) (width int, height int, err error) {
 	if err != nil {
 		return 0, 0, wrap.Error(err, "failed to open image file")
 	}
+	defer errclose.Closef(file, &err, "image file '%s'", path)
 
 	config, _, err := image.DecodeConfig(file)
 	if err != nil {
