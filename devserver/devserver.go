@@ -10,8 +10,9 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"hermannm.dev/devlog/errlog"
 	"hermannm.dev/errclose"
-	"hermannm.dev/personal-website/sitebuilder"
 	"hermannm.dev/wrap"
+
+	"hermannm.dev/personal-website/sitebuilder"
 )
 
 func ServeAndRebuildOnChange(

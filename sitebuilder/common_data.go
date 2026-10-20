@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+//exhaustruct:ignore
 type LinkItem struct {
 	Title string `yaml:"title" validate:"required"`
 	// Text to display for the link. Optional - defaults to Link but with https:// stripped, or

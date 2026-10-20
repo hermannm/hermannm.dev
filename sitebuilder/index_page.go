@@ -134,7 +134,7 @@ ProjectLoop:
 		ProjectGroups: projectGroups.ToSlice(),
 		Icons:         renderer.icons,
 	}
-	if err = renderer.renderPage(ctx, pageTemplate.Meta.Page, pageTemplate); err != nil {
+	if err = renderer.renderPage(pageTemplate.Meta.Page, pageTemplate); err != nil {
 		return wrap.Error(err, "failed to render index page")
 	}
 
@@ -169,7 +169,6 @@ func (personalInfo PersonalInfoMarkdown) toTemplateFields(icons IconMap) ([]Link
 		return nil, wrap.Errorf(err, "failed to parse birthday field '%s'", personalInfo.Birthday)
 	}
 
-	//nolint:exhaustruct
 	fields := []LinkItem{
 		{
 			LinkText: fmt.Sprintf("%d years old", ageFromBirthday(birthday)),

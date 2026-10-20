@@ -11,6 +11,7 @@ import (
 
 type IconMap map[string]*IconConfig
 
+//exhaustruct:ignore
 type IconConfig struct {
 	Path string `validate:"required,filepath"`
 	// Populated after [PageRenderer.RenderIcons] finishes.

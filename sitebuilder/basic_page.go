@@ -48,7 +48,6 @@ func (renderer *PageRenderer) RenderBasicPage(ctx context.Context, contentPath s
 		Content: template.HTML(body.String()),
 	}
 	if err = renderer.renderPageWithAndWithoutTrailingSlash(
-		ctx,
 		pageTemplate.Meta.Page,
 		pageTemplate,
 	); err != nil {

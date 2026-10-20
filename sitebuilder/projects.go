@@ -110,7 +110,6 @@ func (renderer *PageRenderer) RenderProjectPage(
 	}
 
 	if err := renderer.renderPageWithAndWithoutTrailingSlash(
-		ctx,
 		projectPage.Meta.Page,
 		projectPage,
 	); err != nil {
@@ -324,7 +323,6 @@ func getTechIcon(
 		return LinkItem{}, "", fmt.Errorf("tech icon '%s' was not rendered", techName)
 	}
 
-	//nolint:exhaustruct
 	return LinkItem{
 		LinkText: techName,
 		Link:     techIcon.Link,

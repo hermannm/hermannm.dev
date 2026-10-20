@@ -306,25 +306,24 @@ type withPager interface {
 // For more info on how GitHub handles trailing slashes, see
 // https://github.com/slorber/trailing-slash-guide.
 func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
-	ctx context.Context,
 	page Page,
 	data withPager,
 ) error {
 	// If the page path ends with .html, then we only want to render it once.
 	if strings.HasSuffix(page.Path, ".html") {
-		return renderer.renderPage(ctx, page, data)
+		return renderer.renderPage(page, data)
 	}
 
 	if strings.HasSuffix(page.Path, "/") {
 		return fmt.Errorf("expected page path '%s' not to end with trailing slash", page.Path)
 	}
 
-	group, ctx := errgroup.WithContext(ctx)
+	var group errgroup.Group
 
 	// Original page, without trailing slash
 	group.Go(
 		func() error {
-			return renderer.renderPage(ctx, page, data)
+			return renderer.renderPage(page, data)
 		},
 	)
 
@@ -339,7 +338,7 @@ func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
 			if !renderer.devMode {
 				newPage.RedirectPath = page.Path
 			}
-			return renderer.renderPage(ctx, newPage, data.withPage(newPage))
+			return renderer.renderPage(newPage, data.withPage(newPage))
 		},
 	)
 
@@ -347,7 +346,6 @@ func (renderer *PageRenderer) renderPageWithAndWithoutTrailingSlash(
 }
 
 func (renderer *PageRenderer) renderPage(
-	ctx context.Context,
 	page Page,
 	data any,
 ) (returnedErr error) {
