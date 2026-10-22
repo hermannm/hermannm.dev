@@ -1,7 +1,7 @@
 ---
 name: omnissiah
 path: /omnissiah
-tagLine: AI agent sandboxing.
+tagLine: Sandboxing for AI agents.
 goPackage:
   rootName: hermannm.dev/omnissiah
   githubURL: https://github.com/hermannm/omnissiah
