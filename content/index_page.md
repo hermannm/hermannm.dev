@@ -26,6 +26,7 @@ projectGroups:
       - /casus-belli
       - /analysis
       - /gadd
+      - /omnissiah
       - /coffeetalk
       - /corona-defense
       - /rov-sim
